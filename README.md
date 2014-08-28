@@ -8,5 +8,6 @@ OSX.
 On Windows, this must be installed to %USERPROFILE%/.vim, and the 
 win\_install.bat script must be run to create a %USERPROFILE%/.vimrc stub file.
 
-To create a file or folder named ".vim" in Windows Explorer, type ".vim.". The 
-trailing period will be removed.
+To create a file or folder named ".vim" in Windows Explorer, type `.vim.`. The 
+trailing period will be removed. In a command prompt, it is enough to type 
+`mkdir .vim`.
