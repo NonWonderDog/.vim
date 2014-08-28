@@ -1,0 +1,2 @@
+tagbar.vmb: call delete('C:\Users\rgmorr\.vim/README.md')|call delete('C:\Users\rgmorr\.vim/autoload/tagbar.vim')|call delete('C:\Users\rgmorr\.vim/doc/tagbar.txt')|call delete('C:\Users\rgmorr\.vim/plugin/tagbar.vim')|call delete('C:\Users\rgmorr\.vim/syntax/tagbar.vim')
+hilinks.vba: call delete('C:\Users\rgmorr\.vim/plugin/hilinks.vim')|call delete('C:\Users\rgmorr\.vim/doc/hilinks.txt')
