@@ -17,9 +17,11 @@ if has("multi_byte")
 endif
 
 if has('win32') || has('win64')
-	"use '.vim' instead of 'vimfiles', and use .viminfo
+	" use '.vim' instead of 'vimfiles', and use .viminfo
 	set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
 	set viminfo+=n~/.viminfo
+	" redirect $MYVIMRC to this file, rather than the stub
+	let $MYVIMRC='~/.vim/vimrc'
 	if executable("bash")
 		" Use bash if available
 		set shell=bash
