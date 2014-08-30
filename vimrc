@@ -14,6 +14,9 @@ if has("multi_byte")
 	scriptencoding utf-8
 	" enable autorecognize for SJIS-encoded files
 	setglobal fileencodings=ucs-bom,utf-8,sjis,default,latin1
+	" default to IME off
+	set iminsert=0
+	set imsearch=-1
 endif
 
 if has('win32') || has('win64')
