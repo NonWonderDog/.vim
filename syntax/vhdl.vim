@@ -236,11 +236,12 @@ syn match   vhdlSpecial	"\\.\{-}\\"
 "syn include @doxygen syntax/doxygen.vim
 "syn include @plantuml syntax/plantuml.vim
 syn match   vhdlComment "--.*$" contains=@Spell,vhdlTodo
-syn match   vhdlSpecialComment "--!.*$" contains=@Spell,doxygenCommand,vhdlTodo
+syn match   vhdlSpecialComment "--!.*$" contains=@Spell,doxygenCommand,doxygenEscape,vhdlTodo
 "syn match   vhdlSpecialComment "--!.*$" contains=@doxygen,@plantuml
 syn keyword vhdlTodo	contained TODO FIXME XXX
 syn match doxygenCommand contained "[\\@]todo"
-syn match doxygenCommand contained "[\\@]\a\+\%([\s\t\[\]}$]\|.\{-}}{\?\)"
+syn match doxygenCommand contained "[\\@]\a\+\%(\>\|[\[\]}$]\|.\{-}}{\?\)"
+syn match doxygenEscape contained "[\\@]\%(---\|--\|::\|[\$@&~<>#%".|]\)"
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -276,6 +277,7 @@ if version >= 508 || !exists("did_vhdl_syntax_inits")
   HiLink vhdlAttribute	    Type
   HiLink vhdlTodo	    Todo
   HiLink doxygenCommand	    Special
+  HiLink doxygenEscape	    Special
 
   delcommand HiLink
 endif
