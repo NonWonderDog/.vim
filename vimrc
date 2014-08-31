@@ -1,12 +1,16 @@
 " Bob Morris .vimrc file
-" maintained on Windows 7 PC
+" Tested on Windows 7 and Ubuntu 14.04
+" Using Vim 7.4
 
-" Use marker folding in this file
 " vim:fdm=marker
 
-" Environment {{{
 set nocompatible
 
+" Pathogen {{{
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
+" }}}
+" Environment {{{
 if has("multi_byte")
 	" use unicode
 	set encoding=utf-8
@@ -84,6 +88,9 @@ set spelllang=en_us
 " }}}
 " Editor {{{
 
+" Use all filetype-dependent settings
+filetype plugin indent on
+
 " essentials
 set hidden				" keep hidden buffers on window close
 set history=100			" keep 100 lines of command line history
@@ -107,9 +114,6 @@ set mousemodel=popup
 set incsearch			" do incremental searching
 set ignorecase			" use case-insensitive searches
 set smartcase			" make only lower-case patterns case-insensitive
-
-" Use all filetype-dependent settings
-filetype plugin indent on
 
 " Use syntax and search highlighting, when the terminal has colors
 if &t_Co > 2 || has("gui_running")

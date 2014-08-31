@@ -1,0 +1,42 @@
+[submodule "bundle/matchit"]
+	path = bundle/matchit
+	url = git@github.com:tmhedberg/matchit.git
+[submodule "bundle/vim-speeddating"]
+	path = bundle/vim-speeddating
+	url = git@github.com:tpope/vim-speeddating.git
+[submodule "bundle/vim-surround"]
+	path = bundle/vim-surround
+	url = git@github.com:tpope/vim-surround.git
+[submodule "bundle/vim-repeat"]
+	path = bundle/vim-repeat
+	url = git@github.com:tpope/vim-repeat.git
+[submodule "bundle/vim-misc"]
+	path = bundle/vim-misc
+	url = git@github.com:xolox/vim-misc.git
+[submodule "bundle/vim-shell"]
+	path = bundle/vim-shell
+	url = git@github.com:xolox/vim-shell.git
+[submodule "bundle/vim-easytags"]
+	path = bundle/vim-easytags
+	url = git@github.com:xolox/vim-easytags.git
+[submodule "bundle/vim-reload"]
+	path = bundle/vim-reload
+	url = git@github.com:xolox/vim-reload.git
+[submodule "bundle/tagbar"]
+	path = bundle/tagbar
+	url = git@github.com:majutsushi/tagbar.git
+[submodule "bundle/ultisnips"]
+	path = bundle/ultisnips
+	url = git@github.com:SirVer/ultisnips.git
+[submodule "bundle/vim-snippets"]
+	path = bundle/vim-snippets
+	url = git@github.com:honza/vim-snippets.git
+[submodule "bundle/tcomment_vim"]
+	path = bundle/tcomment_vim
+	url = git@github.com:tomtom/tcomment_vim.git
+[submodule "bundle/vim-hilinks"]
+	path = bundle/vim-hilinks
+	url = git@github.com:kergoth/vim-hilinks.git
+[submodule "bundle/vim-pathogen"]
+	path = bundle/vim-pathogen
+	url = git@github.com:tpope/vim-pathogen.git

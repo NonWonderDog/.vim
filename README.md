@@ -1,13 +1,19 @@
 Vim Configuration Files
 =======================
 
-This relies in the behavior introduced in Vim 7.3, in which ~/.vim/vimrc is 
-a default alternate location for ~/.vimrc. This works only on Linux and maybe 
-OSX.
+For ease of compatibility between Windows and Linux, this was designed to live 
+in `~/.vim` on both platforms.  It will not function correctly if installed to 
+another directory.  Note that this is not the default location on Windows, 
+which uses `~/vimfiles` and `~/_vimrc` by default.
 
-On Windows, this must be installed to %USERPROFILE%/.vim, and the 
-win\_install.bat script must be run to create a %USERPROFILE%/.vimrc stub file.
+In Vim 7.3 and above, vim will look for `~/.vim/vimrc` in preference to 
+`~/.vimrc`, so a symlink from `~/.vimrc` is unecessary.
 
-To create a file or folder named ".vim" in Windows Explorer, type `.vim.`. The 
-trailing period will be removed. In a command prompt, it is enough to type 
-`mkdir .vim`.
+An install script `win_install.bat` is included for Windows, which creates 
+a stub file at `~/.vimrc` to redirect to the `~/.vim` directory.
+
+On Windows, Explorer interprets a file or folder name starting with a dot as 
+a file with an extension but no name, and gives an error. To work around this, 
+add a trailing dot to the file name. Typing `.vim.` to rename the folder will 
+create the correctly named directory.
+
