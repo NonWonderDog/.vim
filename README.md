@@ -29,6 +29,7 @@ For an install from scratch:
 	sudo apt-get install exuberant-ctags
 	git clone git@github.com:NonWonderDog/.vim.git ~/.vim
 	rm ~/.vimrc
+	vim +Helptags +qall
 
 Windows Install
 ---------------
@@ -46,6 +47,9 @@ needed if creating the directory from a command prompt.
 After a `git clone` or `svn checkout`, the win\_install.bat script will create 
 a stub `~/.vimrc` file pointing to the real `~/.vim/vimrc` file.  This step is 
 necessary because we are not using the default `~/vimfiles` path.
+
+After installing Vim and this repository, start Vim and execute `:Helptags` to 
+update the documentation.
 
 ### Prerequisites
 - Vim 7.4 or above: <http://www.vim.org/download.php>
