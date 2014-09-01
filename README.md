@@ -1,8 +1,12 @@
 Vim Configuration Files
 =======================
+My Vim dotfiles.
 
-My Vim dotfiles, including Windows and Linux cross-compatibility and 
-transparent CJK input support.
+Includes:
+- Windows and Linux compatibility
+- UTF-8 and CJK input support
+- Custom color scheme based on "Wombat"
+- Custom syntax files for VHDL 2008 and IEC Structured Text
 
 For ease of compatibility between Windows and Linux, this was designed to live 
 in `~/.vim` on both platforms.  It will not function correctly if installed to 
