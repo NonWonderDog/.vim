@@ -6,10 +6,6 @@
 
 set nocompatible
 
-" Pathogen {{{
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect()
-" }}}
 " Environment {{{
 if has("multi_byte")
 	" use unicode
@@ -44,6 +40,9 @@ if has('win32') || has('win64')
 		set nomore
 	endif
 endif
+
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
 
 " Use ag or ack instead of grep
 if executable('ag')
