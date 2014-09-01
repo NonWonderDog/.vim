@@ -56,12 +56,11 @@ update the documentation.
 ### Prerequisites
 - Vim 7.4 or above: <http://www.vim.org/download.php>
 - Exuberant Ctags: <http://ctags.sourceforge.net/>
-	- Required for the Easytags plugin and code tags in general.
 	- `ctags.exe` from the download must be on your Windows `%PATH%`.
 - 32-bit Python 2.7: <https://www.python.org/download>
 	- Required for the Ultisnip plugin.
 	- The official Vim 7.4 release for Windows also supports Python 3.2, but
-	  not the newest Python 3.4.1.
+	  not Python 3.3 or above
 
 If you're using a different Vim build 
 ([Haroogan's](https://bitbucket.org/Haroogan/vim-for-windows/src) is quite good 
