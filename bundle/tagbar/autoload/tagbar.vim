@@ -2162,7 +2162,7 @@ function! s:ExecuteCtagsOnFile(fname, realfname, typeinfo) abort
         let ctags_bin = g:tagbar_ctags_bin
     endif
 
-    let ctags_cmd = s:EscapeCtagsCmd(ctags_bin, ctags_args, a:fname)
+    let ctags_cmd = join([ctags_bin, join(ctags_args, " "), a:fname], " ")
     if ctags_cmd == ''
         return ''
     endif
