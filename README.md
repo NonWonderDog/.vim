@@ -35,12 +35,6 @@ all submodules automatically.
 
 Windows Install
 ---------------
-The latest version of Vim can be found at <http://www.vim.org/download.php>.
-
-Exuberant Ctags is also required, found at <http://ctags.sourceforge.net/>.  
-`ctags.exe` is the only required file from the download package, and can be 
-placed anywhere on your %PATH% or in the Vim install directory.
-
 The contents of this repository must be installed to a `%USERPROFILE%/.vim` 
 directory.  This distribution will not function correctly if installed to the 
 default `%USERPROFILE%/vimfiles` directory.
@@ -53,9 +47,24 @@ name.  The name `.vim.` will create the `.vim` directory.  No workarounds are
 needed if creating the directory from a command prompt.
 
 After a `git clone --recursive` or `svn checkout`, the win\_install.bat script 
-will create a stub `~/.vimrc` file pointing to the real `~/.vim/vimrc` file.  
+will create a stub `~/.vimrc` file pointing to the real `~/.vim/vimrc` file. 
 This step is necessary because we are not using the default `~/vimfiles` path.
 
+### Prerequisites
+- Vim 7.4 or above: <http://www.vim.org/download.php>
+- Exuberant Ctags: <http://ctags.sourceforge.net/>
+	- Required for the Easytags plugin and code tags in general.
+	- `ctags.exe` from the download must be on your Windows %PATH%.
+- 32-bit Python 2.7: <https://www.python.org/download>
+	- Required for the Ultisnip plugin.
+	- The official Vim 7.4 release for Windows also supports Python 3.2, but
+	  not the newest Python 3.4.1.
+
+If you're using a different Vim build 
+([Haroogan's](https://bitbucket.org/Haroogan/vim-for-windows/src) is quite good 
+for 64-bit), make sure to install an appropriate version of Python.  To install 
+the 64-bit build of Vim 7.4, extract it to C:/Program Files/Vim/vim74 and run 
+install.exe with administrator priviledges.
 
 Todo
 ----
