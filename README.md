@@ -27,11 +27,8 @@ For an install from scratch:
 
 	sudo apt-get install vim-gtk
 	sudo apt-get install exuberant-ctags
-	git clone --recursive git@github.com:NonWonderDog/.vim.git ~/.vim
+	git clone git@github.com:NonWonderDog/.vim.git ~/.vim
 	rm ~/.vimrc
-
-Plugins are included as git submodules. `git clone --recursive` should clone 
-all submodules automatically.
 
 Windows Install
 ---------------
@@ -46,15 +43,15 @@ in a dot in Explorer, the simplest workaround is to add a dot to the end of the
 name.  The name `.vim.` will create the `.vim` directory.  No workarounds are 
 needed if creating the directory from a command prompt.
 
-After a `git clone --recursive` or `svn checkout`, the win\_install.bat script 
-will create a stub `~/.vimrc` file pointing to the real `~/.vim/vimrc` file. 
-This step is necessary because we are not using the default `~/vimfiles` path.
+After a `git clone` or `svn checkout`, the win\_install.bat script will create 
+a stub `~/.vimrc` file pointing to the real `~/.vim/vimrc` file.  This step is 
+necessary because we are not using the default `~/vimfiles` path.
 
 ### Prerequisites
 - Vim 7.4 or above: <http://www.vim.org/download.php>
 - Exuberant Ctags: <http://ctags.sourceforge.net/>
 	- Required for the Easytags plugin and code tags in general.
-	- `ctags.exe` from the download must be on your Windows %PATH%.
+	- `ctags.exe` from the download must be on your Windows `%PATH%`.
 - 32-bit Python 2.7: <https://www.python.org/download>
 	- Required for the Ultisnip plugin.
 	- The official Vim 7.4 release for Windows also supports Python 3.2, but
