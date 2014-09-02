@@ -183,15 +183,17 @@ set ruler				" show the cursor position all the time
 set showcmd				" display incomplete commands
 
 " Set font and color scheme
-if has('gui')
-	colorscheme numbat
-	if has('win32') || has('win64')
-		set guifont=Consolas:h8
-		set guifontwide=MS_Gothic:h8:cSHIFTJIS
-	endif
-else
+colorscheme numbat256
+if has('win32') || has('win64')
+	set guifont=Consolas:h8
+	set guifontwide=MS_Gothic:h8:cSHIFTJIS
+endif
+
+if ($TERM == "xterm" || $TERM == "xterm-256color" || $TERM == "xterm-88color")
+	" set gnome terminal colors and italic escape sequences
 	set t_Co=256
-	colorscheme numbat
+	set t_ZH=[3m
+	set t_ZR=[23m
 endif
 
 " Change shown characters for list mode
@@ -312,6 +314,7 @@ command! -nargs=+ -complete=command TabOutput call RedirMessages(<q-args>, 'tabn
 set tags=./tags;,~/.vimtags " add upward search for local tags files
 let g:easytags_dynamic_files = 1 " write to first available tags file from above list
 let g:easytags_file = '~/.vimtags-$USER'
+let g:easytags_async = 1
 " add arduino support
 let g:easytags_languages = {
 \   'arduino': {

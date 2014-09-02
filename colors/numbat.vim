@@ -1,7 +1,8 @@
 " Author:		Robert Morris (nonwonderdog@gmail.com)
 " Credits:		Lars H. Nielsen (dengmao@gmail.com)
-" Last Change:	April 16 2014
-" Adapted from Lars H. Nielsen's 'Wombat' scheme
+" Last Change:	2 September 2014
+"
+" Adapted from Wombat by Lars H. Nielsen
 
 set background=dark
 
@@ -57,31 +58,3 @@ hi Special			guifg=#f2da6f 	gui=none		ctermfg=brown
 hi Float			guifg=#ffaa50	gui=none		ctermfg=red
 hi Boolean			guifg=#e454ba	gui=none		ctermfg=red
 
-" terminal color definitions
-"hi SpecialKey	ctermfg=darkgreen
-"hi NonText		cterm=bold ctermfg=darkblue
-"hi Directory	ctermfg=darkcyan
-"hi IncSearch	cterm=NONE ctermfg=yellow ctermbg=green
-"hi Search		cterm=NONE ctermfg=grey ctermbg=blue
-"hi MoreMsg		ctermfg=darkcyan
-"hi ModeMsg		cterm=NONE ctermfg=brown
-"hi LineNr		ctermfg=3
-"hi Question		ctermfg=darkcyan
-"hi StatusLine	cterm=bold,reverse
-"hi StatusLineNC cterm=reverse
-"hi VertSplit	cterm=reverse
-"hi Title		ctermfg=5
-"hi Visual		cterm=reverse
-"hi VisualNOS	cterm=bold,underline
-"hi WarningMsg	ctermfg=1
-"hi WildMenu		ctermfg=0 ctermbg=3
-hi Folded		ctermfg=darkgrey ctermbg=NONE
-hi FoldColumn	ctermfg=darkgrey ctermbg=NONE
-"hi DiffAdd		ctermbg=4
-"hi DiffChange	ctermbg=5
-"hi DiffDelete	cterm=bold ctermfg=4 ctermbg=6
-"hi DiffText		cterm=bold ctermbg=1
-"hi Statement	ctermfg=3
-"hi Underlined	cterm=underline ctermfg=darkcyan
-"hi Ignore		cterm=bold ctermfg=7
-"hi Ignore		ctermfg=darkgrey
