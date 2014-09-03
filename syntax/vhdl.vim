@@ -240,7 +240,7 @@ syn match   vhdlSpecialComment "--!.*$" contains=@Spell,doxygenCommand,doxygenEs
 "syn match   vhdlSpecialComment "--!.*$" contains=@doxygen,@plantuml
 syn keyword vhdlTodo	contained TODO FIXME XXX
 syn match doxygenCommand contained "[\\@]todo"
-syn match doxygenCommand contained "[\\@]\a\+\%(\>\|[\[\]}$]\|.\{-}}{\?\)"
+syn match doxygenCommand contained "[\\@]\a\+\%([\[\]}$]\|.\{-}}{\?\|\>\)"
 syn match doxygenEscape contained "[\\@]\%(---\|--\|::\|[\$@&~<>#%".|]\)"
 
 " Define the default highlighting.
