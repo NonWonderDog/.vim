@@ -95,6 +95,7 @@ set hidden				" keep hidden buffers on window close
 set history=100			" keep 100 lines of command line history
 set switchbuf=usetab	" when executing quickfix or buffer split command, look for existing window before opening a new one
 set linebreak			" break at word boundaries when 'wrap' is set
+set display+=lastline	" show partial lines when wrapping
 set noequalalways		" don't resize windows on close or split
 
 " set session saving options
@@ -189,11 +190,16 @@ if has('win32') || has('win64')
 	set guifontwide=MS_Gothic:h8:cSHIFTJIS
 endif
 
-if ($TERM == "xterm" || $TERM == "xterm-256color" || $TERM == "xterm-88color")
-	" set gnome terminal colors and italic escape sequences
+if $TERM =~ "^xterm"
+	" try 256 color mode even if unreported
+	" set xterm escape sequences
 	set t_Co=256
-	set t_ZH=[3m
-	set t_ZR=[23m
+	set t_ZH=[3m		" start italics
+	set t_ZR=[23m		" end italics
+	set t_us=[4m		" start underline
+	set t_ue=[24m		" end underline
+	"set t_SI=[5\ q		" start insert (blinking bar)
+	"set t_EI=[1\ q		" end insert (blinking block)
 endif
 
 " Change shown characters for list mode
