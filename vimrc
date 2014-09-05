@@ -319,7 +319,11 @@ command! -nargs=+ -complete=command TabOutput call RedirMessages(<q-args>, 'tabn
 " Easytags Options {{{
 set tags=./tags;,~/.vimtags " add upward search for local tags files
 let g:easytags_dynamic_files = 1 " write to first available tags file from above list
-let g:easytags_file = '~/.vimtags-$USER'
+if has('win32') || has('win64')
+	let g:easytags_file = '~/.vimtags'
+else
+	let g:easytags_file = '~/.vimtags-$USER'
+endif
 let g:easytags_async = 1
 " add arduino support
 let g:easytags_languages = {
