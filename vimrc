@@ -194,12 +194,24 @@ if $TERM =~ "^xterm"
 	" try 256 color mode even if unreported
 	" set xterm escape sequences
 	set t_Co=256
-	set t_ZH=[3m		" start italics
-	set t_ZR=[23m		" end italics
-	set t_us=[4m		" start underline
-	set t_ue=[24m		" end underline
-	"set t_SI=[5\ q		" start insert (blinking bar)
-	"set t_EI=[1\ q		" end insert (blinking block)
+	let &t_ZH="\e[3m"		" start italics
+	let &t_ZR="\e[23m"		" end italics
+	let &t_us="\e[4m"		" start underline
+	let &t_ue="\e[24m"		" end underline
+	"set t_SI="\e[5\ q"		" start insert (blinking bar)
+	"set t_EI="\e[1\ q"		" end insert (blinking block)
+endif
+
+if !empty($CONEMUBUILD)
+	set term=xterm
+	set termencoding=default	" can't figure out how to get unicode working
+	set t_Co=256
+	let &t_AB="\e[48;5;%dm"
+	let &t_AF="\e[38;5;%dm"
+	let &t_ZH="\e[3m"		" start italics
+	let &t_ZR="\e[23m"		" end italics
+	let &t_us="\e[4m"		" start underline (check this...)
+	let &t_ue="\e[24m"		" end underline (check this...)
 endif
 
 " Change shown characters for list mode
