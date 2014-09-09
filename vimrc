@@ -198,8 +198,8 @@ if $TERM =~ "^xterm"
 	let &t_ZR="\e[23m"		" end italics
 	let &t_us="\e[4m"		" start underline
 	let &t_ue="\e[24m"		" end underline
-	"set t_SI="\e[5\ q"		" start insert (blinking bar)
-	"set t_EI="\e[1\ q"		" end insert (blinking block)
+	"let t_SI="\e[5\ q"		" start insert (blinking bar)
+	"let t_EI="\e[1\ q"		" end insert (blinking block)
 endif
 
 if !empty($CONEMUBUILD)
