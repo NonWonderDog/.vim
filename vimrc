@@ -220,8 +220,8 @@ if !empty($CONEMUBUILD)
 	let &t_AF="\e[38;5;%dm"
 	let &t_ZH="\e[3m"		" start italics
 	let &t_ZR="\e[23m"		" end italics
-	let &t_us="\e[4m"		" start underline (check this...)
-	let &t_ue="\e[24m"		" end underline (check this...)
+	let &t_us="\e[4m"		" start underline
+	let &t_ue="\e[24m"		" end underline
 endif
 
 " Change shown characters for list mode
