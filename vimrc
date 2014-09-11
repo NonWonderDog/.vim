@@ -198,8 +198,18 @@ if $TERM =~ "^xterm"
 	let &t_ZR="\e[23m"		" end italics
 	let &t_us="\e[4m"		" start underline
 	let &t_ue="\e[24m"		" end underline
-	"set t_SI="\e[5\ q"		" start insert (blinking bar)
-	"set t_EI="\e[1\ q"		" end insert (blinking block)
+endif
+
+if $COLORTERM =~ "gnome-terminal"
+	" use cursor shape autocommands since the escape sequences fail
+	if has("autocmd")
+		au InsertEnter * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape ibeam"
+		au InsertLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
+		au VimLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
+	endif
+elseif $TERM =~ "xterm"
+	let &t_SI="\e[5\ q"		" start insert (blinking bar)
+	let &t_EI="\e[1\ q"		" end insert (blinking block)
 endif
 
 if !empty($CONEMUBUILD)
