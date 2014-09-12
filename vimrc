@@ -192,33 +192,39 @@ if has('win32') || has('win64')
 endif
 
 if $TERM =~ "^xterm"
-	" try 256 color mode even if unreported
 	" set xterm escape sequences
-	set t_Co=256
 	let &t_ZH="\e[3m"		" start italics
 	let &t_ZR="\e[23m"		" end italics
 	let &t_us="\e[4m"		" start underline
 	let &t_ue="\e[24m"		" end underline
+	let &t_SI="\e[5 q"		" start insert (blinking bar)
+	let &t_EI="\e[1 q"		" end insert (blinking block)
 endif
 
-if $COLORTERM =~ "gnome-terminal"
-	" use cursor shape autocommands since the escape sequences fail
+if $COLORTERM == "gnome-terminal"
+	" Use 256 color mode
+	set t_Co=256
+	" use autocommands since DECSCUSR isn't supported yet
+	" This isn't really optimal since it changes the default profile for all 
+	" terminal windows, but it's the only solution that works.
+	let &t_SI=""
+	let &t_EI=""
 	if has("autocmd")
+		" the VimEnter command shows termresponse on startup???
+		"au VimEnter * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
 		au InsertEnter * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape ibeam"
 		au InsertLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
 		au VimLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
 	endif
-elseif $TERM =~ "xterm"
-	let &t_SI="\e[5\ q"		" start insert (blinking bar)
-	let &t_EI="\e[1\ q"		" end insert (blinking block)
 endif
 
 if !empty($CONEMUBUILD)
+	" 256 color terminal is possible in Windows using ConEmu
 	set term=xterm
-	set termencoding=default	" can't figure out how to get unicode working
+	set termencoding=default	" not an 8-bit terminal
 	set t_Co=256
-	let &t_AB="\e[48;5;%dm"
-	let &t_AF="\e[38;5;%dm"
+	let &t_AB="\e[48;5;%dm"	" set ANSI background color
+	let &t_AF="\e[38;5;%dm"	" set ANSI foreground color
 	let &t_ZH="\e[3m"		" start italics
 	let &t_ZR="\e[23m"		" end italics
 	let &t_us="\e[4m"		" start underline
