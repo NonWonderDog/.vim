@@ -179,11 +179,12 @@ endif
 " Appearance {{{
 
 set guioptions=m		" hide all gui stuff except menu bar
+set laststatus=2		" always show status line
 set visualbell			" get rid of the stupid noise
 set ruler				" show the cursor position all the time
 set showcmd				" display incomplete commands
 
-" Set font and color scheme
+" Set windows font and color scheme
 colorscheme numbat256
 if has('win32') || has('win64')
 	set guifont=Consolas:h8
