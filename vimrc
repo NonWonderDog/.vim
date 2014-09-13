@@ -81,14 +81,14 @@ if has('mouse')
 	set mouse=a
 endif
 
-" set spellcheck dictionary to US English
-set spelllang=en_us
-
 " }}}
 " Editor {{{
 
 " Use all filetype-dependent settings
 filetype plugin indent on
+
+" set spellcheck dictionary to US English
+set spelllang=en_us
 
 " essentials
 set hidden				" keep hidden buffers on window close
