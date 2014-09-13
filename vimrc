@@ -97,6 +97,7 @@ set switchbuf=usetab	" when executing quickfix or buffer split command, look for
 set linebreak			" break at word boundaries when 'wrap' is set
 set display+=lastline	" show partial lines when wrapping
 set noequalalways		" don't resize windows on close or split
+set ttimeoutlen=10		" 10 ms delay for terminal escape codes
 
 " set session saving options
 set sessionoptions=help,sesdir,tabpages,winsize
