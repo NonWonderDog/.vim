@@ -290,7 +290,7 @@ inoremap jj <Esc>
 inoremap jk <Esc>
 
 " Use K for grep instead of man
-"nnoremap K :!ack "\b<C-R><C-W>\b"<CR>:cw<CR>
+"nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Step through quickfix with F7 F8
 nnoremap <silent> <F7> :cp<CR>
