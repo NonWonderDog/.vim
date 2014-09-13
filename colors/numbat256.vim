@@ -307,7 +307,7 @@ call <SID>X("PreProc", 			"e5786d", 	"",			"none")
 call <SID>X("Number",			"e5786d", 	"",			"none")
 call <SID>X("Special",			"f2da6f", 	"",			"none")
 call <SID>X("Float",			"ffaa50",	"",			"none")
-call <SID>X("Boolean",			"e454ba",	"",			"none")
+call <SID>X("Boolean",			"d565b7",	"",			"none")
 
 hi! link VisualNOS		Visual
 hi! link FoldColumn		Folded
