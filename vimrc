@@ -237,7 +237,7 @@ if !empty($CONEMUBUILD)
 	set listchars=tab:>\ ,eol:<,trail:-,nbsp:%,precedes:<,extends:>
 endif
 
-" Set window size
+" Set window size on Windows
 if has("gui_running")
 	" GUI is running or is about to start.
 	set lines=48 columns=120
@@ -246,14 +246,6 @@ if has("gui_running")
 		if has("autocmd")
 			au GUIEnter * simalt ~x
 		endif
-	endif
-else
-	" This is console Vim.
-	if exists("+lines")
-		set lines=48
-	endif
-	if exists("+columns")
-		set columns=120
 	endif
 endif
 
