@@ -184,6 +184,9 @@ set visualbell			" get rid of the stupid noise
 set ruler				" show the cursor position all the time
 set showcmd				" display incomplete commands
 
+" Change shown characters for list mode
+set listchars=tab:→·,eol:¬,trail:·,nbsp:█,precedes:«,extends:»
+
 " Set windows font and color scheme
 colorscheme numbat256
 if has('win32') || has('win64')
@@ -229,10 +232,9 @@ if !empty($CONEMUBUILD)
 	let &t_ZR="\e[23m"		" end italics
 	let &t_us="\e[4m"		" start underline
 	let &t_ue="\e[24m"		" end underline
+	" ConEmu really doesn't handle unicode well
+	set listchars=tab:>\ ,eol:<,trail:-,nbsp:%,precedes:<,extends:>
 endif
-
-" Change shown characters for list mode
-set listchars=tab:→·,eol:¬,trail:·,nbsp:█,precedes:«,extends:»
 
 " Set window size
 if has("gui_running")
