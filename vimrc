@@ -268,6 +268,9 @@ map Q gq
 inoremap <C-U> <C-G>u<C-U>
 inoremap <c-w> <c-g>u<c-w>
 
+" sudo write with w!!
+cmap w!! w !sudo tee >/dev/null %
+
 " remove middle mouse button paste mapping
 map <MiddleMouse> <Nop>
 imap <MiddleMouse> <Nop>
@@ -279,19 +282,22 @@ map <4-MiddleMouse> <Nop>
 imap <4-MiddleMouse> <Nop>
 
 " Get rid of F1 help
-inoremap <F1> <Nop>
-nnoremap <F1> <Nop>
-vnoremap <F1> <Nop>
+map <F1> <Nop>
+imap <F1> <Nop>
 
-" Create Blank Newlines and stay in Normal mode
+" Create Blank Newlines and stay in Normal mode with <Enter>
 "nnoremap <silent> <Enter> o<Esc>
 "nnoremap <silent> <S-Enter> O<Esc>
 
 " Break line with CTRL-J
 nnoremap <NL> i<CR><ESC>
 
+" Exit insert mode with jj or jk
+inoremap jj <Esc>
+inoremap jk <Esc>
+
 " Use K for grep instead of man
-"nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+"nnoremap K :!ack "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Step through quickfix with F7 F8
 nnoremap <silent> <F7> :cp<CR>
