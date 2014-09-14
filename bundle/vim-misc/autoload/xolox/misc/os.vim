@@ -114,7 +114,7 @@ function! xolox#misc#os#exec(options) " {{{1
     let async = get(a:options, 'async', 0)
 
     " We need to know in a couple of places whether we are on Windows.
-    let is_win = xolox#misc#os#is_win()
+    let is_win = &shell =~ "cmd\%(\.exe\)\?$"
 
     " Use vim-shell so we don't pop up a console window on Windows? If the
     " caller specifically asks us *not* to use vim-shell, we'll respect that
@@ -159,7 +159,7 @@ function! xolox#misc#os#exec(options) " {{{1
       if async
         if is_win
           let cmd = printf('start /b %s', cmd)
-        elseif has('unix')
+        elseif &shell =~ "sh"
           let cmd = printf('(%s) &', cmd)
         else
           call xolox#misc#msg#warn("vim-misc %s: I don't know how to execute the command %s asynchronously on your platform! Falling back to synchronous mode...", g:xolox#misc#version, cmd)
@@ -170,7 +170,7 @@ function! xolox#misc#os#exec(options) " {{{1
       " the default shell, because we assume that standard output and standard
       " error can be redirected separately, but (t)csh does not support this
       " (and it might be the default shell).
-      if has('unix')
+      if &shell =~ "sh"
         call xolox#misc#msg#debug("vim-misc %s: Generated shell expression: %s", g:xolox#misc#version, cmd)
         let cmd = printf('sh -c %s', xolox#misc#escape#shell(cmd))
       endif
