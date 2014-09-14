@@ -53,6 +53,21 @@ necessary because we are not using the default `~/vimfiles` path.
 After installing Vim and this repository, start Vim and execute `:Helptags` to 
 update the documentation.
 
+Bash will be used for the Vim `shell` setting if it exists.  It's highly 
+recommended that `bash`, `tee`, and `grep` be on your Windows path, as they 
+smooth out a few annoyances with Vim on Windows.  Most notably, Vim will not 
+have to open a separate command window for commands such as `make`, `grep`, or 
+`!ctags`.  If you're using msysgit, you more than likely already have these 
+utilities.
+
+The one downside of using bash as the Windows Vim shell is the output filename 
+format.  Vim doesn't understand `/c/Program\ Files/` style paths, so full paths 
+will not be hyperlinked in the quickfix list.  I've changed the `grepprg` to 
+automatically convert filenames starting with `/` into windows format, but it 
+might not be very robust.  The older 
+[win-bash](http://win-bash.sourceforge.net/) project returns Windows-style 
+filepaths and doesn't suffer from this problem. 
+
 ### Prerequisites
 - Vim 7.4 or above: <http://www.vim.org/download.php>
 - Exuberant Ctags: <http://ctags.sourceforge.net/>

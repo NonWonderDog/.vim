@@ -29,6 +29,12 @@ if has('win32') || has('win64')
 		" Use bash if available
 		set shell=bash
 		set shellslash
+		" set shell configuration here to avoid confusing early-loading 
+		" plugins
+		set shellcmdflag='-c'
+		set shellpipe=>
+		set shellxquote=\"
+		set shellredir=>%s\ 2>&1
 	else
 		set shell=cmd
 	endif
@@ -49,6 +55,13 @@ if executable('ag')
 	set grepprg=ag\ --nogroup\ --nocolor
 elseif executable('ack')
 	set grepprg=ack\ --nogroup\ --nocolor
+elseif executable("grep")
+	if executable("sed")
+		" call sed to replace posix /c/ paths with c:/
+		let &grepprg='grep -n -H $* \| sed \"s_^/\\(.\\)._\\1:/_\"'
+	else
+		set grepprg=grep\ -n\ -H
+	endif
 endif
 
 " keep swap, backup, and undo files tidy
@@ -349,12 +362,12 @@ command! -nargs=+ -complete=command TabOutput call RedirMessages(<q-args>, 'tabn
 " Easytags Options {{{
 set tags=./tags;,~/.vimtags " add upward search for local tags files
 let g:easytags_dynamic_files = 1 " write to first available tags file from above list
+let g:easytags_async = 1
 if has('win32') || has('win64')
 	let g:easytags_file = '~/.vimtags'
 else
 	let g:easytags_file = '~/.vimtags-$USER'
 endif
-let g:easytags_async = 1
 " add arduino support
 let g:easytags_languages = {
 \   'arduino': {
