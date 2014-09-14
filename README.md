@@ -7,6 +7,7 @@ Includes:
 - UTF-8 and CJK input support
 - Custom color scheme based on "Wombat"
 - Custom syntax files for VHDL 2008 and IEC Structured Text
+- Support for bash shell (Git Bash, win-bash, etc) on Windows
 
 For ease of compatibility between Windows and Linux, this was designed to live 
 in `~/.vim` on both platforms.  It will not function correctly if installed to 
