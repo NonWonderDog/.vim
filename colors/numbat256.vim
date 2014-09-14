@@ -1,6 +1,6 @@
-" Author:		Robert Morris (nonwonderdog@gmail.com)
-" Credits:		Lars H. Nielsen (dengmao@gmail.com)
-"				Henry So, Jr.
+" Author:       Robert Morris (nonwonderdog@gmail.com)
+" Credits:      Lars H. Nielsen (dengmao@gmail.com)
+"               Henry So, Jr.
 "
 " A modified and extended version of Wombat by Lars Nielsen.
 " This version includes a modified version of the terminal color functions 
@@ -10,17 +10,17 @@
 set background=dark
 
 if version > 580
-	hi clear
-	if exists("syntax_on")
-		syntax reset
-	endif
+    hi clear
+    if exists("syntax_on")
+        syntax reset
+    endif
 endif
 
 let g:colors_name = "numbat256"
 
 " Low-color terminal uses Desert {{{
 if !(has("gui_running") || &t_Co == 88 || &t_Co == 256)
-	" basic terminal colors from Desert
+    " basic terminal colors from Desert
     hi SpecialKey    ctermfg=darkgreen
     hi NonText       cterm=bold ctermfg=darkblue
     hi Directory     ctermfg=darkcyan
@@ -55,11 +55,11 @@ if !(has("gui_running") || &t_Co == 88 || &t_Co == 256)
     hi Underlined    cterm=underline ctermfg=5
     hi Ignore        ctermfg=darkgrey
     hi Error         cterm=bold ctermfg=7 ctermbg=1
-	finish
+    finish
 endif
 " }}}
 
-	" functions {{{
+    " functions {{{
     " returns an approximate grey index for the given grey level
     fun <SID>grey_number(x)
         if &t_Co == 88
@@ -256,157 +256,156 @@ endif
 
     " sets the highlighting for the given group
     fun <SID>X(group, fg, bg, attr)
-		let l:fg = substitute(a:fg, '#','','')
-		let l:bg = substitute(a:bg, '#','','')
+        let l:fg = substitute(a:fg, '#','','')
+        let l:bg = substitute(a:bg, '#','','')
         if l:fg != ""
-			if l:fg ==? "none"
-				exec "hi " . a:group . " guifg=NONE" . " ctermfg=NONE"
-			else
-				exec "hi " . a:group . " guifg=#" . l:fg . " ctermfg=" . <SID>rgb(l:fg)
-			endif
+            if l:fg ==? "none"
+                exec "hi " . a:group . " guifg=NONE" . " ctermfg=NONE"
+            else
+                exec "hi " . a:group . " guifg=#" . l:fg . " ctermfg=" . <SID>rgb(l:fg)
+            endif
         endif
         if l:bg != ""
-			if l:bg ==? "none"
-				exec "hi " . a:group . " guibg=NONE" . " ctermbg=NONE"
-			else
-				exec "hi " . a:group . " guibg=#" . l:bg . " ctermbg=" . <SID>rgb(l:bg)
-			endif
+            if l:bg ==? "none"
+                exec "hi " . a:group . " guibg=NONE" . " ctermbg=NONE"
+            else
+                exec "hi " . a:group . " guibg=#" . l:bg . " ctermbg=" . <SID>rgb(l:bg)
+            endif
         endif
         if a:attr != ""
-			exec "hi " . a:group . " gui=" . a:attr . " cterm=" . a:attr
+            exec "hi " . a:group . " gui=" . a:attr . " cterm=" . a:attr
         endif
     endfun
     " }}}
 
 " Custom Color Palette
-let s:black		= '#242424'
-let s:bblack	= '#99968b'
-let s:blue		= '#8ac6f2'
-let s:bblue		= '#80a0ff'
-let s:green		= '#cae682'
-let s:bgreen	= '#95e454'
-let s:cyan		= '#50968b'
-let s:bcyan		= '#34e2e2'
-let s:red		= '#e5786d'
-let s:bred		= '#ff2d2d'
-let s:violet	= '#d565b7'
-let s:yellow	= '#f2da65'
-let s:orange	= '#ffaa50'
-let s:white		= '#d3d7cf'
-let s:bwhite	= '#f6f3e8'
+let s:black     = '#242424'
+let s:bblack    = '#99968b'
+let s:blue      = '#8ac6f2'
+let s:bblue     = '#80a0ff'
+let s:green     = '#cae682'
+let s:bgreen    = '#95e454'
+let s:cyan      = '#50968b'
+let s:bcyan     = '#34e2e2'
+let s:red       = '#e5786d'
+let s:bred      = '#ff2d2d'
+let s:violet    = '#d565b7'
+let s:yellow    = '#f2da65'
+let s:orange    = '#ffaa50'
+let s:white     = '#d3d7cf'
+let s:bwhite    = '#f6f3e8'
 
 " selected xterm colors
-let s:red1		= '#ff0000'
-let s:red2		= '#d70000'
-let s:red3		= '#af0000'
-let s:red4		= '#870000'
-let s:red5		= '#5f0000'
-let s:green1	= '#00ff00'
-let s:green2	= '#00d700'
-let s:green3	= '#00af00'
-let s:green4	= '#008700'
-let s:green5	= '#005f00'
-let s:blue1		= '#0000ff'
-let s:blue2		= '#0000d7'
-let s:blue3		= '#0000af'
-let s:blue4		= '#000087'
-let s:blue5		= '#00005f'
-let s:yellow1	= '#ffff00'
-let s:cyan1		= '#00ffff'
-let s:magenta1	= '#ff00ff'
-let s:grey0		= '#000000'
-let s:grey3		= '#080808'
-let s:grey7		= '#121212'
-let s:grey11	= '#1c1c1c'
-let s:grey15	= '#262626'
-let s:grey19	= '#303030'
-let s:grey23	= '#3a3a3a'
-let s:grey27	= '#444444'
-let s:grey30	= '#4e4e4e'
-let s:grey35	= '#585858'
-let s:grey39	= '#626262'
-let s:grey42	= '#6c6c6c'
-let s:grey46	= '#767676'
-let s:grey50	= '#808080'
-let s:grey54	= '#8a8a8a'
-let s:grey58	= '#949494'
-let s:grey62	= '#9e9e9e'
-let s:grey66	= '#a8a8a8'
-let s:grey70	= '#b2b2b2'
-let s:grey74	= '#bcbcbc'
-let s:grey78	= '#c6c6c6'
-let s:grey82	= '#d0d0d0'
-let s:grey85	= '#dadada'
-let s:grey89	= '#e4e4e4'
-let s:grey93	= '#eeeeee'
-let s:grey100	= '#ffffff'
+let s:red1      = '#ff0000'
+let s:red2      = '#d70000'
+let s:red3      = '#af0000'
+let s:red4      = '#870000'
+let s:red5      = '#5f0000'
+let s:green1    = '#00ff00'
+let s:green2    = '#00d700'
+let s:green3    = '#00af00'
+let s:green4    = '#008700'
+let s:green5    = '#005f00'
+let s:blue1     = '#0000ff'
+let s:blue2     = '#0000d7'
+let s:blue3     = '#0000af'
+let s:blue4     = '#000087'
+let s:blue5     = '#00005f'
+let s:yellow1   = '#ffff00'
+let s:cyan1     = '#00ffff'
+let s:magenta1  = '#ff00ff'
+let s:grey0     = '#000000'
+let s:grey3     = '#080808'
+let s:grey7     = '#121212'
+let s:grey11    = '#1c1c1c'
+let s:grey15    = '#262626'
+let s:grey19    = '#303030'
+let s:grey23    = '#3a3a3a'
+let s:grey27    = '#444444'
+let s:grey30    = '#4e4e4e'
+let s:grey35    = '#585858'
+let s:grey39    = '#626262'
+let s:grey42    = '#6c6c6c'
+let s:grey46    = '#767676'
+let s:grey50    = '#808080'
+let s:grey54    = '#8a8a8a'
+let s:grey58    = '#949494'
+let s:grey62    = '#9e9e9e'
+let s:grey66    = '#a8a8a8'
+let s:grey70    = '#b2b2b2'
+let s:grey74    = '#bcbcbc'
+let s:grey78    = '#c6c6c6'
+let s:grey82    = '#d0d0d0'
+let s:grey85    = '#dadada'
+let s:grey89    = '#e4e4e4'
+let s:grey93    = '#eeeeee'
+let s:grey100   = '#ffffff'
 
 " General colors
-call <SID>X('Normal', 			s:bwhite, 	s:grey15, 	'none')
-
-call <SID>X('SpecialKey',		s:grey30, 	'',			'none')
-call <SID>X('NonText', 			s:grey30, 	'',			'none')
-call <SID>X('Directory', 		s:cyan1, 	'',			'none')
-call <SID>X('ErrorMsg', 		s:grey100, 	s:red1,		'none')
-call <SID>X('IncSearch',		'',			'',			'inverse')
-call <SID>X('Search',			s:black,	s:yellow,	'none')
-call <SID>X('MoreMsg',			s:green4,	'none',		'bold')
-call <SID>X('ModeMsg',			s:red,		'',			'bold')
-call <SID>X('LineNr', 			s:grey46, 	s:grey19, 	'none')
-call <SID>X('CursorLineNr', 	s:grey54,	'',			'bold')
-call <SID>X('Question',		 	s:green2,	'',			'bold')
-call <SID>X('StatusLine', 		s:bwhite, 	s:grey27, 	'none')
-call <SID>X('StatusLineNC', 	s:grey46, 	s:grey27, 	'none')
-call <SID>X('VertSplit', 		s:grey27, 	s:grey27, 	'none')
-call <SID>X('Title',			s:red,		'',			'bold')
-call <SID>X('Visual',			s:bwhite, 	s:grey27,	'none')
-call <SID>X('VisualNOS',		s:bwhite, 	s:grey27,	'bold,underline')
-call <SID>X('WarningMsg',		s:red1, 	'',			'none')
-call <SID>X('WildMenu',			s:black,	s:yellow,	'none')
-call <SID>X('Folded', 		 	s:grey46, 	s:grey19,	'none')
-call <SID>X('FoldColumn',	 	s:grey46, 	s:grey19,	'none')
-call <SID>X('DiffAdd',			'',			'005f5f',	'none')
-call <SID>X('DiffDelete',		'87afd7',	'005f5f',	'none')
-call <SID>X('DiffChange',		'',			'005f87',	'none')
-call <SID>X('DiffText',			'',			s:red4,		'none')
-call <SID>X('SignColumn',		s:cyan,		s:grey19,	'none')
-call <SID>X('Conceal',			s:yellow,	'none',		'none')
-hi SpellBad		guisp=red		gui=undercurl	ctermfg=196	ctermbg=NONE	cterm=underline
-hi SpellCap		guisp=royalblue	gui=undercurl	ctermfg=63	ctermbg=NONE	cterm=underline
-hi SpellRare	guisp=magenta	gui=undercurl	ctermfg=201	ctermbg=NONE	cterm=underline
-hi SpellLocal	guisp=cyan		gui=undercurl	ctermfg=51	ctermbg=NONE	cterm=underline
-call <SID>X('Pmenu',			s:bwhite, 	s:grey27,	'')
-call <SID>X('PmenuSel',			s:grey0, 	s:yellow,	'')
-call <SID>X('PmenuSbar',		'',			s:grey19,	'none')
-call <SID>X('PmenuThumb',		'',			s:grey50,	'none')
-call <SID>X('TabLine',			s:grey100,	s:grey50,	'none')
-call <SID>X('TabLineSel',		s:grey100,	'none',		'bold')
-call <SID>X('TabLineFill',		s:grey100,	s:grey27,	'none')
-call <SID>X('CursorColumn',		'',			s:grey19,	'none')
-call <SID>X('CursorLine',		'',			s:grey19,	'none')
-call <SID>X('ColorColumn',		'',			s:red4,		'none')
-call <SID>X('Cursor',			'',			s:grey39,	'none')
+call <SID>X('Normal',           s:bwhite,   s:grey15,   'none') 
+call <SID>X('SpecialKey',       s:grey30,   '',         'none')
+call <SID>X('NonText',          s:grey30,   '',         'none')
+call <SID>X('Directory',        s:cyan1,    '',         'none')
+call <SID>X('ErrorMsg',         s:grey100,  s:red1,     'none')
+call <SID>X('IncSearch',        '',         '',         'inverse')
+call <SID>X('Search',           s:black,    s:yellow,   'none')
+call <SID>X('MoreMsg',          s:green4,   'none',     'bold')
+call <SID>X('ModeMsg',          s:red,      '',         'bold')
+call <SID>X('LineNr',           s:grey46,   s:grey19,   'none')
+call <SID>X('CursorLineNr',     s:grey54,   '',         'bold')
+call <SID>X('Question',         s:green2,   '',         'bold')
+call <SID>X('StatusLine',       s:bwhite,   s:grey27,   'none')
+call <SID>X('StatusLineNC',     s:grey46,   s:grey27,   'none')
+call <SID>X('VertSplit',        s:grey27,   s:grey27,   'none')
+call <SID>X('Title',            s:red,      '',         'bold')
+call <SID>X('Visual',           s:bwhite,   s:grey27,   'none')
+call <SID>X('VisualNOS',        s:bwhite,   s:grey27,   'bold,underline')
+call <SID>X('WarningMsg',       s:red1,     '',         'none')
+call <SID>X('WildMenu',         s:black,    s:yellow,   'none')
+call <SID>X('Folded',           s:grey46,   s:grey19,   'none')
+call <SID>X('FoldColumn',       s:grey46,   s:grey19,   'none')
+call <SID>X('DiffAdd',          '',         '005f5f',   'none')
+call <SID>X('DiffDelete',       '87afd7',   '005f5f',   'none')
+call <SID>X('DiffChange',       '',         '005f87',   'none')
+call <SID>X('DiffText',         '',         s:red4,     'none')
+call <SID>X('SignColumn',       s:cyan,     s:grey19,   'none')
+call <SID>X('Conceal',          s:yellow,   'none',     'none')
+hi SpellBad     guisp=red       gui=undercurl   ctermfg=196 ctermbg=NONE    cterm=underline
+hi SpellCap     guisp=royalblue gui=undercurl   ctermfg=63  ctermbg=NONE    cterm=underline
+hi SpellRare    guisp=magenta   gui=undercurl   ctermfg=201 ctermbg=NONE    cterm=underline
+hi SpellLocal   guisp=cyan      gui=undercurl   ctermfg=51  ctermbg=NONE    cterm=underline
+call <SID>X('Pmenu',            s:bwhite,   s:grey27,   '')
+call <SID>X('PmenuSel',         s:grey0,    s:yellow,   '')
+call <SID>X('PmenuSbar',        '',         s:grey19,   'none')
+call <SID>X('PmenuThumb',       '',         s:grey50,   'none')
+call <SID>X('TabLine',          s:grey100,  s:grey50,   'none')
+call <SID>X('TabLineSel',       s:grey100,  'none',     'bold')
+call <SID>X('TabLineFill',      s:grey100,  s:grey27,   'none')
+call <SID>X('CursorColumn',     '',         s:grey19,   'none')
+call <SID>X('CursorLine',       '',         s:grey19,   'none')
+call <SID>X('ColorColumn',      '',         s:red4,     'none')
+call <SID>X('Cursor',           '',         s:grey39,   'none')
 
 " Syntax highlighting
-call <SID>X('lCursor',			'',			s:bred,		'none')
-call <SID>X('MatchParen',		s:bred,		'none',		'bold')
-call <SID>X('Comment',			s:bblack,	'',			'italic')
-call <SID>X('Constant', 		s:red,	 	'',			'none')
-call <SID>X('Special',			s:yellow, 	'',			'none')
-call <SID>X('Identifier', 		s:green, 	'',			'none')
-call <SID>X('Statement', 		s:blue, 	'',			'none')
-call <SID>X('PreProc', 			s:red,	 	'',			'none')
-call <SID>X('Type', 			s:green, 	'',			'none')
-call <SID>X('Underlined',		s:bblue,	'',			'underline')
-call <SID>X('Error',			s:grey100, 	s:red1,		'none')
-call <SID>X('Todo', 			s:bcyan, 	'none',		'bold,italic,underline')
-call <SID>X('String', 			s:bgreen, 	'',			'italic')
-call <SID>X('Number',			s:red,	 	'',			'none')
-call <SID>X('Boolean',			s:violet,	'',			'none')
-call <SID>X('Float',			s:orange,	'',			'none')
-call <SID>X('Function', 		s:green, 	'',			'none')
-call <SID>X('Keyword',			s:blue, 	'',			'none')
-call <SID>X('SpecialComment',	s:cyan, 	'',			'none')
+call <SID>X('lCursor',          '',         s:bred,     'none')
+call <SID>X('MatchParen',       s:bred,     'none',     'bold')
+call <SID>X('Comment',          s:bblack,   '',         'italic')
+call <SID>X('Constant',         s:red,      '',         'none')
+call <SID>X('Special',          s:yellow,   '',         'none')
+call <SID>X('Identifier',       s:green,    '',         'none')
+call <SID>X('Statement',        s:blue,     '',         'none')
+call <SID>X('PreProc',          s:red,      '',         'none')
+call <SID>X('Type',             s:green,    '',         'none')
+call <SID>X('Underlined',       s:bblue,    '',         'underline')
+call <SID>X('Error',            s:grey100,  s:red1,     'none')
+call <SID>X('Todo',             s:bcyan,    'none',     'bold,italic,underline')
+call <SID>X('String',           s:bgreen,   '',         'italic')
+call <SID>X('Number',           s:red,      '',         'none')
+call <SID>X('Boolean',          s:violet,   '',         'none')
+call <SID>X('Float',            s:orange,   '',         'none')
+call <SID>X('Function',         s:green,    '',         'none')
+call <SID>X('Keyword',          s:blue,     '',         'none')
+call <SID>X('SpecialComment',   s:cyan,     '',         'none')
 
 " delete functions {{{
 delf <SID>X
