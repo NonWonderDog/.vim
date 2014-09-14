@@ -4,7 +4,6 @@ git subtree pull --prefix bundle/vim-speeddating git@github.com:tpope/vim-speedd
 git subtree pull --prefix bundle/vim-surround git@github.com:tpope/vim-surround.git master --squash
 git subtree pull --prefix bundle/vim-repeat git@github.com:tpope/vim-repeat.git master --squash
 git subtree pull --prefix bundle/vim-misc git@github.com:xolox/vim-misc.git master --squash
-git subtree pull --prefix bundle/vim-shell git@github.com:xolox/vim-shell.git master --squash
 git subtree pull --prefix bundle/vim-easytags git@github.com:xolox/vim-easytags.git master --squash
 git subtree pull --prefix bundle/vim-reload git@github.com:xolox/vim-reload.git master --squash
 git subtree pull --prefix bundle/tagbar git@github.com:majutsushi/tagbar.git master --squash
