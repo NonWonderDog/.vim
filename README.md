@@ -47,9 +47,9 @@ in a dot in Explorer, the simplest workaround is to add a dot to the end of the
 name.  The name `.vim.` will create the `.vim` directory.  No workarounds are 
 needed if creating the directory from a command prompt.
 
-After a `git clone` or `svn checkout`, the win\_install.bat script will create 
-a stub `~/.vimrc` file pointing to the real `~/.vim/vimrc` file.  This step is 
-necessary because we are not using the default `~/vimfiles` path.
+After a `git clone` or `svn checkout`, run the win\_install.bat script to 
+create a stub `~/.vimrc` file pointing to the real `~/.vim/vimrc` file.  This 
+step is necessary because we are not using the default `~/vimfiles` path.
 
 After installing Vim and this repository, start Vim and execute `:Helptags` to 
 update the documentation.
