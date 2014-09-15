@@ -6,18 +6,25 @@ Includes:
 - Windows and Linux compatibility
 - UTF-8 and CJK input support
 - Custom color scheme based on "Wombat"
-- Custom syntax files for VHDL 2008 and IEC Structured Text
+- 256 color terminal support on Linux xterm and gnome-terminal
+- 256 color terminal support on Windows using 
+  [ConEmu](https://code.google.com/p/conemu-maximus5/)
+- Nearly identical colors in both 24-bit and 256 color
 - Support for bash shell (Git Bash, win-bash, etc) on Windows
+- Custom syntax files for VHDL 2008 and IEC Structured Text
 
 For ease of compatibility between Windows and Linux, this was designed to live 
 in `~/.vim` on both platforms.  It will not function correctly if installed to 
 any other directory.  Note that this is not the default location on Windows, 
-which uses `~/vimfiles` and `~/_vimrc` by default.
+which uses `~/vimfiles` and `~/_vimrc` by default (where `~` is equal to 
+`%USERPROFILE%`).
 
 Linux Install
 -------------
-This requires an install of Vim with python support. On Ubuntu Linux, this can 
-be found in the `vim-gnome` or `vim-gtk` package.
+The Ultisnip plugin requires an install of Vim with python support. On Ubuntu 
+Linux, a version of gvim with python can be found in the `vim-gnome` or 
+`vim-gtk` package.  `vim-gtk` seems to be more complete, but has extra 
+dependencies on Ubuntu.
 
 The `exuberant-ctags` package integrates with Vim and is very useful for 
 navigating around code.  It is required for the Easytags and Tagbar plugins.  
@@ -63,11 +70,11 @@ utilities.
 
 The one downside of using bash as the Windows Vim shell is the output filename 
 format.  Vim doesn't understand `/c/Program\ Files/` style paths, so full paths 
-will not be hyperlinked in the quickfix list.  I've changed the `grepprg` to 
-automatically convert filenames starting with `/` into windows format, but it 
-might not be very robust.  The older 
-[win-bash](http://win-bash.sourceforge.net/) project returns Windows-style 
-filepaths and doesn't suffer from this problem. 
+will not be hyperlinked in the quickfix list.  I've added a quick hack to make 
+the Vim `grep` command automatically convert filenames starting with `/` to 
+windows format, but this isn't very well tested and doesn't help with `make` 
+output.  The older [win-bash](http://win-bash.sourceforge.net/) project returns 
+Windows-style filepaths and doesn't suffer from this problem. 
 
 ### Prerequisites
 - Vim 7.4 or above: <http://www.vim.org/download.php>
@@ -79,12 +86,14 @@ filepaths and doesn't suffer from this problem.
 	  not Python 3.3 or above
 
 If you're using a different Vim build 
-([Haroogan's](https://bitbucket.org/Haroogan/vim-for-windows/src) is quite good 
-for 64-bit), make sure to install an appropriate version of Python.  To install 
-the 64-bit build of Vim 7.4, extract it to C:/Program Files/Vim/vim74 and run 
-install.exe with administrator priviledges.
+([Haroogan](https://bitbucket.org/Haroogan/vim-for-windows/src) provides a good 
+64-bit build), make sure to install an appropriate version of Python.  To 
+install the 64-bit build of Vim 7.4, extract it to C:/Program Files/Vim/vim74 
+and run install.exe with administrator priviledges.
 
 Todo
 ----
-It should be possible to free this from the `~/.vim` path dependency on 
-Windows.
+* Remove the `~/.vim` path dependency on Windows.
+* Get Linux IME support (IBus-Anthy, etc) to work more like the Windows IME 
+  integration
+
