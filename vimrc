@@ -298,7 +298,7 @@ inoremap <C-U> <C-G>u<C-U>
 inoremap <c-w> <c-g>u<c-w>
 
 " sudo write with w!!
-cmap w!! w !sudo tee >/dev/null %
+cmap W! w !sudo tee >/dev/null %
 
 " remove middle mouse button paste mapping
 map <MiddleMouse> <Nop>
