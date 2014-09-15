@@ -47,8 +47,12 @@ if has('win32') || has('win64')
 	endif
 endif
 
+" Use pathogen
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
+
+" Allow :Man lookups
+runtime ftplugin/man.vim
 
 " Use ag or ack instead of grep
 if executable('ag')
@@ -155,7 +159,7 @@ set synmaxcol=400
 set wildmenu
 set wildmode=full
 
-" use the only acceptable c indent style
+" change indent style
 set autoindent		" use automatic indenting if no file type indent exists
 "set smarttab		" tab/backspace at beginning of line moves by shiftwidth instead of (soft)tabstop
 set shiftwidth=4	" indent by 4 spaces
@@ -166,6 +170,25 @@ set nowrap			" turn off text wrap
 
 " in case I add expandtab, I can still edit makefiles
 autocmd FileType make setlocal noexpandtab
+
+" Use HTML for 'K' man page lookups in gui if possible
+" <Leader>K can be used for man.vim lookups
+if has('gui_running')
+	if executable('man') && executable('groff')
+		if !empty($BROWSER)
+			set keywordprg=man\ -H
+		elseif executable('firefox')
+			set keywordprg=man\ -Hfirefox
+		elseif executable('chromium-browser')
+			set keywordprg=man\ --html=chromium-browser
+		elseif executable('google-chrome')
+			set keywordprg=man\ --html=google-chrome
+		endif
+	endif
+endif
+
+" use :help for 'K' lookups in vim files
+autocmd FileType vim setlocal keywordprg=:help
 
 " default quickfix support
 set errorformat=%f(%l):%m
@@ -301,9 +324,6 @@ nnoremap <NL> i<CR><ESC>
 " Exit insert mode with jj or jk
 inoremap jj <Esc>
 inoremap jk <Esc>
-
-" Use K for grep instead of man
-"nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Step through quickfix with F7 F8
 nnoremap <silent> <F7> :cp<CR>
