@@ -123,6 +123,8 @@ syn keyword vhdlType float128 unresolved_float128 u_float_128
 syn keyword vhdlType round_type
 syn keyword vhdlFunction to_float
 " VHDL 2008 additions
+syn keyword vhdlStatement force release
+syn match   vhdlSpecial "[@\^]"
 syn keyword vhdlType boolean_vector integer_vector real_vector time_vector
 syn keyword vhdlType unresolved_signed unresolved_unsigned u_signed u_unsigned
 syn keyword vhdlFunction to_string to_ostring to_hstring justify
@@ -201,8 +203,8 @@ syn keyword vhdlCharacter DEL c128 c129 c130 c131 c132 c133 c134 c135 c136 c137 
 syn keyword vhdlCharacter c140 c141 c142 c143 c144 c145 c146 c147 c148 c149 c150 c151
 syn keyword vhdlCharacter c152 c153 c154 c155 c156 c157 c158 c159
 
-" illegal characters
-syn match vhdlError "[$~!#%@\^\[\]{}]"
+" illegal characters (@ and ^ are allowed in external names as of VHDL-2008)
+syn match vhdlError "[$~!#%\[\]{}]"
 " integers
 syn match vhdlNumber "-\=\<[0-9_]\+\>"
 syn match vhdlNumber "-\=\<[0-9_]\+[eE][+]\=[0-9_]\+\>"
