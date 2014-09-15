@@ -96,4 +96,6 @@ Todo
 * Remove the `~/.vim` path dependency on Windows.
 * Get Linux IME support (IBus-Anthy, etc) to work more like the Windows IME 
   integration
+* Change cursor to underline in REPLACE mode in terminal Vim (check 
+  v:insertmode on InsertChange and InsertEnter)
 
