@@ -435,4 +435,14 @@ let g:tagbar_type_arduino = {
 \ }
 
 " }}}
-
+" Markdown {{{
+" Apply language-specific syntax highlighting inside fenced code blocks
+let g:markdown_fenced_languages = [
+			\ 'sh', 'shell=sh', 'bash=sh', 'zsh=sh', 'tcsh',
+			\ 'tex', 'latex=tex',
+			\ 'css', 'html', 'xml',
+			\ 'javascript', 'js=javascript', 'json=javascript',
+			\ 'c', 'cpp', 'csharp=cs', 'c#=cs',
+			\ 'vhdl', 'verilog', 'tcl'
+			\ ]
+" }}}
