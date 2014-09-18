@@ -143,13 +143,14 @@ endif
 set foldmethod=syntax
 set foldlevelstart=0
 
-" don't autoformat text by default
+" don't autoformat text (=code) by default
 set formatoptions-=t
-" use auto-format for comments, using trailing space
+" use auto-format for comments, using trailing space for paragraph 
+" continuation
 set formatoptions+=cwa
-" Don't break after single letter words
+" don't break after single letter words
 set formatoptions+=1
-" Support Japanese line break rules more properly
+" support CJK line break rules more properly
 set formatoptions+=mM
 
 " limit syntax highlighting on long lines for speed
@@ -159,16 +160,23 @@ set synmaxcol=400
 set wildmenu
 set wildmode=full
 
-" change indent style
-set autoindent		" use automatic indenting if no file type indent exists
-"set smarttab		" tab/backspace at beginning of line moves by shiftwidth instead of (soft)tabstop
-set shiftwidth=4	" indent by 4 spaces
-set tabstop=4		" tabs are 4 spaces wide
-set softtabstop=4	" indents made of spaces are 4 spaces wide
+" Tabs should align to 8 columns to match unix terminal output (and github), 
+" but I prefer 4 spaces for indentation.
+" This makes indents, the tab key, and the backspace key use four literal 
+" spaces instead of a tab, but pre-existing tab characters align to 8 columns.
+" This is probably the best compromise.
+set autoindent		" use automatic indenting
+set smartindent     " use C-like indent rules in files that aren't C (those use cindent)
+set tabstop=8		" literal tabs are 8 spaces wide to comply with unix standards
+set shiftwidth=4	" indent code by 4 spaces
+set softtabstop=4	" in insert mode, tabs are 4 spaced wide
+set expandtab		" insert spaces instead of tabs
+set smarttab		" in insert mode, use shiftwidth instead of softtabstop for indent with <Tab> (redundant)
 set cinoptions=:0g0N-s " don't indent case labels or scope declarations
+
 set nowrap			" turn off text wrap
 
-" in case I add expandtab, I can still edit makefiles
+" Use explicit tab characters in makefiles
 autocmd FileType make setlocal noexpandtab
 
 " Use HTML for 'K' man page lookups in gui if possible
