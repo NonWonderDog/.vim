@@ -172,7 +172,11 @@ set shiftwidth=4    " indent code by 4 spaces
 set softtabstop=4   " in insert mode, tabs are 4 spaced wide
 set expandtab       " insert spaces instead of tabs
 set smarttab        " in insert mode, use shiftwidth instead of softtabstop for indent with <Tab> (redundant)
-set cinoptions=:0g0N-s " don't indent case labels or scope declarations
+
+" C indent options
+set cinoptions=:0   " don't indent case labels
+set cinoptions+=g0  " don't indent C++ scope declarations
+set cinoptions+=N-s " don't indent after namespace declaration
 
 set nowrap          " turn off text wrap
 
