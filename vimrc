@@ -282,16 +282,16 @@ if !empty($CONEMUBUILD)
     set listchars=tab:>\ ,eol:<,trail:-,nbsp:%,precedes:<,extends:>
 endif
 
-" Set window size on Windows
+" Set gui window size
 if has("gui_running")
     " GUI is running or is about to start.
-    set lines=48 columns=120
-    if has('win32') || has('win64')
-        " Maximize window with the worst hack possible (English Windows)
-        if has("autocmd")
-            au GUIEnter * simalt ~x
-        endif
-    endif
+    set lines=48 columns=132
+    "if has('win32') || has('win64')
+    "    " Maximize window with the worst hack possible (English Windows)
+    "    if has("autocmd")
+    "        au GUIEnter * simalt ~x
+    "    endif
+    "endif
 endif
 
 " }}}
