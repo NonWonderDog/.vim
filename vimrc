@@ -31,7 +31,7 @@ if has('win32') || has('win64')
         set shellslash
         " set shell configuration here to avoid confusing early-loading 
         " plugins
-        set shellcmdflag='-c'
+        set shellcmdflag=-c
         set shellpipe=>
         set shellxquote=\"
         set shellredir=>%s\ 2>&1
