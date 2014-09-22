@@ -114,7 +114,7 @@ function! xolox#misc#os#exec(options) " {{{1
     let async = get(a:options, 'async', 0)
 
     " We need to know in a couple of places whether we are on Windows.
-    let is_win = &shell =~ "cmd\%(\.exe\)\?$"
+    let is_win = &shell =~ "cmd"
 
     " Use vim-shell so we don't pop up a console window on Windows? If the
     " caller specifically asks us *not* to use vim-shell, we'll respect that
