@@ -245,11 +245,12 @@ syn keyword vhdlTodo	contained TODO FIXME XXX
 syn match doxygenEscape contained "[\@]\%(---\|--\|::\|[\$@&~<>#%".|]\)\?"
 " normal commands, containing a keyword
 syn region doxygenCommandRegion matchgroup=doxygenCommand contained start="[\@]\a\@=" end="\A\@=" contains=doxygenCommand transparent
+syn region doxygenCommandRegion matchgroup=doxygenTodo contained start="[\@]\a\@=\%(todo\|bug\)" end="\A\@=" transparent
 " function commands
 syn region doxygenCommandRegion matchgroup=doxygenCommand contained start="[\@]f\A\@=\s\@!" end="\%([\[\]}$]\|{.\{-}}{\?\|\s\)"
 
 syn keyword doxygenCommand contained a addindex addtogroup anchor arg attention author authors
-syn keyword doxygenCommand contained b brief bug
+syn keyword doxygenCommand contained b brief
 syn keyword doxygenCommand contained c callgraph callergraph category cite class code cond copybrief copydetails copydoc copyright
 syn keyword doxygenCommand contained date def defgroup deprecated details diafile dir docbookonly dontinclude dot dotfile
 syn keyword doxygenCommand contained e else elseif em enum example exception extends
@@ -264,7 +265,7 @@ syn keyword doxygenCommand contained overload
 syn keyword doxygenCommand contained p package page par paragraph param parblock post pre private privatesection property protected protectedsection pure
 syn keyword doxygenCommand contained ref refitem related relates relatedalso relatesalso remark remarks result return returns retval rtfonly
 syn keyword doxygenCommand contained sa secreflist section see short showinitializer since skip skipine snippet startuml struct subpage subsection subsubsection
-syn keyword doxygenCommand contained tableofcontents test throw throws todo tparam typedef
+syn keyword doxygenCommand contained tableofcontents test throw throws tparam typedef
 syn keyword doxygenCommand contained union until
 syn keyword doxygenCommand contained var verbatim verbinclude version vhdlflow
 syn keyword doxygenCommand contained warning weakgroup
@@ -304,6 +305,7 @@ if version >= 508 || !exists("did_vhdl_syntax_inits")
   HiLink vhdlAttribute	    Type
   HiLink vhdlTodo	    Todo
   HiLink doxygenCommand	    Special
+  HiLink doxygenTodo	    Todo
   HiLink doxygenEscape	    Special
 
   delcommand HiLink
