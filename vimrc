@@ -25,16 +25,21 @@ if has('win32') || has('win64')
     set viminfo+=n~/.viminfo
     " redirect $MYVIMRC to this file, rather than the stub
     let $MYVIMRC='~/.vim/vimrc'
-    if executable("bash")
-        " Use bash if available
-        set shell=bash
+    if executable("bash") || executable("tcsh")
+        " Use *nix shell if available
+        if executable("tcsh")
+            set shell=tcsh
+            set shellredir=>&
+        elseif executable("bash")
+            set shell=bash
+            set shellredir=>%s\ 2>&1
+        endif
         set shellslash
         " set shell configuration here to avoid confusing early-loading 
         " plugins
         set shellcmdflag=-c
         set shellpipe=>
         set shellxquote=\"
-        set shellredir=>%s\ 2>&1
     else
         set shell=cmd
     endif
@@ -42,6 +47,9 @@ if has('win32') || has('win64')
         " Make build output show up on the screen, just like in *nix
         " noshelltemp and nomore ideally would be set only during make
         set shellpipe=2>&1\|\ tee
+        if &shell =~ "csh"
+            set shellpipe=\|&\ tee
+        endif
         set noshelltemp
         set nomore
     endif

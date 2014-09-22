@@ -146,7 +146,11 @@ function! xolox#misc#os#exec(options) " {{{1
     if redirect_output
       let tempout = tempname()
       let temperr = tempname()
-      let cmd = printf('(%s) 1>%s 2>%s', cmd, xolox#misc#escape#shell(tempout), xolox#misc#escape#shell(temperr))
+      if &shell =~ "csh"
+        let cmd = printf('((%s >%s) >&%s)', cmd, xolox#misc#escape#shell(tempout), xolox#misc#escape#shell(temperr))
+      else
+        let cmd = printf('(%s) 1>%s 2>%s', cmd, xolox#misc#escape#shell(tempout), xolox#misc#escape#shell(temperr))
+      endif
     endif
 
     " Use vim-shell or system() to execute the external command?
@@ -164,15 +168,6 @@ function! xolox#misc#os#exec(options) " {{{1
         else
           call xolox#misc#msg#warn("vim-misc %s: I don't know how to execute the command %s asynchronously on your platform! Falling back to synchronous mode...", g:xolox#misc#version, cmd)
         endif
-      endif
-
-      " On UNIX we explicitly execute the command line using 'sh' instead of
-      " the default shell, because we assume that standard output and standard
-      " error can be redirected separately, but (t)csh does not support this
-      " (and it might be the default shell).
-      if &shell =~ "csh"
-        call xolox#misc#msg#debug("vim-misc %s: Generated shell expression: %s", g:xolox#misc#version, cmd)
-        let cmd = printf('sh -c %s', xolox#misc#escape#shell(cmd))
       endif
 
       " Let the user know what's happening (in case they're interested).

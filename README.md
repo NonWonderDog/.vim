@@ -74,7 +74,8 @@ will not be hyperlinked in the quickfix list.  I've added a quick hack to make
 the Vim `grep` command automatically convert filenames starting with `/` to 
 windows format, but this isn't very well tested and doesn't help with `make` 
 output.  The older [win-bash](http://win-bash.sourceforge.net/) project returns 
-Windows-style filepaths and doesn't suffer from this problem. 
+Windows-style filepaths, but is too limited to be of much use (it doesn't 
+support subshells, for one thing).
 
 ### Prerequisites
 - Vim 7.4 or above: <http://www.vim.org/download.php>
