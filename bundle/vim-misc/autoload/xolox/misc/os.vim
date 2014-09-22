@@ -170,7 +170,7 @@ function! xolox#misc#os#exec(options) " {{{1
       " the default shell, because we assume that standard output and standard
       " error can be redirected separately, but (t)csh does not support this
       " (and it might be the default shell).
-      if &shell =~ "sh"
+      if &shell =~ "csh"
         call xolox#misc#msg#debug("vim-misc %s: Generated shell expression: %s", g:xolox#misc#version, cmd)
         let cmd = printf('sh -c %s', xolox#misc#escape#shell(cmd))
       endif
