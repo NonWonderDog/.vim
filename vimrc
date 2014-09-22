@@ -146,9 +146,9 @@ set foldlevelstart=0
 " use autoformatting
 set textwidth=79        " autoformat to 79-column text
 set formatoptions-=t    " don't autoformat text (=code) by default
-set formatoptions+=cwa  " use auto-format for comments, using trailing space for continuation 
+set formatoptions+=cjwa " use auto-format for comments, using trailing space for continuation
 set formatoptions+=1    " don't break after single letter words
-set formatoptions+=mM   " support CJK line break rules more properly
+set formatoptions+=mB   " support CJK line break rules more properly
 
 " limit syntax highlighting on long lines for speed
 set synmaxcol=400
