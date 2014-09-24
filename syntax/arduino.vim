@@ -56,3 +56,6 @@ hi def link arduinoStdFunc Function
 hi def link arduinoFunc Function
 hi def link arduinoMethod Function
 hi def link arduinoModule Identifier
+
+let b:current_syntax = "arduino"
+

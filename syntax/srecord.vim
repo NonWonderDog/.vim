@@ -1,5 +1,3 @@
-syn clear
-
 " 
 " Motorola S-Record Syntax highlighting file
 "
@@ -7,6 +5,15 @@ syn clear
 "
 " Version 2.0
 "
+
+" For version 5.x: Clear all syntax items
+" For version 6.x: Quit when a syntax file was already loaded
+if version < 600
+  syntax clear
+elseif exists("b:current_syntax")
+  finish
+endif
+
 
 " Match the Record type field
 syn match s0 /^S0/ nextgroup=count0
@@ -81,36 +88,36 @@ if version >= 508 || !exists("did_hex_syntax_inits")
     command -nargs=+ HiLink hi def link <args>
   endif
 
-  HiLink s0				WarningMsg
-  HiLink s1				WarningMsg
-  HiLink s2				WarningMsg
-  HiLink s3				WarningMsg
-  HiLink s5				WarningMsg
-  HiLink s7				WarningMsg
-  HiLink s8				WarningMsg
-  HiLink s9				WarningMsg
+  HiLink s0		WarningMsg
+  HiLink s1		WarningMsg
+  HiLink s2		WarningMsg
+  HiLink s3		WarningMsg
+  HiLink s5		WarningMsg
+  HiLink s7		WarningMsg
+  HiLink s8		WarningMsg
+  HiLink s9		WarningMsg
 
-  HiLink count0			Constant
-  HiLink count1			Constant
-  HiLink count2			Constant
-  HiLink count3			Constant
-  HiLink count5			Constant
-  HiLink count7			Constant
-  HiLink count8			Constant
-  HiLink count9			Constant
+  HiLink count0		Constant
+  HiLink count1		Constant
+  HiLink count2		Constant
+  HiLink count3		Constant
+  HiLink count5		Constant
+  HiLink count7		Constant
+  HiLink count8		Constant
+  HiLink count9		Constant
 
-  HiLink address0		Comment
-  HiLink address1		Comment
-  HiLink address2		Comment
-  HiLink address3		Comment
-  HiLink address5		Comment
-  HiLink address7		Comment
-  HiLink address8		Comment
-  HiLink address9		Comment
+  HiLink address0	Comment
+  HiLink address1	Comment
+  HiLink address2	Comment
+  HiLink address3	Comment
+  HiLink address5	Comment
+  HiLink address7	Comment
+  HiLink address8	Comment
+  HiLink address9	Comment
 
-  HiLink body2			CursorColumn
+  HiLink body2		CursorColumn
 
-  HiLink crc			Search
+  HiLink crc		Search
 
   delcommand HiLink
 endif

@@ -6,15 +6,13 @@
 " Version:      0.2.rgm
 " TODO:         There are some bugs, add << >>
 "
-if exists("b:current_syntax")
-    finish
-endif
-
+" For version 5.x: Clear all syntax items
+" For version 6.x: Quit when a syntax file was already loaded
 if version < 600
   syntax clear
+elseif exists("b:current_syntax")
+  finish
 endif
-
-let b:current_syntax = "plantuml"
 
 syntax sync minlines=100
 
@@ -155,28 +153,42 @@ syntax match plantumlStereotype "<<\(node\|rect\|folder\|frame\|cloud\|database\
 syntax match plantumlStereotype "<<\(entrypoint\|exitpoint\|choice\|join\|fork\|end\)>>"
 
 " Highlight
-highlight default link plantumlCommentTODO Todo
-highlight default link plantumlKeyword Keyword
-highlight default link plantumlTypeKeyword Type
-highlight default link plantumlPreProc PreProc
-highlight default link plantumlDir Constant
-highlight default link plantumlColor Constant
-highlight default link plantumlHorizontalArrow Identifier
-highlight default link plantumlVerticalArrow Special
-highlight default link plantumlDirectedOrVerticalArrowLR Special
-highlight default link plantumlDirectedOrVerticalArrowRL Special
-highlight default link plantumlLabel Special
-highlight default link plantumlText Label
-highlight default link plantumlClassPublic Structure
-highlight default link plantumlClassPrivate Macro
-highlight default link plantumlClassProtected Statement
-highlight default link plantumlClassPackPrivate Function
-highlight default link plantumlSpecialString Special
-highlight default link plantumlString String
-highlight default link plantumlComment Comment
-highlight default link plantumlMultilineComment Comment
-highlight default link plantumlColonLine Comment
-highlight default link plantumlActivityThing Type
-highlight default link plantumlActivitySynch Type
-highlight default link plantumlSkinparamKeyword Identifier
-highlight default link plantumlStereotype Special
+if version >= 508 || !exists("did_vhdl_syntax_inits")
+  if version < 508
+    let did_vhdl_syntax_inits = 1
+    command -nargs=+ HiLink hi link <args>
+  else
+    command -nargs=+ HiLink hi def link <args>
+  endif
+
+  HiLink plantumlCommentTODO                Todo
+  HiLink plantumlKeyword                    Keyword
+  HiLink plantumlTypeKeyword                Type
+  HiLink plantumlPreProc                    PreProc
+  HiLink plantumlDir                        Constant
+  HiLink plantumlColor                      Constant
+  HiLink plantumlHorizontalArrow            Identifier
+  HiLink plantumlVerticalArrow              Special
+  HiLink plantumlDirectedOrVerticalArrowLR  Special
+  HiLink plantumlDirectedOrVerticalArrowRL  Special
+  HiLink plantumlLabel                      Special
+  HiLink plantumlText                       Label
+  HiLink plantumlClassPublic                Structure
+  HiLink plantumlClassPrivate               Macro
+  HiLink plantumlClassProtected             Statement
+  HiLink plantumlClassPackPrivate           Function
+  HiLink plantumlSpecialString              Special
+  HiLink plantumlString                     String
+  HiLink plantumlComment                    Comment
+  HiLink plantumlMultilineComment           Comment
+  HiLink plantumlColonLine                  Comment
+  HiLink plantumlActivityThing              Type
+  HiLink plantumlActivitySynch              Type
+  HiLink plantumlSkinparamKeyword           Identifier
+  HiLink plantumlStereotype                 Special
+
+  delcommand HiLink
+endif
+
+let b:current_syntax = "plantuml"
+
