@@ -55,6 +55,6 @@ hi Keyword			guifg=#8ac6f2 	gui=none		ctermfg=darkcyan
 hi PreProc 			guifg=#e5786d 	gui=none		ctermfg=red
 hi Number			guifg=#e5786d 	gui=none		ctermfg=red
 hi Special			guifg=#f2da6f 	gui=none		ctermfg=brown
-hi Float			guifg=#ffaa50	gui=none		ctermfg=red
+hi Float			guifg=#d565b7  	gui=none		ctermfg=red
 hi Boolean			guifg=#d565b7	gui=none		ctermfg=red
 
