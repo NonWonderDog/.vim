@@ -238,38 +238,7 @@ syn match   vhdlSpecial	"\\.\{-}\\"
 "syn include @doxygen syntax/doxygen.vim
 "syn include @plantuml syntax/plantuml.vim
 syn match   vhdlComment "--.*$" contains=@Spell,vhdlTodo
-syn match   vhdlSpecialComment "--!.*$" contains=@Spell,doxygenCommandRegion,doxygenEscape,vhdlTodo
 syn keyword vhdlTodo	contained TODO FIXME XXX
-
-" escape characters and non-printing single '\' characters
-syn match doxygenEscape contained "[\@]\%(---\|--\|::\|[\$@&~<>#%".|]\)\?"
-" normal commands, containing a keyword
-syn region doxygenCommandRegion matchgroup=doxygenCommand contained start="[\@]\a\@=" end="\A\@=" contains=doxygenCommand transparent
-syn region doxygenCommandRegion matchgroup=doxygenTodo contained start="[\@]\a\@=\%(todo\|bug\)" end="\A\@=" transparent
-" function commands
-syn region doxygenCommandRegion matchgroup=doxygenCommand contained start="[\@]f\A\@=\s\@!" end="\%([\[\]}$]\|{.\{-}}{\?\|\s\)"
-
-syn keyword doxygenCommand contained a addindex addtogroup anchor arg attention author authors
-syn keyword doxygenCommand contained b brief
-syn keyword doxygenCommand contained c callgraph callergraph category cite class code cond copybrief copydetails copydoc copyright
-syn keyword doxygenCommand contained date def defgroup deprecated details diafile dir docbookonly dontinclude dot dotfile
-syn keyword doxygenCommand contained e else elseif em enum example exception extends
-syn keyword doxygenCommand contained endcode endcond enddocbookonly endif endinternal endlatexonly endlink endmanonly endmsc endparblock endrtfonly endsecreflist endverbatim enduml endxmlonly 
-syn keyword doxygenCommand contained file fn
-syn keyword doxygenCommand contained headerfile hideinitializer htmlinclude htmlonly
-syn keyword doxygenCommand contained idlexcept if ifnot image implements include includelineno ingroup internal invariant interface
-syn keyword doxygenCommand contained latexinclude latexonly li line link 
-syn keyword doxygenCommand contained mainpage manonly memberof msc mscfile
-syn keyword doxygenCommand contained n name namespace nosubgrouping note
-syn keyword doxygenCommand contained overload
-syn keyword doxygenCommand contained p package page par paragraph param parblock post pre private privatesection property protected protectedsection pure
-syn keyword doxygenCommand contained ref refitem related relates relatedalso relatesalso remark remarks result return returns retval rtfonly
-syn keyword doxygenCommand contained sa secreflist section see short showinitializer since skip skipine snippet startuml struct subpage subsection subsubsection
-syn keyword doxygenCommand contained tableofcontents test throw throws tparam typedef
-syn keyword doxygenCommand contained union until
-syn keyword doxygenCommand contained var verbatim verbinclude version vhdlflow
-syn keyword doxygenCommand contained warning weakgroup
-syn keyword doxygenCommand contained xmlonly xrefitem
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -304,9 +273,6 @@ if version >= 508 || !exists("did_vhdl_syntax_inits")
   HiLink vhdlError	    Error
   HiLink vhdlAttribute	    Type
   HiLink vhdlTodo	    Todo
-  HiLink doxygenCommand	    Special
-  HiLink doxygenTodo	    Todo
-  HiLink doxygenEscape	    Special
 
   delcommand HiLink
 endif

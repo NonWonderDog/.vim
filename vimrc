@@ -452,8 +452,10 @@ let g:tagbar_type_arduino = {
 \ }
 
 " }}}
-" Markdown {{{
-" Apply language-specific syntax highlighting inside fenced code blocks
+" Syntax Options {{{
+" Use LaTeX instead of TeX
+let g:tex_flavor = "latex"
+" Apply language-specific highlighting inside markdown fenced code blocks
 let g:markdown_fenced_languages = [
             \ 'sh', 'shell=sh', 'bash=sh', 'zsh=sh', 'tcsh',
             \ 'tex', 'latex=tex',
