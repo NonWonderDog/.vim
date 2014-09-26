@@ -165,25 +165,25 @@ set synmaxcol=400
 set wildmenu
 set wildmode=full
 
-" Tabs should align to 8 columns to match unix terminal output (and github), 
+" Tabs should align to 8 columns to match posix terminal output (and github), 
 " but I prefer 4 spaces for indentation.
-" This makes indents, the tab key, and the backspace key use four literal 
-" spaces instead of a tab, but pre-existing tab characters align to 8 columns.
-" This is probably the best compromise.
-set autoindent      " use automatic indenting
-set smartindent     " use 'C-lite' indent rules for filetypes that don't define rules
-set tabstop=8       " literal tabs are 8 spaces wide to comply with unix standards
-set shiftwidth=4    " indent code by 4 spaces
-set softtabstop=4   " in insert mode, tabs are 4 spaced wide
-set expandtab       " insert spaces instead of tabs
-set smarttab        " in insert mode, use shiftwidth instead of softtabstop for indent with <Tab> (redundant)
+" This is a compromise configuration in which tabs are always 8 spaces wide, 
+" except at the beginning of a line where 4 space indents are used.  This way 
+" all you need to do to edit tab-delimited files is "set noexpandtab".
+set autoindent          " use automatic indenting
+set smartindent         " use 'C-lite' indent rules for filetypes that don't define rules
+set tabstop=8           " literal tabs are 8 spaces wide
+set softtabstop=8       " expanded tabs are 8 spaced wide
+set shiftwidth=4        " indent code by 4 spaces
+set smarttab            " use shiftwidth instead of softtabstop for tabs at beginning of line
+set expandtab           " don't insert tab characters
 
 " C indent options
-set cinoptions=:0   " don't indent case labels
-set cinoptions+=g0  " don't indent C++ scope declarations
-set cinoptions+=N-s " don't indent after namespace declaration
+set cinoptions=:0       " don't indent case labels
+set cinoptions+=g0      " don't indent C++ scope declarations
+set cinoptions+=N-s     " don't indent after namespace declaration
 
-set nowrap          " turn off text wrap
+set nowrap              " turn off text wrap
 
 " Use explicit tab characters in makefiles
 autocmd FileType make setlocal noexpandtab
