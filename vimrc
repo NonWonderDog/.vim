@@ -345,13 +345,13 @@ inoremap jk <Esc>
 " Navigate windows with Alt-movement keys
 set winaltkeys=no
 nnoremap <silent> <A-h> :wincmd h<CR>
-nmap h <A-h>
+nmap <Esc>h <A-h>
 nnoremap <silent> <A-j> :wincmd j<CR>
-nmap j <A-j>
+nmap <Esc>j <A-j>
 nnoremap <silent> <A-k> :wincmd k<CR>
-nmap k <A-k>
+nmap <Esc>k <A-k>
 nnoremap <silent> <A-l> :wincmd l<CR>
-nmap l <A-l>
+nmap <Esc>l <A-l>
 
 " Step through quickfix with F7 F8
 
