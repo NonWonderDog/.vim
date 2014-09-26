@@ -239,7 +239,7 @@ set ruler               " show the cursor position all the time
 set showcmd             " display incomplete commands
 
 " Change shown characters for list mode
-set listchars=tab:→·,eol:¬,trail:·,nbsp:█,precedes:«,extends:»
+set listchars=tab:►─,eol:¬,trail:·,nbsp:⁃,precedes:◄,extends:►
 
 " Set windows font and color scheme
 colorscheme numbat256
@@ -287,7 +287,7 @@ if !empty($CONEMUBUILD)
     let &t_us="\e[4m"       " start underline
     let &t_ue="\e[24m"      " end underline
     " ConEmu really doesn't handle unicode well
-    set listchars=tab:>\ ,eol:<,trail:-,nbsp:%,precedes:<,extends:>
+    set listchars=tab:>-,eol:¬,trail:·,nbsp:·,precedes:«,extends:»
 endif
 
 " Set gui window size
