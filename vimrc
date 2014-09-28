@@ -234,9 +234,12 @@ endif
 
 set guioptions=m        " hide all gui stuff except menu bar
 set laststatus=2        " always show status line
-set visualbell          " get rid of the stupid noise
 set ruler               " show the cursor position all the time
 set showcmd             " display incomplete commands
+if has('win32') || has('win64')
+    " Gnome has this as an option, but windows always makes a ding
+    set visualbell          " get rid of the stupid noise
+endif
 
 " Change shown characters for list mode
 if has("gui_running")
