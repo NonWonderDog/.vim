@@ -351,6 +351,10 @@ nnoremap <NL> i<CR><ESC>
 inoremap jj <Esc>
 inoremap jk <Esc>
 
+" Always move by screen lines instead of file lines
+nnoremap j gj
+nnoremap k gk
+
 " Navigate windows with Alt-movement keys
 set winaltkeys=no
 nnoremap <silent> <A-h> :wincmd h<CR>
