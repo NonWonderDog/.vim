@@ -24,7 +24,8 @@ endif
 let b:undo_ftplugin = "unlet! b:match_words"
 
 " auto comment stuff
-set comments=s1:(*,mb:*,ex:*),://
+set comments=sO:*\ -,mO:*\ \ ,exO:*),s1:(*,mb:*,ex:*)
+set commentstring=(*%s*)
 set fo-=t fo+=croql
 set textwidth=79
 
