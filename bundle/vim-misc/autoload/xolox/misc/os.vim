@@ -149,7 +149,11 @@ function! xolox#misc#os#exec(options) " {{{1
       if &shell =~ "csh"
         let cmd = printf('((%s >%s) >&%s)', cmd, xolox#misc#escape#shell(tempout), xolox#misc#escape#shell(temperr))
       else
-        let cmd = printf('(%s) 1>%s 2>%s', cmd, xolox#misc#escape#shell(tempout), xolox#misc#escape#shell(temperr))
+        if has('win32')
+          let cmd = printf('((%s) 1>%s 2>%s)', cmd, xolox#misc#escape#shell(tempout), xolox#misc#escape#shell(temperr))
+        else
+          let cmd = printf('(%s) 1>%s 2>%s', cmd, xolox#misc#escape#shell(tempout), xolox#misc#escape#shell(temperr))
+        endif
       endif
     endif
 
