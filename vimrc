@@ -287,7 +287,6 @@ endif
 if !empty($CONEMUBUILD)
     " 256 color terminal is possible in Windows using ConEmu
     set term=xterm
-    set termencoding=default    " not an 8-bit terminal
     set t_Co=256
     let &t_AB="\e[48;5;%dm" " set ANSI background color
     let &t_AF="\e[38;5;%dm" " set ANSI foreground color
