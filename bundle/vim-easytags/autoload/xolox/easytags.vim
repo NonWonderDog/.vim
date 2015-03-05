@@ -1,9 +1,9 @@
 " Vim script
 " Author: Peter Odding <peter@peterodding.com>
-" Last Change: August 8, 2014
+" Last Change: November 21, 2014
 " URL: http://peterodding.com/code/vim/easytags/
 
-let g:xolox#easytags#version = '3.6.6'
+let g:xolox#easytags#version = '3.9.1'
 let g:xolox#easytags#default_pattern_prefix = '\C\<'
 let g:xolox#easytags#default_pattern_suffix = '\>'
 
@@ -239,15 +239,17 @@ function! s:prep_cmdline(cfile, tagsfile, arguments) " {{{3
   let custom_languages = xolox#misc#option#get('easytags_languages', {})
   let language = get(custom_languages, vim_file_type, {})
   if empty(language)
-    let program = xolox#misc#option#get('easytags_cmd')
-    let cmdline = [program, '--fields=+l', '--c-kinds=+p', '--c++-kinds=+p']
+    let cmdline = [xolox#easytags#ctags_command()]
+    call add(cmdline, '--fields=+l')
+    call add(cmdline, '--c-kinds=+p')
+    call add(cmdline, '--c++-kinds=+p')
     call add(cmdline, '--sort=no')
     call add(cmdline, '-f-')
     if xolox#misc#option#get('easytags_include_members', 0)
       call add(cmdline, '--extra=+q')
     endif
   else
-    let program = get(language, 'cmd', xolox#misc#option#get('easytags_cmd'))
+    let program = get(language, 'cmd', xolox#easytags#ctags_command())
     if empty(program)
       call xolox#misc#msg#warn("easytags.vim %s: No 'cmd' defined for language '%s', and also no global default!", g:xolox#easytags#version, vim_file_type)
       return
@@ -293,7 +295,6 @@ function! xolox#easytags#highlight() " {{{2
   " TODO This is a mess; Re-implement Python version in Vim script, benchmark, remove Python version.
   try
     call g:xolox#easytags#highlight_timer.start()
-    " Treat C++ and Objective-C as plain C.
     let filetype = xolox#easytags#filetypes#canonicalize(&filetype)
     let tagkinds = get(s:tagkinds, filetype, [])
     if exists('g:syntax_on') && !empty(tagkinds) && !exists('b:easytags_nohl')
@@ -432,6 +433,20 @@ let s:invalid_keywords = {
 
 " Public supporting functions (might be useful to others). {{{1
 
+function! xolox#easytags#ctags_command() " {{{2
+  let program = xolox#misc#option#get('easytags_cmd')
+  if !empty(program)
+    let options = xolox#misc#option#get('easytags_opts')
+    if !empty(options)
+      let command_line = [program]
+      call extend(command_line, map(copy(options), 'xolox#misc#escape#shell(expand(v:val))'))
+      let program = join(command_line)
+    endif
+    return program
+  endif
+  return ''
+endfunction
+
 function! xolox#easytags#get_tagsfile() " {{{2
   let tagsfile = ''
   " Look for a suitable project specific tags file?
@@ -552,18 +567,20 @@ endfunction
 " Miscellaneous script-local functions. {{{1
 
 function! s:report_results(response, async) " {{{2
-  let actions = []
-  if a:response['num_updated'] > 0
-    call add(actions, printf('updated %i tags', a:response['num_updated']))
-  endif
-  if a:response['num_filtered'] > 0
-    call add(actions, printf('filtered %i invalid tags', a:response['num_filtered']))
-  endif
-  if !empty(actions)
-    let function = a:async ? 'xolox#misc#msg#debug' : 'xolox#misc#msg#info'
-    let actions_string = xolox#misc#str#ucfirst(join(actions, ' and '))
-    let command_type = a:async ? 'asynchronously' : 'synchronously'
-    call call(function, ["easytags.vim %s: %s in %s (%s).", g:xolox#easytags#version, actions_string, a:response['elapsed_time'], command_type])
+  if !xolox#misc#option#get('easytags_suppress_report', 0)
+    let actions = []
+    if a:response['num_updated'] > 0
+      call add(actions, printf('updated %i tags', a:response['num_updated']))
+    endif
+    if a:response['num_filtered'] > 0
+      call add(actions, printf('filtered %i invalid tags', a:response['num_filtered']))
+    endif
+    if !empty(actions)
+      let function = a:async ? 'xolox#misc#msg#debug' : 'xolox#misc#msg#info'
+      let actions_string = xolox#misc#str#ucfirst(join(actions, ' and '))
+      let command_type = a:async ? 'asynchronously' : 'synchronously'
+      call call(function, ["easytags.vim %s: %s in %s (%s).", g:xolox#easytags#version, actions_string, a:response['elapsed_time'], command_type])
+    endif
   endif
 endfunction
 
@@ -632,25 +649,28 @@ call xolox#easytags#define_tagkind({
       \ 'hlgroup': 'luaFunc',
       \ 'tagkinds': 'f'})
 
-" C. {{{2
+" C and C++. {{{2
+"
+" C and C++ are both treated as C++, for details refer
+" to https://github.com/xolox/vim-easytags/issues/91.
 
 call xolox#easytags#define_tagkind({
-      \ 'filetype': 'c',
+      \ 'filetype': 'cpp',
       \ 'hlgroup': 'cType',
       \ 'tagkinds': '[cgstu]'})
 
 call xolox#easytags#define_tagkind({
-      \ 'filetype': 'c',
+      \ 'filetype': 'cpp',
       \ 'hlgroup': 'cEnum',
       \ 'tagkinds': 'e'})
 
 call xolox#easytags#define_tagkind({
-      \ 'filetype': 'c',
+      \ 'filetype': 'cpp',
       \ 'hlgroup': 'cPreProc',
       \ 'tagkinds': 'd'})
 
 call xolox#easytags#define_tagkind({
-      \ 'filetype': 'c',
+      \ 'filetype': 'cpp',
       \ 'hlgroup': 'cFunction',
       \ 'tagkinds': '[fp]'})
 
@@ -659,7 +679,7 @@ highlight def link cFunction Function
 
 if xolox#misc#option#get('easytags_include_members', 0)
   call xolox#easytags#define_tagkind({
-        \ 'filetype': 'c',
+        \ 'filetype': 'cpp',
         \ 'hlgroup': 'cMember',
         \ 'tagkinds': 'm'})
  highlight def link cMember Identifier
@@ -823,6 +843,16 @@ call xolox#easytags#define_tagkind({
       \ 'tagkinds': 'p'})
 
 highlight def link tclCommandTag Operator
+
+" Perl. {{{2
+
+call xolox#easytags#define_tagkind({
+      \ 'filetype': 'perl',
+      \ 'hlgroup': 'perlFunctionTag',
+      \ 'tagkinds': '[s]',
+      \ 'pattern_prefix': '\%(\<sub\s\+\)\@<!\%(>\|\s\|&\|^\)\@<=\<'})
+
+highlight def link perlFunctionTag Operator
 
 " }}}
 

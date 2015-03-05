@@ -12,11 +12,11 @@ There's just one problem: You have to manually keep your tags files up-to-date a
 
 Unzip the most recent ZIP archives of the [vim-easytags] [download-easytags] and [vim-misc] [download-misc] plug-ins inside your Vim profile directory (usually this is `~/.vim` on UNIX and `%USERPROFILE%\vimfiles` on Windows), restart Vim and execute the command `:helptags ~/.vim/doc` (use `:helptags ~\vimfiles\doc` instead on Windows).
 
-If you prefer you can also use [Pathogen] [pathogen], [Vundle] [vundle] or a similar tool to install & update the [vim-easytags] [github-easytags] and [vim-misc] [github-misc] plug-ins using a local clone of the git repository.
+If you prefer you can also use [Pathogen] [pathogen], [Vundle] [vundle] or a similar tool to install and update the [vim-easytags] [github-easytags] and [vim-misc] [github-misc] plug-ins using a local clone of the git repository.
 
 Now try it out: Edit any file type supported by Exuberant Ctags and within ten seconds the plug-in should create/update your tags file (`~/.vimtags` on UNIX, `~/_vimtags` on Windows) with the tags defined in the file you just edited! This means that whatever file you're editing in Vim (as long as it's on the local file system), tags will always be available by the time you need them!
 
-Additionally if the file you just opened is an AWK, C#, C, C++, Objective-C, Java, Lua, PHP, Python, Ruby, Shell, Tcl or Vim source file you should also notice that the function and type names defined in the file have been syntax highlighted.
+Additionally if the file you just opened is an AWK, C#, C, C++, Objective-C, Java, Lua, Perl, PHP, Python, Ruby, Shell, Tcl or Vim source file you should also notice that the function and/or type names defined in the file have been syntax highlighted.
 
 The `easytags.vim` plug-in is intended to work automatically once it's installed, but if you want to change how it works there are several options you can change and commands you can execute from your own mappings and/or automatic commands. These are all documented below.
 
@@ -61,6 +61,14 @@ The plug-in will try to determine the location where Exuberant Ctags is installe
     :let g:easytags_cmd = '/usr/local/bin/ctags'
 
 If you rely entirely on language-specific configuration and don't have a general ctags program, set this to the empty string.
+
+### The `g:easytags_opts` option
+
+If you need to pass custom command line option(s) to the program specified by `g:easytags_cmd` you can set this option to a list of strings to be passed to Exuberant Ctags. Make sure to only use options that are valid in any context, for example the concatenation of `g:easytags_cmd`, `g:easytags_opts` and `--list-languages` should work as expected. Here's an example:
+
+    :let g:easytags_opts = ['--options=$VIM\ctags\ctags.cnf']
+
+The example above (based on [issue 98] [98]) overrides the location of Exuberant Ctags' configuration file. As you can see the command line option(s) may contain environment variables, these will be expanded before passing the options to Exuberant Ctags (to make sure it works in all environments).
 
 ### The `g:easytags_async` option
 
@@ -217,6 +225,12 @@ If this is set and not false, it will suppress the warning on startup if ctags i
 
     :let g:easytags_suppress_ctags_warning = 1
 
+### The `g:easytags_suppress_report` option
+
+If this is set and not false, it will suppress the report displayed on tag updates.
+
+    :let g:easytags_suppress_report = 1
+
 ## Customizing the easytags plug-in
 
 Advanced users may wish to customize how the easytags plug-in works beyond the point of changing configuration defaults. This section contains some hints about this. If you have suggestions, please feel free to submit them.
@@ -242,6 +256,7 @@ The easytags plug-in defines new highlighting groups for dynamically highlighted
  * **C, C++, Objective C:** `cTypeTag`, `cEnumTag`, `cPreProcTag`, `cFunctionTag`, `cMemberTag`
  * **Java:** `javaClassTag`, `javaInterfaceTag`, `javaMethodTag`
  * **Lua:** `luaFuncTag`
+ * **Perl:** `perlFunctionTag`
  * **PHP:** `phpFunctionsTag`, `phpClassesTag`
  * **Python:** `pythonFunctionTag`, `pythonMethodTag`, `pythonClassTag`
  * **Ruby:** `rubyModuleNameTag`, `rubyClassNameTag`, `rubyMethodNameTag`
@@ -342,6 +357,7 @@ This software is licensed under the [MIT license](http://en.wikipedia.org/wiki/M
 Thanks go out to everyone who has helped to improve the vim-easytags plug-in (whether through pull requests, bug reports or personal e-mails).
 
 
+[98]: https://github.com/xolox/vim-easytags/issues/98
 [canon]: http://en.wikipedia.org/wiki/Canonicalization
 [code_complete]: http://www.vim.org/scripts/script.php?script_id=1764
 [ctags]: http://en.wikipedia.org/wiki/Ctags
