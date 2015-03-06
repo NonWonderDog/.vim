@@ -12,3 +12,4 @@ git subtree pull --prefix bundle/vim-snippets git@github.com:honza/vim-snippets.
 git subtree pull --prefix bundle/tcomment_vim git@github.com:tomtom/tcomment_vim.git master --squash
 git subtree pull --prefix bundle/vim-hilinks git@github.com:kergoth/vim-hilinks.git master --squash
 git subtree pull --prefix bundle/vim-ps1 git@github.com:PProvost/vim-ps1.git master --squash
+git subtree pull --prefix bundle/syntastic git@github.com:scrooloose/syntastic.git master --squash
