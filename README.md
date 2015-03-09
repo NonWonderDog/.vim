@@ -29,17 +29,17 @@ dependencies on Ubuntu.
 The `exuberant-ctags` package integrates with Vim and is very useful for 
 navigating around code.  It is required for the Easytags and Tagbar plugins.  
 
-Vim 7.3 and above will prioritize the `~/.vim/vimrc` included in this 
-repository over `~/.vimrc` in the home folder, so no symbolic links are 
-necessary. Make sure to delete any existing `~/.vimrc` file, or these settings 
-will not be used.
+Vim 7.3 and above will use the `~/.vim/vimrc` included in this repository if no 
+`~/.vimrc` is found, so no installation script is necessary. If you prefer to 
+have your settings in `~/.vimrc` anyway, the `install` script will create the 
+link for you and move any old `~/.vimrc` file to `.dotfiles_old/vimrc`.
 
 For an install from scratch:
 
 	sudo apt-get install vim-gtk exuberant-ctags
 	git clone git@github.com:NonWonderDog/.vim.git ~/.vim
-	rm ~/.vimrc
-	vim +Helptags +qall
+        ~/.vim/install
+        vim +Helptags +qall
 
 Windows Install
 ---------------
@@ -47,16 +47,18 @@ The contents of this repository must be installed to a `%USERPROFILE%/.vim`
 directory.  This distribution will not function correctly if installed to the 
 default `%USERPROFILE%/vimfiles` directory.
 
-When renaming files or folders in Windows Explorer, everything after the final 
-dot is interpreted as an extension, and Explorer does not allow one to create 
-files with an extension but no name.  To create a file or directory beginning 
-in a dot in Explorer, the simplest workaround is to add a dot to the end of the 
-name.  The name `.vim.` will create the `.vim` directory.  No workarounds are 
-needed if creating the directory from a command prompt.
+Windows explorer makes it difficult to create files that start with a period 
+and have no extension, as it interprets them as files with an extension but no 
+name.  To work around this, append a final dot -- it and the "empty extension" 
+will be removed. Type `.vim.` as the directory name in Explorer to create the 
+`.vim` directory.  This isn't necessary if creating the directory from 
+a command prompt.
 
-After a `git clone` or `svn checkout`, run the win\_install.bat script to 
-create a stub `~/.vimrc` file pointing to the real `~/.vim/vimrc` file.  This 
-step is necessary because we are not using the default `~/vimfiles` path.
+After a `git clone` or `svn checkout`, run the `install.bat` script to create 
+a symbolic link from `%USERPROFILE%/.vimrc` to `%USERPROFILE%/.vim/vimrc`.  
+This step is necessary because we are not using the default 
+`%USERPROFILE%/vimfiles` path.  `install.bat` runs the included `install.ps1` 
+PowerShell script as administrator.
 
 After installing Vim and this repository, start Vim and execute `:Helptags` to 
 update the documentation.
