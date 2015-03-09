@@ -14,3 +14,4 @@ git subtree pull --prefix bundle/vim-hilinks git@github.com:kergoth/vim-hilinks.
 git subtree pull --prefix bundle/vim-ps1 git@github.com:PProvost/vim-ps1.git master --squash
 git subtree pull --prefix bundle/syntastic git@github.com:scrooloose/syntastic.git master --squash
 git subtree pull --prefix bundle/tabular git@github.com:godlygeek/tabular.git master --squash
+git subtree pull --prefix bundle/vim-hoogle git@github.com:Twinside/vim-hoogle.git master --squash
