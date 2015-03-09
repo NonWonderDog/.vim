@@ -8,3 +8,6 @@
 
 # local dictionary files
 spell
+
+# vim doctags
+**/doc/tags
