@@ -23,6 +23,7 @@ if has('win32') || has('win64')
     " use '.vim' instead of 'vimfiles', and use .viminfo
     set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
     set viminfo+=n~/.viminfo
+    " using bash really confuses ConEmu
     " if executable("bash") || executable("tcsh")
     "    " Use *nix shell if available
     "    if executable("tcsh")
@@ -244,7 +245,8 @@ endif
 if has("gui_running")
     set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
 else
-    set listchars=tab:▸—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
+    " avoid unicode for safety
+    set listchars=tab:>-,eol:¬,trail:·,nbsp:·,precedes:«,extends:»
 endif
 
 " Set windows font and color scheme
@@ -265,7 +267,7 @@ if $TERM =~ "^xterm"
 endif
 
 if $COLORTERM == "gnome-terminal"
-    " In Ubuntu the arrows fallback on wrong-sized fonts
+    " In Ubuntu the arrows fall back on wrong-sized fonts
     set listchars=tab:▸—,eol:¬,trail:·,nbsp:⁃,precedes:«,extends:»
     " Use 256 color mode
     set t_Co=256
@@ -293,8 +295,8 @@ if !empty($CONEMUBUILD)
     let &t_ZR="\e[23m"      " end italics
     let &t_us="\e[4m"       " start underline
     let &t_ue="\e[24m"      " end underline
-    " Windows console Vim really doesn't handle unicode well
-    set listchars=tab:>-,eol:¬,trail:·,nbsp:·,precedes:«,extends:»
+    " This only really works using codepage 65001
+    set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
 endif
 
 " Set gui window size
