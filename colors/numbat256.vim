@@ -278,7 +278,7 @@ endif
     endfun
     " }}}
 
-" Custom Color Palette
+" Custom Color Palette {{{
 let s:black     = '#242424'
 let s:bblack    = '#99968b'
 let s:blue      = '#8ac6f2'
@@ -294,8 +294,9 @@ let s:yellow    = '#f2da65'
 let s:orange    = '#ffaa50'
 let s:white     = '#d3d7cf'
 let s:bwhite    = '#f6f3e8'
+" }}}
 
-" selected xterm colors
+" selected xterm colors {{{
 let s:red1      = '#ff0000'
 let s:red2      = '#d70000'
 let s:red3      = '#af0000'
@@ -340,6 +341,7 @@ let s:grey85    = '#dadada'
 let s:grey89    = '#e4e4e4'
 let s:grey93    = '#eeeeee'
 let s:grey100   = '#ffffff'
+" }}}
 
 " General colors
 call <SID>X('Normal',           s:bwhite,   s:grey15,   'none') 
@@ -348,7 +350,7 @@ call <SID>X('NonText',          s:grey30,   '',         'none')
 call <SID>X('Directory',        s:cyan1,    '',         'none')
 call <SID>X('ErrorMsg',         s:grey100,  s:red1,     'none')
 call <SID>X('IncSearch',        '',         '',         'inverse')
-call <SID>X('Search',           s:black,    s:yellow,   'none')
+call <SID>X('Search',           s:grey11,   s:yellow,   'none')
 call <SID>X('MoreMsg',          s:green4,   'none',     'bold')
 call <SID>X('ModeMsg',          s:red,      '',         'bold')
 call <SID>X('LineNr',           s:grey46,   s:grey19,   'none')
@@ -361,7 +363,7 @@ call <SID>X('Title',            s:red,      '',         'bold')
 call <SID>X('Visual',           s:bwhite,   s:grey27,   'none')
 call <SID>X('VisualNOS',        s:bwhite,   s:grey27,   'bold,underline')
 call <SID>X('WarningMsg',       s:red1,     '',         'none')
-call <SID>X('WildMenu',         s:black,    s:yellow,   'none')
+call <SID>X('WildMenu',         s:grey11,   s:yellow,   'none')
 call <SID>X('Folded',           s:grey46,   s:grey19,   'none')
 call <SID>X('FoldColumn',       s:grey46,   s:grey19,   'none')
 call <SID>X('DiffAdd',          '',         '005f5f',   'none')
@@ -383,7 +385,7 @@ call <SID>X('TabLineSel',       s:grey100,  'none',     'bold')
 call <SID>X('TabLineFill',      s:grey100,  s:grey27,   'none')
 call <SID>X('CursorColumn',     '',         s:grey19,   'none')
 call <SID>X('CursorLine',       '',         s:grey19,   'none')
-call <SID>X('ColorColumn',      '',         s:red4,     'none')
+call <SID>X('ColorColumn',      '',         s:grey19,     'none')
 call <SID>X('Cursor',           '',         s:grey39,   'none')
 
 " Syntax highlighting
