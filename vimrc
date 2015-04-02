@@ -23,24 +23,24 @@ if has('win32') || has('win64')
     " use '.vim' instead of 'vimfiles', and use .viminfo
     set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
     set viminfo+=n~/.viminfo
-    if executable("bash") || executable("tcsh")
-       " Use *nix shell if available
-       if executable("tcsh")
-           set shell=tcsh
-           set shellredir=>&
-       elseif executable("bash")
-           set shell=bash
-           set shellredir=>%s\ 2>&1
-       endif
-       set shellslash
-       " set shell configuration here to avoid confusing early-loading 
-       " plugins
-       set shellcmdflag=-c
-       set shellpipe=>
-       set shellxquote=\"
-    else
-       set shell=cmd
-    endif
+    " if executable("bash") || executable("tcsh")
+    "    " Use *nix shell if available
+    "    if executable("tcsh")
+    "        set shell=tcsh
+    "        set shellredir=>&
+    "    elseif executable("bash")
+    "        set shell=bash
+    "        set shellredir=>%s\ 2>&1
+    "    endif
+    "    set shellslash
+    "    " set shell configuration here to avoid confusing early-loading 
+    "    " plugins
+    "    set shellcmdflag=-c
+    "    set shellpipe=>
+    "    set shellxquote=\"
+    " else
+    "    set shell=cmd
+    " endif
     if executable("tee")
         " Make build output show up on the screen, just like in *nix
         " noshelltemp and nomore ideally would be set only during make
@@ -248,7 +248,7 @@ else
 endif
 
 " Set windows font and color scheme
-colorscheme numbat256
+colorscheme numbat
 if has('win32') || has('win64')
     set guifont=Consolas:h8
     set guifontwide=MS_Gothic:h8:cSHIFTJIS
