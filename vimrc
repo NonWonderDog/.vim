@@ -23,25 +23,23 @@ if has('win32') || has('win64')
     " use '.vim' instead of 'vimfiles', and use .viminfo
     set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
     set viminfo+=n~/.viminfo
-    " redirect $MYVIMRC to this file, rather than the stub
-    let $MYVIMRC='~/.vim/vimrc'
     if executable("bash") || executable("tcsh")
-        " Use *nix shell if available
-        if executable("tcsh")
-            set shell=tcsh
-            set shellredir=>&
-        elseif executable("bash")
-            set shell=bash
-            set shellredir=>%s\ 2>&1
-        endif
-        set shellslash
-        " set shell configuration here to avoid confusing early-loading 
-        " plugins
-        set shellcmdflag=-c
-        set shellpipe=>
-        set shellxquote=\"
+       " Use *nix shell if available
+       if executable("tcsh")
+           set shell=tcsh
+           set shellredir=>&
+       elseif executable("bash")
+           set shell=bash
+           set shellredir=>%s\ 2>&1
+       endif
+       set shellslash
+       " set shell configuration here to avoid confusing early-loading 
+       " plugins
+       set shellcmdflag=-c
+       set shellpipe=>
+       set shellxquote=\"
     else
-        set shell=cmd
+       set shell=cmd
     endif
     if executable("tee")
         " Make build output show up on the screen, just like in *nix
@@ -236,6 +234,7 @@ set guioptions=m        " hide all gui stuff except menu bar
 set laststatus=2        " always show status line
 set ruler               " show the cursor position all the time
 set showcmd             " display incomplete commands
+set cc=80               " highlight column 80
 if has('win32') || has('win64')
     " Gnome has this as an option, but windows always makes a ding
     set visualbell          " get rid of the stupid noise
