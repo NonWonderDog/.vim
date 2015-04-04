@@ -17,3 +17,4 @@ git subtree pull --prefix bundle/tabular git@github.com:godlygeek/tabular.git ma
 git subtree pull --prefix bundle/vim-hoogle git@github.com:Twinside/vim-hoogle.git master --squash
 git subtree pull --prefix bundle/previm git@github.com:kannokanno/previm.git master --squash
 git subtree pull --prefix bundle/open-browser git@github.com:tyru/open-browser.vim.git master --squash
+git subtree pull --prefix bundle/vim-syntax-haskell-cabal git@github.com:Twinside/vim-syntax-haskell-cabal.git master --squash
