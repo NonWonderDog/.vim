@@ -1,3 +1,3 @@
 if executable("ghc-mod")
-    cd `ghc-mod root`
+    lcd `ghc-mod root`
 end
