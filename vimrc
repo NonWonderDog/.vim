@@ -12,8 +12,17 @@ if has("multi_byte")
     set encoding=utf-8
     set fileencoding=utf-8
     scriptencoding utf-8
-    " enable autorecognize for SJIS-encoded files
-    setglobal fileencodings=ucs-bom,utf-8,sjis,default,latin1
+    if has('win32') || has('win64')
+        " use SJIS and 'ANSI' codepages on Windows
+        " The "default" codepage on English Windows is "latin1", which is 
+        " wrong. It should be "cp1252".  Unfortunately that means we can't use 
+        " "default" here, so you have to change this if you're on Russian 
+        " Windows, for example.
+        setglobal fileencodings=ucs-bom,utf-8,sjis,cp1252
+    else
+        " recognize SJIS on Linux
+        setglobal fileencodings=ucs-bom,utf-8,sjis,default,latin1
+    end
     " default to IME off
     set iminsert=0
     set imsearch=-1
