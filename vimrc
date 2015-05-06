@@ -228,6 +228,9 @@ set errorformat+=#%t%*[^\ ]\ %*[^\ ]\ %f:%l\ %m
 set errorformat+=#%t%*[^\ ]\ %*[^\ ]\ %f:%l(%c)\ %m
 set errorformat+=#%t%*[^\ ]\ %*[^\ ]\ %f:%l(%c+%*[0-9])\ %m
 
+" use side-by-side diffs
+set diffopt+=vertical
+
 " little tweaks
 if has("autocmd")
     " Jump to the last cursor position when opening a buffer
