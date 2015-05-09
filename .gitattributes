@@ -1,0 +1,12 @@
+# Autodetect text files
+* text=auto
+
+# Windows install files use Windows line endings
+*.bat eol=crlf
+*.ps1 eol=crlf
+
+* Shell and Vim files use unix line endings
+*.sh eol=lf
+*.vim eol=lf
+*rc eol=lf
+
