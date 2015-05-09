@@ -5,7 +5,7 @@
 *.bat eol=crlf
 *.ps1 eol=crlf
 
-* Shell and Vim files use unix line endings
+# Shell and Vim files use unix line endings
 *.sh eol=lf
 *.vim eol=lf
 *rc eol=lf
