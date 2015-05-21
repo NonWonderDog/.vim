@@ -44,12 +44,12 @@ function! xolox#misc#escape#shell(string) " {{{1
     try
       let ssl_save = &shellslash
       set noshellslash
-      return shellescape(a:string)
+      return shellescape(a:string,1)
     finally
       let &shellslash = ssl_save
     endtry
   else
-    return shellescape(a:string)
+    return shellescape(a:string,1)
   endif
 endfunction
 
