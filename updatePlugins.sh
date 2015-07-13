@@ -20,3 +20,4 @@ git subtree pull --prefix bundle/open-browser open-browser master --squash
 git subtree pull --prefix bundle/vim-syntax-haskell-cabal vim-syntax-haskell-cabal master --squash
 git subtree pull --prefix bundle/CamelCaseMotion CamelCaseMotion master --squash
 git subtree pull --prefix bundle/vim-fugitive vim-fugitive master --squash
+git subtree pull --prefix bundle/vim-easy-align vim-easy-align master --squash
