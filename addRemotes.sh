@@ -20,4 +20,4 @@ git remote add -f open-browser git@github.com:tyru/open-browser.vim.git
 git remote add -f vim-syntax-haskell-cabal git@github.com:Twinside/vim-syntax-haskell-cabal.git
 git remote add -f CamelCaseMotion git@github.com:bkad/CamelCaseMotion.git
 git remote add -f vim-fugitive git@github.com:tpope/vim-fugitive
-
+git remote add -f vim-easy-align git@github.com:junegunn/vim-easy-align
