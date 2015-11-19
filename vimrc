@@ -127,7 +127,13 @@ set spelllang=en_us
 set hidden              " keep hidden buffers on window close
 set history=100         " keep 100 lines of command line history
 set switchbuf=usetab    " when executing quickfix or buffer split command, look for existing window before opening a new one
-set linebreak           " break at word boundaries when 'wrap' is set
+if has("linebreak")
+    set linebreak       " break at word boundaries when 'wrap' is set
+    set showbreak=..    " start wrapped lines with '..'
+    if exists("&breakindent")
+        set breakindent " maintain indents when wrapping
+    endif
+endif
 set display+=lastline   " show partial lines when wrapping
 set noequalalways       " don't resize windows on close or split
 set ttimeoutlen=10      " 10 ms delay for terminal escape codes
