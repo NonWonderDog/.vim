@@ -1,2 +1,2 @@
-au BufRead,BufNewFile *.s19 set filetype=srecord
+au BufRead,BufNewFile *.s19,*.s28,*.s37,*.sr,*.srec set filetype=srecord
 
