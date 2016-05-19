@@ -341,7 +341,7 @@ map Q gq
 inoremap <C-U> <C-G>u<C-U>
 inoremap <c-w> <c-g>u<c-w>
 
-" sudo write with w!!
+" sudo write with W!
 cmap W! w !sudo tee >/dev/null %
 
 " remove middle mouse button paste mapping
