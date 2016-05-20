@@ -315,6 +315,8 @@ if !empty($CONEMUBUILD)
     let &t_ue="\e[24m"      " end underline
     " This only really works using codepage 65001
     set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
+    map <Char-0x07F> <BS>
+    imap <Char-0x07F> <BS>
 endif
 
 " Set gui window size
