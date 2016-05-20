@@ -7,8 +7,6 @@ git remote add -f vim-misc git@github.com:xolox/vim-misc.git
 git remote add -f vim-easytags vim-easytags
 git remote add -f vim-reload git@github.com:xolox/vim-reload.git
 git remote add -f tagbar git@github.com:majutsushi/tagbar.git
-git remote add -f ultisnips git@github.com:SirVer/ultisnips.git
-git remote add -f vim-snippets git@github.com:honza/vim-snippets.git
 git remote add -f tcomment_vim git@github.com:tomtom/tcomment_vim.git
 git remote add -f vim-hilinks git@github.com:kergoth/vim-hilinks.git
 git remote add -f vim-ps1 git@github.com:PProvost/vim-ps1.git

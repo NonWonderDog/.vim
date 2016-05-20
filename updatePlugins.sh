@@ -7,8 +7,6 @@ git subtree pull --prefix bundle/vim-misc vim-misc master --squash
 git subtree pull --prefix bundle/vim-easytags vim-easytags master --squash
 git subtree pull --prefix bundle/vim-reload vim-reload master --squash
 git subtree pull --prefix bundle/tagbar tagbar master --squash
-git subtree pull --prefix bundle/ultisnips ultisnips master --squash
-git subtree pull --prefix bundle/vim-snippets vim-snippets master --squash
 git subtree pull --prefix bundle/tcomment_vim tcomment_vim master --squash
 git subtree pull --prefix bundle/vim-hilinks vim-hilinks master --squash
 git subtree pull --prefix bundle/vim-ps1 vim-ps1 master --squash
