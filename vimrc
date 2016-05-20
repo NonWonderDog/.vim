@@ -313,10 +313,16 @@ if !empty($CONEMUBUILD)
     let &t_ZR="\e[23m"      " end italics
     let &t_us="\e[4m"       " start underline
     let &t_ue="\e[24m"      " end underline
-    " This only really works using codepage 65001
-    set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
+    " rebind mouse wheel
+    map <Esc>[62~ <C-E>
+    imap <Esc>[62~ <C-X><C-E>
+    map <Esc>[63~ <C-Y>
+    imap <Esc>[63~ <C-X><C-Y>
+    " rebind backspace
     map <Char-0x07F> <BS>
     imap <Char-0x07F> <BS>
+    " This only really works using codepage 65001
+    set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
 endif
 
 " Set gui window size
