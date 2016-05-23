@@ -373,6 +373,13 @@ imap <F1> <Nop>
 " Break line with CTRL-J
 nnoremap <NL> i<CR><ESC>
 
+" Clear highlighting with <C-l>
+nnoremap <silent> <C-l> :<C-U>noh<CR><C-l>
+
+" Open folds with spacebar
+nnoremap <Space> zA
+nnoremap <S-Space> za
+
 " Exit insert mode with jj or jk
 inoremap jj <Esc>
 inoremap jk <Esc>
@@ -383,13 +390,13 @@ nnoremap k gk
 
 " Navigate windows with Alt-movement keys
 set winaltkeys=no
-nnoremap <silent> <A-h> :wincmd h<CR>
+nnoremap <silent> <A-h> :<C-U>wincmd h<CR>
 nmap <Esc>h <A-h>
-nnoremap <silent> <A-j> :wincmd j<CR>
+nnoremap <silent> <A-j> :<C-U>wincmd j<CR>
 nmap <Esc>j <A-j>
-nnoremap <silent> <A-k> :wincmd k<CR>
+nnoremap <silent> <A-k> :<C-U>wincmd k<CR>
 nmap <Esc>k <A-k>
-nnoremap <silent> <A-l> :wincmd l<CR>
+nnoremap <silent> <A-l> :<C-U>wincmd l<CR>
 nmap <Esc>l <A-l>
 
 " Step through quickfix with F7 F8
