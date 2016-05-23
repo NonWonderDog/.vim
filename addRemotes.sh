@@ -19,3 +19,4 @@ git remote add -f vim-syntax-haskell-cabal git@github.com:Twinside/vim-syntax-ha
 git remote add -f CamelCaseMotion git@github.com:bkad/CamelCaseMotion.git
 git remote add -f vim-fugitive git@github.com:tpope/vim-fugitive
 git remote add -f vim-easy-align git@github.com:junegunn/vim-easy-align
+git remote add -f vim-pandoc-syntax git@github.com:vim-pandoc/vim-pandoc-syntax
