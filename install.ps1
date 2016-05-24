@@ -36,6 +36,10 @@ foreach ($file in $files) {
     cmd /c mklink "$HOME\.$file" "$dir\$file"
 }
 
+# neovim support
+cmd /c mklink /D "$env:LOCALAPPDATA\nvim\" "$dir\"
+cmd /c mklink "$env:LOCALAPPDATA\nvim\init.vim" "$dir\vimrc"
+
 write-host "Done."
 pauseQuit
 

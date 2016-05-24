@@ -30,8 +30,10 @@ endif
 
 if has('win32') || has('win64')
     " use '.vim' instead of 'vimfiles', and use .viminfo
-    set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
-    set viminfo+=n~/.viminfo
+    if !has('nvim')
+        set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
+        set viminfo+=n~/.viminfo
+    endif
     " using bash really confuses ConEmu
     " if executable("bash") || executable("tcsh")
     "    " Use *nix shell if available
@@ -534,4 +536,10 @@ let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+" }}}
+" Neovim Options {{{
+if has('nvim')
+    set termguicolors
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+endif
 " }}}
