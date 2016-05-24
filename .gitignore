@@ -11,3 +11,6 @@ spell
 
 # vim doctags
 **/doc/tags
+
+# silly Windows recursive symlink??
+init.vim
