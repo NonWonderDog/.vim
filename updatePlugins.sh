@@ -20,3 +20,4 @@ git subtree pull --prefix bundle/CamelCaseMotion CamelCaseMotion master --squash
 git subtree pull --prefix bundle/vim-fugitive vim-fugitive master --squash
 git subtree pull --prefix bundle/vim-easy-align vim-easy-align master --squash
 git subtree pull --prefix bundle/vim-pandoc-syntax vim-pandoc-syntax master --squash
+git subtree pull --prefix bundle/neovim-gui-shim neovim-gui-shim master --squash

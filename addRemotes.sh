@@ -20,3 +20,4 @@ git remote add -f CamelCaseMotion git@github.com:bkad/CamelCaseMotion.git
 git remote add -f vim-fugitive git@github.com:tpope/vim-fugitive
 git remote add -f vim-easy-align git@github.com:junegunn/vim-easy-align
 git remote add -f vim-pandoc-syntax git@github.com:vim-pandoc/vim-pandoc-syntax
+git remote add -f neovim-gui-shim git@github.com:equalsraf/neovim-gui-shim
