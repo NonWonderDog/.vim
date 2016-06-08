@@ -174,6 +174,9 @@ set formatoptions+=cjwa " use auto-format for comments, using trailing space for
 set formatoptions+=1    " don't break after single letter words
 set formatoptions+=mB   " support CJK line break rules more properly
 
+" set compatibility options
+set cpoptions+=J        " sentences are separated by two spaces
+
 " limit syntax highlighting on long lines for speed
 set synmaxcol=400
 
