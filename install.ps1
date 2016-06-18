@@ -15,7 +15,7 @@ function pauseQuit
 }
 
 ## Main Program
-$dir = get-item (split-path -parent $MyInvocation.MyCommand.Path)
+$dir = get-item -Force (split-path -parent $MyInvocation.MyCommand.Path)
 $files = @("vimrc")
 $olddir = join-path $HOME .dotfiles_old
 
