@@ -174,6 +174,9 @@ set formatoptions+=cjwa " use auto-format for comments, using trailing space for
 set formatoptions+=1    " don't break after single letter words
 set formatoptions+=mB   " support CJK line break rules more properly
 
+" set compatibility options
+set cpoptions+=J        " sentences are separated by two spaces
+
 " limit syntax highlighting on long lines for speed
 set synmaxcol=400
 
@@ -456,7 +459,23 @@ command! -nargs=+ -complete=command OutputWin call RedirMessages(<q-args>, 'new'
 command! -nargs=+ -complete=command OutputTab call RedirMessages(<q-args>, 'tabnew' )
 
 " }}}
-" Easytags Options {{{
+" Syntax Options {{{
+" Use LaTeX instead of TeX
+let g:tex_flavor = "latex"
+" Apply language-specific highlighting inside markdown fenced code blocks
+let g:markdown_fenced_languages = [
+            \ 'sh', 'shell=sh', 'bash=sh', 'zsh=sh', 'tcsh',
+            \ 'tex', 'latex=tex',
+            \ 'css', 'html', 'xml',
+            \ 'javascript', 'js=javascript', 'json=javascript',
+            \ 'c', 'cpp', 'csharp=cs', 'c#=cs',
+            \ 'vhdl', 'verilog', 'tcl'
+            \ ]
+" }}}
+" Plugin Settings {{{
+call camelcasemotion#CreateMotionMappings('<Leader>')
+
+" Easytags Options
 set tags=./tags;,~/.vimtags " add upward search for local tags files
 let g:easytags_dynamic_files = 1 " write to first available tags file from above list
 let g:easytags_async = 1
@@ -475,8 +494,8 @@ let g:easytags_languages = {
 \       'recurse_flag': '-R'
 \   }
 \}
-" }}}
-" TagBar Options {{{
+
+" TagBar Options
 " Add arduino support
 let g:tagbar_type_arduino = {
     \ 'ctagstype' : 'c++',
@@ -511,21 +530,7 @@ let g:tagbar_type_arduino = {
     \ }
 \ }
 
-" }}}
-" Syntax Options {{{
-" Use LaTeX instead of TeX
-let g:tex_flavor = "latex"
-" Apply language-specific highlighting inside markdown fenced code blocks
-let g:markdown_fenced_languages = [
-            \ 'sh', 'shell=sh', 'bash=sh', 'zsh=sh', 'tcsh',
-            \ 'tex', 'latex=tex',
-            \ 'css', 'html', 'xml',
-            \ 'javascript', 'js=javascript', 'json=javascript',
-            \ 'c', 'cpp', 'csharp=cs', 'c#=cs',
-            \ 'vhdl', 'verilog', 'tcl'
-            \ ]
-" }}}
-" Syntastic Options {{{
+" Syntastic Options
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
