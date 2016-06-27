@@ -139,6 +139,7 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 
 Plug 'tyru/open-browser.vim'
+Plug 'vimoutliner/vimoutliner'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
 Plug 'xolox/vim-easytags'
@@ -417,8 +418,8 @@ nnoremap <NL> i<CR><ESC>
 nnoremap <silent> <C-l> :<C-U>noh<CR><C-l>
 
 " Open folds with spacebar
-nnoremap <Space> zA
-nnoremap <S-Space> za
+nnoremap <S-Space> zA
+nnoremap <Space> za
 
 " Exit insert mode with jj or jk
 inoremap jj <Esc>
@@ -439,23 +440,30 @@ nmap <Esc>k <A-k>
 nnoremap <silent> <A-l> :<C-U>wincmd l<CR>
 nmap <Esc>l <A-l>
 
-" Step through quickfix with F7 F8
-
-nnoremap <silent> <F7> :cp<CR>
-nnoremap <silent> <F8> :cn<CR>
-
 " Make with F5
 nnoremap <F5> :w<CR>:make<CR>
 inoremap <F5> <Esc>:w<CR>:make<CR>
 vnoremap <F5> <C-U>:w<CR>:make<CR>
 
-" Compile plantUML with F11
-nnoremap <F11> :w<CR>:silent !plantuml %<CR>
-inoremap <F11> <Esc>:w<CR>:silent !plantuml %<CR>
-vnoremap <F11> <C-U>:w<CR>:silent !plantuml %<CR>
+" Step through quickfix with F7 F8
+nnoremap <silent> <F7> :cp<CR>
+nnoremap <silent> <F8> :cn<CR>
 
 " Open Tagbar with F10
 nnoremap <silent> <F10> :TagbarToggle<CR>
+
+" Compile plantUML with F11
+" nnoremap <F11> :w<CR>:silent !plantuml %<CR>
+" inoremap <F11> <Esc>:w<CR>:silent !plantuml %<CR>
+" vnoremap <F11> <C-U>:w<CR>:silent !plantuml %<CR>
+
+" Fullscreen on F11
+" using dll from RIscRIpt/gvimfullscreen_win32
+if has('win64')
+    map <F11> :<C-u>call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+elseif has('win32')
+    map <F11> :<C-u>call libcallnr("gvimfullscreen_x32.dll", "ToggleFullScreen", 0)<CR>
+endif
 
 " }}}
 " Commands {{{
@@ -508,6 +516,8 @@ let g:markdown_fenced_languages = [
             \ ]
 " }}}
 " Plugin Settings {{{
+
+" CamelCaseMotion Options
 call camelcasemotion#CreateMotionMappings('<Leader>')
 
 " Easytags Options
@@ -529,6 +539,18 @@ let g:easytags_languages = {
 \       'recurse_flag': '-R'
 \   }
 \}
+
+" Syntastic Options
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+let g:syntastic_enable_signs = 1
+let g:syntastic_enable_highlighting = 1
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " TagBar Options
 " Add arduino support
@@ -565,17 +587,8 @@ let g:tagbar_type_arduino = {
     \ }
 \ }
 
-" Syntastic Options
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
-let g:syntastic_enable_signs = 1
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" vim-markdown-folding Options
+let g:markdown_fold_style = 'nested'
 " }}}
 " Neovim Options {{{
 if has('nvim')
