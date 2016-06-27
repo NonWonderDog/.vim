@@ -9,6 +9,9 @@
 # local dictionary files
 spell
 
+# local plugin files
+plugged
+
 # vim doctags
 **/doc/tags
 

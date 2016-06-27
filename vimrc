@@ -65,13 +65,6 @@ if has('win32') || has('win64')
     endif
 endif
 
-" Use pathogen
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect()
-
-" Allow :Man lookups
-runtime ftplugin/man.vim
-
 " Use ag or ack instead of grep
 if executable('ag')
     set grepprg=ag\ --nogroup\ --nocolor
@@ -115,6 +108,47 @@ set writebackup " make a temporary backup before overwriting a file
 if has('mouse')
     set mouse=a
 endif
+
+" }}}
+" {{{ Plugins
+" Allow :Man lookups
+runtime ftplugin/man.vim
+
+" Manage plugins with vim-plug
+call plug#begin('~/.vim/plugged')
+Plug 'PProvost/vim-ps1'
+
+Plug 'Twinside/vim-hoogle'
+Plug 'Twinside/vim-syntax-haskell-cabal'
+
+Plug 'bkad/CamelCaseMotion'
+Plug 'equalsraf/neovim-gui-shim'
+Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
+Plug 'kannokanno/previm'
+Plug 'kergoth/vim-hilinks'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/syntastic'
+Plug 'tmhedberg/matchit'
+Plug 'tomtom/tcomment_vim'
+
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-surround'
+
+Plug 'tyru/open-browser.vim'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+Plug 'xolox/vim-easytags'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-reload'
+call plug#end()
+
+" Use pathogen
+" runtime bundle/vim-pathogen/autoload/pathogen.vim
+" execute pathogen#infect()
+
 
 " }}}
 " Editor {{{

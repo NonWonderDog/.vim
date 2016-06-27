@@ -39,7 +39,7 @@ For an install from scratch:
 	sudo apt-get install vim-gtk exuberant-ctags
 	git clone git@github.com:NonWonderDog/.vim.git ~/.vim
         ~/.vim/install
-        vim +Helptags +qall
+        vim +PlugInstall +qall
 
 Windows Install
 ---------------
@@ -60,45 +60,17 @@ This step is necessary because we are not using the default
 `%USERPROFILE%/vimfiles` path.  `install.bat` runs the included `install.ps1` 
 PowerShell script as administrator.
 
-After installing Vim and this repository, start Vim and execute `:Helptags` to 
-update the documentation.
+After installing Vim and this repository, start Vim and execute `:PlugInstall` 
+to install plugins with vim-plug.
 
-Bash will be used for the Vim `shell` setting if it exists.  It's highly 
-recommended that `bash`, `tee`, and `grep` be on your Windows path, as they 
-smooth out a few annoyances with Vim on Windows.  Most notably, Vim will not 
+It's highly recommended that a version of `tee` be on your Windows path, as it 
+smoothes out a few annoyances with Vim on Windows.  Most notably, Vim will not 
 have to open a separate command window for commands such as `make`, `grep`, or 
-`!ctags`.  If you're using msysgit, you more than likely already have these 
-utilities.
-
-The one downside of using bash as the Windows Vim shell is the output filename 
-format.  Vim doesn't understand `/c/Program\ Files/` style paths, so full paths 
-will not be hyperlinked in the quickfix list.  I've added a quick hack to make 
-the Vim `grep` command automatically convert filenames starting with `/` to 
-windows format, but this isn't very well tested and doesn't help with `make` 
-output.  The older [win-bash](http://win-bash.sourceforge.net/) project returns 
-Windows-style filepaths, but is too limited to be of much use (it doesn't 
-support subshells, for one thing).
+`!ctags`.  The simplest way to get this utility is to install msysgit and let 
+it add the GNU utilities to your path.
 
 ### Prerequisites
 - Vim 7.4 or above: <http://www.vim.org/download.php>
 - Exuberant Ctags: <http://ctags.sourceforge.net/>
 	- `ctags.exe` from the download must be on your Windows `%PATH%`.
-- 32-bit Python 2.7: <https://www.python.org/download>
-	- Required for the Ultisnip plugin.
-	- The official Vim 7.4 release for Windows also supports Python 3.2, but
-	  not Python 3.3 or above
-
-If you're using a different Vim build 
-([Haroogan](https://bitbucket.org/Haroogan/vim-for-windows/src) provides a good 
-64-bit build), make sure to install an appropriate version of Python.  To 
-install the 64-bit build of Vim 7.4, extract it to C:/Program Files/Vim/vim74 
-and run install.exe with administrator priviledges.
-
-Todo
-----
-* Remove the `~/.vim` path dependency on Windows.
-* Get Linux IME support (IBus-Anthy, etc) to work more like the Windows IME 
-  integration
-* Change cursor to underline in REPLACE mode in terminal Vim (check 
-  v:insertmode on InsertChange and InsertEnter)
 
