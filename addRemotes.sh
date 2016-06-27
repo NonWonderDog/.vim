@@ -4,7 +4,7 @@ git remote add -f vim-speeddating git@github.com:tpope/vim-speeddating.git
 git remote add -f vim-surround git@github.com:tpope/vim-surround.git
 git remote add -f vim-repeat git@github.com:tpope/vim-repeat.git
 git remote add -f vim-misc git@github.com:xolox/vim-misc.git
-git remote add -f vim-easytags vim-easytags
+git remote add -f vim-easytags git@github.com:xolox/vim-easytags
 git remote add -f vim-reload git@github.com:xolox/vim-reload.git
 git remote add -f tagbar git@github.com:majutsushi/tagbar.git
 git remote add -f tcomment_vim git@github.com:tomtom/tcomment_vim.git
