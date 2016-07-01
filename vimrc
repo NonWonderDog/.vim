@@ -79,7 +79,7 @@ elseif executable("grep")
     endif
 endif
 
-" keep swap, backup, and undo files tidy
+" keep swap, backup, undo, and view files tidy
 " create directories if they don't exist
 if empty(glob('~/.vim/.backup'))
     call mkdir($HOME . "/.vim/.backup")
@@ -98,6 +98,8 @@ set undodir=./.vim-swap//
 set directory+=~/.vim/.swap//
 set backupdir+=~/.vim/.backup//
 set undodir+=~/.vim/.undo//
+" viewdir only accepts a single directory
+set viewdir=~/.vim/.view
 
 set swapfile " use swap files
 set undofile " use persistent undo
@@ -501,6 +503,20 @@ command! -nargs=+ -complete=command Output call RedirMessages(<q-args>, ''      
 command! -nargs=+ -complete=command OutputWin call RedirMessages(<q-args>, 'new'    )
 command! -nargs=+ -complete=command OutputTab call RedirMessages(<q-args>, 'tabnew' )
 
+" }}}
+" Autocommands {{{
+" save folds and cursor position on save
+set viewoptions=folds,cursor
+augroup vimrc
+    autocmd BufWritePost *
+    \   if expand('%') != '' && &buftype !~ 'nofile'
+    \|      mkview
+    \|  endif
+    autocmd BufRead *
+    \   if expand('%') != '' && &buftype !~ 'nofile'
+    \|      silent loadview
+    \|  endif
+augroup END
 " }}}
 " Syntax Options {{{
 " Use LaTeX instead of TeX
