@@ -1,5 +1,5 @@
 " Bob Morris .vimrc file
-" Tested on Windows 7 and Ubuntu 14.04
+" Tested on Windows 7 and Ubuntu 16.04
 " Using Vim 7.4
 
 " vim:fdm=marker
@@ -26,6 +26,11 @@ if has("multi_byte")
     " default to IME off
     set iminsert=0
     set imsearch=-1
+endif
+
+" don't use fish shell
+if &shell =~# 'fish$'
+    set shell=sh
 endif
 
 if has('win32') || has('win64')
@@ -100,6 +105,7 @@ set backupdir+=~/.vim/.backup//
 set undodir+=~/.vim/.undo//
 " viewdir only accepts a single directory
 set viewdir=~/.vim/.view
+set viewoptions=folds,cursor
 
 set swapfile " use swap files
 set undofile " use persistent undo
@@ -119,6 +125,7 @@ runtime ftplugin/man.vim
 " Manage plugins with vim-plug
 call plug#begin('~/.vim/plugged')
 Plug 'PProvost/vim-ps1'
+Plug 'dag/vim-fish'
 
 Plug 'Twinside/vim-hoogle'
 Plug 'Twinside/vim-syntax-haskell-cabal'
@@ -147,6 +154,10 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
+
+Plug 'idbrii/vim-focusclip'
+
+Plug 'wincent/terminus'
 call plug#end()
 
 " Use pathogen
@@ -505,18 +516,24 @@ command! -nargs=+ -complete=command OutputTab call RedirMessages(<q-args>, 'tabn
 
 " }}}
 " Autocommands {{{
-" save folds and cursor position on save
-set viewoptions=folds,cursor
-augroup vimrc
-    autocmd BufWritePost *
-    \   if expand('%') != '' && &buftype !~ 'nofile'
-    \|      mkview
-    \|  endif
-    autocmd BufRead *
-    \   if expand('%') != '' && &buftype !~ 'nofile'
-    \|      silent loadview
-    \|  endif
-augroup END
+if has("autocmd")
+    augroup vimrc
+        " save folds and cursor position on save
+        autocmd BufWritePost *
+        \   if expand('%') != '' && &buftype !~ 'nofile'
+        \|      mkview
+        \|  endif
+        autocmd BufRead *
+        \   if expand('%') != '' && &buftype !~ 'nofile'
+        \|      silent loadview
+        \|  endif
+
+        " save clipboard on exit
+        if executable("xsel")
+            autocmd VimLeave * call system("xsel -ib", getreg("+"))
+        endif
+    augroup END
+endif
 " }}}
 " Syntax Options {{{
 " Use LaTeX instead of TeX
