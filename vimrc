@@ -445,13 +445,9 @@ nnoremap k gk
 " Navigate windows with Alt-movement keys
 set winaltkeys=no
 nnoremap <silent> <A-h> :<C-U>wincmd h<CR>
-nmap <Esc>h <A-h>
 nnoremap <silent> <A-j> :<C-U>wincmd j<CR>
-nmap <Esc>j <A-j>
 nnoremap <silent> <A-k> :<C-U>wincmd k<CR>
-nmap <Esc>k <A-k>
 nnoremap <silent> <A-l> :<C-U>wincmd l<CR>
-nmap <Esc>l <A-l>
 
 " Make with F5
 nnoremap <F5> :w<CR>:make<CR>
