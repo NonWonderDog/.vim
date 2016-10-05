@@ -59,7 +59,7 @@ syn keyword vhdlConditional when
 syn keyword vhdlStatement after all assert
 syn keyword vhdlStatement attribute
 syn keyword vhdlStatement begin block body buffer bus
-syn keyword vhdlStatement configuration
+syn keyword vhdlStatement configuration context
 syn keyword vhdlStatement disconnect downto
 syn keyword vhdlStatement end exit
 syn keyword vhdlStatement file
