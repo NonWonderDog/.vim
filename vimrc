@@ -382,7 +382,7 @@ endif
 " Set gui window size
 if has("gui_running")
     " GUI is running or is about to start.
-    set lines=48 columns=132
+    set lines=48 columns=161
     "if has('win32') || has('win64')
     "    " Maximize window with the worst hack possible (English Windows)
     "    if has("autocmd")
