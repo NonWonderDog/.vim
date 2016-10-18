@@ -158,6 +158,7 @@ Plug 'xolox/vim-reload'
 Plug 'idbrii/vim-focusclip'
 
 Plug 'wincent/terminus'
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 " Use pathogen
@@ -444,22 +445,29 @@ nnoremap k gk
 
 " Navigate windows with Alt-movement keys
 set winaltkeys=no
-nnoremap <silent> <A-h> :<C-U>wincmd h<CR>
-nnoremap <silent> <A-j> :<C-U>wincmd j<CR>
-nnoremap <silent> <A-k> :<C-U>wincmd k<CR>
-nnoremap <silent> <A-l> :<C-U>wincmd l<CR>
+if $TERM =~ "^tmux"
+    nnoremap <silent> <Esc>h :<C-u>TmuxNavigateLeft<CR>
+    nnoremap <silent> <Esc>j :<C-u>TmuxNavigateDown<CR>
+    nnoremap <silent> <Esc>k :<C-u>TmuxNavigateUp<CR>
+    nnoremap <silent> <Esc>l :<C-u>TmuxNavigateRight<CR>
+else
+    nnoremap <silent> <A-h> :<C-u>wincmd h<CR>
+    nnoremap <silent> <A-j> :<C-u>wincmd j<CR>
+    nnoremap <silent> <A-k> :<C-u>wincmd k<CR>
+    nnoremap <silent> <A-l> :<C-u>wincmd l<CR>
+endif
 
 " Make with F5
 nnoremap <F5> :w<CR>:make<CR>
 inoremap <F5> <Esc>:w<CR>:make<CR>
-vnoremap <F5> <C-U>:w<CR>:make<CR>
+vnoremap <F5> :<C-u>w<CR>:make<CR>
 
 " Step through quickfix with F7 F8
-nnoremap <silent> <F7> :cp<CR>
-nnoremap <silent> <F8> :cn<CR>
+nnoremap <silent> <F7> :<C-u>cp<CR>
+nnoremap <silent> <F8> :<C-u>cn<CR>
 
 " Open Tagbar with F10
-nnoremap <silent> <F10> :TagbarToggle<CR>
+nnoremap <silent> <F10> :<C-u>TagbarToggle<CR>
 
 " Compile plantUML with F11
 " nnoremap <F11> :w<CR>:silent !plantuml %<CR>
@@ -618,6 +626,9 @@ let g:tagbar_type_arduino = {
 
 " vim-markdown-folding Options
 let g:markdown_fold_style = 'nested'
+
+" disable tmux-navigator default mappings
+let g:tmux_navigator_no_mappings = 1
 " }}}
 " Neovim Options {{{
 if has('nvim')
