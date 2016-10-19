@@ -155,7 +155,7 @@ Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
 
-Plug 'idbrii/vim-focusclip'
+Plug 'idbrii/vim-focusclip', empty($ConEmuBuild) ? {} : { 'for': [] }
 
 Plug 'wincent/terminus'
 Plug 'christoomey/vim-tmux-navigator'
@@ -330,13 +330,15 @@ if has('win32') || has('win64')
 endif
 
 if $TERM =~ "^xterm"
-    " set xterm escape sequences
-    let &t_ZH="\e[3m"       " start italics
-    let &t_ZR="\e[23m"      " end italics
-    let &t_us="\e[4m"       " start underline
-    let &t_ue="\e[24m"      " end underline
-    let &t_SI="\e[5 q"      " start insert (blinking bar)
-    let &t_EI="\e[1 q"      " end insert (blinking block)
+    if empty($ConEmuBuild)
+        " set xterm escape sequences
+        let &t_ZH="\e[3m"       " start italics
+        let &t_ZR="\e[23m"      " end italics
+        let &t_us="\e[4m"       " start underline
+        let &t_ue="\e[24m"      " end underline
+        let &t_SI="\e[5 q"      " start insert (blinking bar)
+        let &t_EI="\e[1 q"      " end insert (blinking block)
+    endif
 endif
 
 if $COLORTERM == "gnome-terminal"
@@ -358,9 +360,9 @@ if $COLORTERM == "gnome-terminal"
     endif
 endif
 
-if !empty($CONEMUBUILD)
+if !empty($ConEmuBuild) && !empty($TERM)
     " 256 color terminal is possible in Windows using ConEmu
-    set term=xterm
+    " set term=xterm
     set t_Co=256
     let &t_AB="\e[48;5;%dm" " set ANSI background color
     let &t_AF="\e[38;5;%dm" " set ANSI foreground color
