@@ -371,10 +371,10 @@ if !empty($ConEmuBuild) && !empty($TERM)
     let &t_us="\e[4m"       " start underline
     let &t_ue="\e[24m"      " end underline
     " rebind mouse wheel
-    map <Esc>[62~ <C-E>
-    imap <Esc>[62~ <C-X><C-E>
-    map <Esc>[63~ <C-Y>
-    imap <Esc>[63~ <C-X><C-Y>
+    nnoremap <Esc>[62~ <C-E>
+    nnoremap <Esc>[63~ <C-Y>
+    "inoremap <Esc>[62~ <C-X><C-E>
+    "inoremap <Esc>[63~ <C-X><C-Y>
     " rebind backspace
     map <Char-0x07F> <BS>
     imap <Char-0x07F> <BS>
