@@ -155,7 +155,7 @@ Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
 
-Plug 'idbrii/vim-focusclip', empty($ConEmuBuild) ? {} : { 'for': [] }
+Plug 'idbrii/vim-focusclip', empty($MSYSTEM) ? {} : { 'for': [] }
 
 Plug 'wincent/terminus'
 Plug 'christoomey/vim-tmux-navigator'
@@ -189,6 +189,7 @@ endif
 set display+=lastline   " show partial lines when wrapping
 set noequalalways       " don't resize windows on close or split
 set ttimeoutlen=10      " 10 ms delay for terminal escape codes
+set title               " update window title in console
 
 " set session saving options
 set sessionoptions=help,sesdir,tabpages,winsize
@@ -305,7 +306,7 @@ endif
 " Appearance {{{
 
 set guioptions=m        " hide all gui stuff except menu bar
-set laststatus=2        " always show status line
+set laststatus=1        " hide status line for single window
 set ruler               " show the cursor position all the time
 set showcmd             " display incomplete commands
 set cc=80               " highlight column 80
@@ -452,6 +453,10 @@ if $TERM =~ "^tmux"
     nnoremap <silent> <Esc>j :<C-u>TmuxNavigateDown<CR>
     nnoremap <silent> <Esc>k :<C-u>TmuxNavigateUp<CR>
     nnoremap <silent> <Esc>l :<C-u>TmuxNavigateRight<CR>
+    nnoremap <silent> <A-h> :<C-u>TmuxNavigateLeft<CR>   
+    nnoremap <silent> <A-j> :<C-u>TmuxNavigateDown<CR>   
+    nnoremap <silent> <A-k> :<C-u>TmuxNavigateUp<CR>     
+    nnoremap <silent> <A-l> :<C-u>TmuxNavigateRight<CR>  
 else
     nnoremap <silent> <A-h> :<C-u>wincmd h<CR>
     nnoremap <silent> <A-j> :<C-u>wincmd j<CR>
@@ -477,7 +482,7 @@ nnoremap <silent> <F10> :<C-u>TagbarToggle<CR>
 " vnoremap <F11> <C-U>:w<CR>:silent !plantuml %<CR>
 
 " Fullscreen on F11
-" using dll from RIscRIpt/gvimfullscreen_win32
+" using dll from asins/gvimfullscreen_win32
 if has('win64')
     map <F11> :<C-u>call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
 elseif has('win32')
