@@ -9,8 +9,7 @@ syn region doxygenCommandRegion matchgroup=doxygenTodo start="[\@]\a\@=\%(todo\|
 
 " function commands -- doesn't play nice with comment characters on every line
 "syn region doxygenCommandRegion matchgroup=doxygenCommand start="[\@]f\A\@=\s\@!" end="\%([\[\]}$]\|{.\{-}}{\?\|\s\)"
-" This works in markdown, except for $...$ for some reason
-syn region doxygenCommandRegion matchgroup=doxygenCommand start="[\@]f\$" end="[\@]f\$" contains=@texMaxZoneGroup
+syn region doxygenCommandRegion matchgroup=doxygenCommand start="[\@]f\$" end="[\@]f\$" contains=@texMathZoneGroup
 syn region doxygencommandregion matchgroup=doxygencommand start="[\@]f\[" end="[\@]f\]" contains=@texMathZoneGroup
 syn region doxygencommandregion matchgroup=doxygencommand start="[\@]f{.\{-}}{" end="[\@]f\}" contains=@texMathZoneGroup
 
