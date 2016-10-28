@@ -484,9 +484,9 @@ nnoremap <silent> <F10> :<C-u>TagbarToggle<CR>
 " Fullscreen on F11
 " using dll from asins/gvimfullscreen_win32
 if has('win64')
-    map <F11> :<C-u>call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+    map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
 elseif has('win32')
-    map <F11> :<C-u>call libcallnr("gvimfullscreen_x32.dll", "ToggleFullScreen", 0)<CR>
+    map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen_x32.dll", "ToggleFullScreen", 0)<CR>
 endif
 
 " }}}
