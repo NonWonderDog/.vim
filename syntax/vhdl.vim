@@ -78,8 +78,8 @@ syn keyword vhdlStatement variable with
 
 syn keyword vhdlType note warning error failure
 
-syn keyword vhdlStorageClass access alias array constant range
-syn keyword vhdlStatement subtype type units
+syn keyword vhdlStorageClass access array constant range
+syn keyword vhdlStatement alias subtype type units
 
 syn keyword vhdlRepeat	while wait for loop
 
@@ -93,28 +93,31 @@ syn keyword vhdlType line text
 syn keyword vhdlType std_logic std_logic_vector
 syn keyword vhdlType std_ulogic std_ulogic_vector
 syn keyword vhdlFunction to_slv to_sulv to_unsigned to_signed
+syn keyword vhdlFunction to_StdLogicVector to_Std_Logic_Vector
+syn keyword vhdlFunction to_StdULogicVector to_Std_ULogic_Vector
 syn keyword vhdlFunction to_01 to_x01 to_ux01 to_x01z is_x
 syn keyword vhdlFunction resize std_match
 syn keyword vhdlFunction shift_left shift_right rotate_left rotate_right
 " IEEE math_real
-syn keyword vhdlNumber MATH_E MATH_1_OVER_E
-syn keyword vhdlNumber MATH_PI MATH_2_PI MATH_1_OVER_PI MATH_PI_OVER_2 MATH_PI_OVER_3 MATH_PI_OVER_4 MATH_3_PI_OVER_2
-syn keyword vhdlNumber MATH_LOG_OF_2 MATH_LOG_OF_10 MATH_LOG2_OF_E MATH_LOG10_OF_E
-syn keyword vhdlNumber MATH_SQRT_2 MATH_1_OVER_SQRT_PI
-syn keyword vhdlNumber MATH_DEG_TO_RAD MATH_RAD_TO_DEG
+syn keyword vhdlFloat MATH_E MATH_1_OVER_E
+syn keyword vhdlFloat MATH_PI MATH_2_PI MATH_1_OVER_PI MATH_PI_OVER_2 MATH_PI_OVER_3 MATH_PI_OVER_4 MATH_3_PI_OVER_2
+syn keyword vhdlFloat MATH_LOG_OF_2 MATH_LOG_OF_10 MATH_LOG2_OF_E MATH_LOG10_OF_E
+syn keyword vhdlFloat MATH_SQRT_2 MATH_1_OVER_SQRT_PI
+syn keyword vhdlFloat MATH_DEG_TO_RAD MATH_RAD_TO_DEG
 syn keyword vhdlFunction sign ceil floor round trunc realmax realmin uniform sqrt cbrt exp log log2 log10
 syn keyword vhdlFunction sin cos tan arcsin arccos arctan sinh cosh tanh arcsinh arccosh arctanh
 " TEXtIO functions
 syn keyword vhdlFunction readline writeline
 syn keyword vhdlFunction read oread hread bread write owrite hwrite bwrite
+syn keyword vhdlFunction BINARY_WRITE BINARY_READ OCTAL_READ OCTAL_WRITE HEX_READ HEX_WRITE
 " VHDL 2008 fixed point types
 syn keyword vhdlType ufixed sfixed
 syn keyword vhdlType fixed_round_style_type fixed_overflow_style_type
 syn keyword vhdlType unresolved_ufixed u_ufixed unresolved_sfixed u_sfixed
 syn keyword vhdlFunction to_ufixed to_sfixed to_integer to_real
-syn keyword vhdlFunction find_leftmost find_rightmost divide reciprocal add_carry scalb
-syn keyword vhdlFunction ufixed_low ufixed_high sfixed_low sfixed_high
-syn keyword vhdlFunction to_ufix to_sfix ufix_high ufix_low sfixed_low sfixed_high
+syn keyword vhdlFunction find_leftmost find_rightmost divide reciprocal remainder modulo add_carry scalb Is_Negative
+syn keyword vhdlFunction ufixed_low ufixed_high sfixed_low sfixed_high saturate
+syn keyword vhdlFunction to_ufix to_sfix UFix_high UFix_low SFix_low SFix_high
 " VHDL 2008 floating point types
 syn keyword vhdlType float unresolved_float u_float
 syn keyword vhdlType float32 unresolved_float32 u_float_32
@@ -125,9 +128,12 @@ syn keyword vhdlFunction to_float
 " VHDL 2008 additions
 syn keyword vhdlStatement force release
 syn match   vhdlSpecial "[@\^]"
-syn keyword vhdlType boolean_vector integer_vector real_vector time_vector
+syn keyword vhdlType boolean_vector integer_vector time_vector real_vector
 syn keyword vhdlType unresolved_signed unresolved_unsigned u_signed u_unsigned
-syn keyword vhdlFunction to_string to_ostring to_hstring justify
+syn keyword vhdlFunction to_string to_bstring to_ostring to_hstring justify
+syn keyword vhdlFunction TO_BINARY_STRING TO_OCTAL_STRING TO_HEX_STRING
+syn keyword vhdlFunction from_string from_bstring from_ostring from_hstring
+syn keyword vhdlFunction from_binary_string from_octal_string from_hex_string
 syn keyword vhdlFunction swrite tee flush
 syn keyword vhdlFunction find_leftmost find_rightmost
 " Predefined non standard VHDL types for Mentor Graphics Sys1076/QuickHDL
@@ -212,7 +218,7 @@ syn match vhdlNumber "0*2#[01_]\+#\%([eE][+]\=[0-9_]\+\)\="
 syn match vhdlNumber "0*16#[0-9a-f_]\+#\%([eE][+]\=[0-9_]\+\)\="
 " floating point
 syn match vhdlFloat "-\=\<[0-9_]\+\.[0-9_]\+\>"
-syn match vhdlFloat "-\=\<[0-9_]\+\.[0-9_]\+[eE]-\=[0-9_]\+\>"
+syn match vhdlFloat "-\=\<[0-9_]\+\.[0-9_]\+[eE][+-]\=[0-9_]\+\>"
 syn match vhdlFloat "0*2#[01_]\+\.[01_]\+#\%([eE][+-]\=\d\+\)\="
 syn match vhdlFloat "0*16#[0-9a-f_]\+\.[0-9a-f_]\+#\%([eE][+-]\=\d\+\)\="
 " time
