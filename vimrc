@@ -316,12 +316,7 @@ if has('win32') || has('win64')
 endif
 
 " Change shown characters for list mode
-if has("gui_running")
-    set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
-else
-    " avoid unicode for safety
-    set listchars=tab:>-,eol:¬,trail:·,nbsp:·,precedes:«,extends:»
-endif
+set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
 
 " Set windows font and color scheme
 colorscheme numbat
@@ -382,6 +377,10 @@ if !empty($ConEmuBuild) && !empty($TERM)
     " This only really works using codepage 65001
     set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
 endif
+
+" Make sure &t_EI fires on startup
+" This just enters insert mode, does nothing, and returns to normal mode
+au VimEnter * normal a
 
 " Set gui window size
 if has("gui_running")
