@@ -210,7 +210,7 @@ syn keyword vhdlCharacter c140 c141 c142 c143 c144 c145 c146 c147 c148 c149 c150
 syn keyword vhdlCharacter c152 c153 c154 c155 c156 c157 c158 c159
 
 " illegal characters (@ and ^ are allowed in external names as of VHDL-2008)
-syn match vhdlError "[$~!#%\[\]{}]"
+syn match vhdlError "[$~!#%{}]"
 " integers
 syn match vhdlNumber "-\=\<[0-9_]\+\>"
 syn match vhdlNumber "-\=\<[0-9_]\+[eE][+]\=[0-9_]\+\>"
@@ -234,7 +234,7 @@ syn keyword vhdlOperator **
 syn match   vhdlOperator "?\=[/<>]\=="
 syn match   vhdlOperator "??"
 syn keyword vhdlOperator =>
-syn match   vhdlSpecial  "[:;.,]"
+syn match   vhdlSpecial  "[\[\]:;.,]"
 syn match   vhdlOperator ":="
 syn region  parens	matchgroup=vhdlSpecial	start="(" end=")" fold transparent
 " extended identifier
