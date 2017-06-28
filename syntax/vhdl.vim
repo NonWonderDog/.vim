@@ -52,7 +52,7 @@ syn match   vhdlConditional "\<else\>"
 syn match   vhdlError	    "\<else\s\+if\>"
 syn keyword vhdlConditional then elsif
 
-syn region  vhdlCase	    matchgroup=vhdlConditional	start="\<case\>" end="\<end\s\+case\>" skip="--.*\n" fold keepend extend transparent contains=TOP
+syn region  vhdlCase	    matchgroup=vhdlConditional	start="\<case\>?\?" end="\<end\s\+case\>?\?" skip="--.*\n" fold keepend extend transparent contains=TOP
 syn keyword vhdlConditional when
 
 " VHDL keywords
@@ -196,9 +196,9 @@ syn keyword vhdlVector S0S S1S SXS S0R S1R SXR S0Z S1Z SXZ S0I S1I SXI
 syn case ignore
 
 " logic vectors
-syn match  vhdlVector "B\"[01_]\+\""
-syn match  vhdlVector "O\"[0-7_]\+\""
-syn match  vhdlVector "X\"[0-9a-f_]\+\""
+syn match  vhdlVector "[0-9]*[SU]\=B\"[0L1HXWZU\-\?_]\+\""
+syn match  vhdlVector "[0-9]*[SU]\=O\"[0-7LHXWZU\-\?_]\+\""
+syn match  vhdlVector "[0-9]*[SU]\=X\"[0-9a-fLHXWZU\-\?_]\+\""
 syn region vhdlString start=+"+  end=+"+ contains=@Spell
 
 " characters
