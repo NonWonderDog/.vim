@@ -1,122 +1,141 @@
 " Bob Morris .vimrc file
+" Incorpoating some ideas from spf13
 " Tested on Windows 7 and Ubuntu 16.04
 " Using Vim 7.4
 
 " vim:fdm=marker
 
-set nocompatible
-
 " Environment {{{
-if has("multi_byte")
-    " use unicode
-    set encoding=utf-8
-    set fileencoding=utf-8
-    scriptencoding utf-8
-    if has('win32') || has('win64')
-        " use SJIS and 'ANSI' codepages on Windows
-        " The "default" codepage on English Windows is "latin1", which is 
-        " wrong. It should be "cp1252".  Unfortunately that means we can't use 
-        " "default" here, so you have to change this if you're on Russian 
-        " Windows, for example.
-        setglobal fileencodings=ucs-bom,utf-8,sjis,cp1252
-    else
-        " recognize SJIS on Linux
-        setglobal fileencodings=ucs-bom,utf-8,sjis,default,latin1
-    end
-    " default to IME off
-    set iminsert=0
-    set imsearch=-1
-endif
+    " Identify platform {{{
+        silent function! OSX()
+            return has('macunix')
+        endfunction
+        silent function! LINUX()
+            return has('unix') && !has('macunix') && !has('win32unix')
+        endfunction
+        silent function! WINDOWS()
+            return  (has('win32') || has('win64'))
+        endfunction
+    " }}}
 
-" don't use fish shell
-if &shell =~# 'fish$'
-    set shell=sh
-endif
-
-if has('win32') || has('win64')
-    " use '.vim' instead of 'vimfiles', and use .viminfo
-    if !has('nvim')
-        set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
-        set viminfo+=n~/.viminfo
-    endif
-    " using bash really confuses ConEmu
-    " if executable("bash") || executable("tcsh")
-    "    " Use *nix shell if available
-    "    if executable("tcsh")
-    "        set shell=tcsh
-    "        set shellredir=>&
-    "    elseif executable("bash")
-    "        set shell=bash
-    "        set shellredir=>%s\ 2>&1
-    "    endif
-    "    set shellslash
-    "    " set shell configuration here to avoid confusing early-loading 
-    "    " plugins
-    "    set shellcmdflag=-c
-    "    set shellpipe=>
-    "    set shellxquote=\"
-    " else
-    "    set shell=cmd
-    " endif
-    if executable("tee")
-        " Make build output show up on the screen, just like in *nix
-        " noshelltemp and nomore ideally would be set only during make
-        set shellpipe=2>&1\|\ tee
-        if &shell =~ "csh"
-            set shellpipe=\|&\ tee
+    " Basics {{{
+        set nocompatible
+        if !WINDOWS()
+            set shell=sh
         endif
-        set noshelltemp
-        set nomore
-    endif
-endif
+    " }}}
 
-" Use ag or ack instead of grep
-if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor
-elseif executable('ack')
-    set grepprg=ack\ --nogroup\ --nocolor
-elseif executable("grep")
-    if executable("sed")
-        " call sed to replace posix /c/ paths with c:/
-        let &grepprg='grep -n -H $* \| sed \"s_^/\\(.\\)._\\1:/_\"'
-    else
-        set grepprg=grep\ -n\ -H
-    endif
-endif
+    " Unicode/Japanese Support {{{
+        if has("multi_byte")
+            " use unicode
+            set encoding=utf-8
+            set fileencoding=utf-8
+            scriptencoding utf-8
+            if WINDOWS()
+                " The "default" codepage on English Windows is "latin1", which 
+                " is wrong. It should be "cp1252".  Unfortunately that means we 
+                " can't use "default" here, so you have to change this if 
+                " you're on non-English Windows.
+                setglobal fileencodings=ucs-bom,utf-8,sjis,cp1252
+            else
+                " recognize SJIS on Linux
+                setglobal fileencodings=ucs-bom,utf-8,sjis,default,latin1
+            end
+            " default to IME off
+            set iminsert=0
+            set imsearch=-1
+        endif
+    " }}}
 
-" keep swap, backup, undo, and view files tidy
-" create directories if they don't exist
-if empty(glob('~/.vim/.backup'))
-    call mkdir($HOME . "/.vim/.backup")
-endif
-if empty(glob('~/.vim/.swap'))
-    call mkdir($HOME . "/.vim/.swap")
-endif
-if empty(glob('~/.vim/.undo'))
-    call mkdir($HOME . "/.vim/.undo")
-endif
-" use local hidden directories if they exist
-set directory=./.vim-swap//
-set backupdir=./.vim-backup//
-set undodir=./.vim-swap//
-" otherwise use directories in ~/.vim
-set directory+=~/.vim/.swap//
-set backupdir+=~/.vim/.backup//
-set undodir+=~/.vim/.undo//
-" viewdir only accepts a single directory
-set viewdir=~/.vim/.view
-set viewoptions=folds,cursor
+    " Windows/Linux Compatibility {{{
+        if WINDOWS()
+            " use '.vim' instead of 'vimfiles', and use .viminfo
+            if !has('nvim')
+                set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
+                set viminfo+=n~/.viminfo
+            endif
+            " using a shell other than cmd causes too many plugin issues
+            " if executable("bash") || executable("tcsh")
+            "    " Use *nix shell if available
+            "    if executable("tcsh")
+            "        set shell=tcsh
+            "        set shellredir=>&
+            "    elseif executable("bash")
+            "        set shell=bash
+            "        set shellredir=>%s\ 2>&1
+            "    endif
+            "    set shellslash
+            "    " set shell configuration here to avoid confusing early-loading 
+            "    " plugins
+            "    set shellcmdflag=-c
+            "    set shellpipe=>
+            "    set shellxquote=\"
+            " else
+            "    set shell=cmd
+            " endif
+            if executable("tee")
+                " Make build output show up on the screen, just like in *nix
+                " noshelltemp and nomore ideally would be set only during make
+                set shellpipe=2>&1\|\ tee
+                if &shell =~ "csh"
+                    set shellpipe=\|&\ tee
+                endif
+                set noshelltemp
+                set nomore
+            endif
+        endif
+    " }}}
 
-set swapfile " use swap files
-set undofile " use persistent undo
-set nobackup " no permanent backups
-set writebackup " make a temporary backup before overwriting a file
+    " Grep program {{{
+        if executable('ag')
+            set grepprg=ag\ --nogroup\ --nocolor
+        elseif executable('ack')
+            set grepprg=ack\ --nogroup\ --nocolor
+        elseif executable("grep")
+            if WINDOWS()
+                if executable("sed")
+                    " call sed to replace posix /c/ paths with c:/
+                    let &grepprg='grep -n -H $* \| sed \"s_^/\\(.\\)._\\1:/_\"'
+                else
+                    set grepprg=grep\ -n\ -H
+                endif
+            endif
+        endif
+    " }}}
 
-" enable the mouse
-if has('mouse')
-    set mouse=a
-endif
+    " Temp Files {{{
+        " keep swap, backup, undo, and view files tidy
+        " create directories if they don't exist
+        if empty(glob('~/.vim/.backup'))
+            call mkdir($HOME . "/.vim/.backup")
+        endif
+        if empty(glob('~/.vim/.swap'))
+            call mkdir($HOME . "/.vim/.swap")
+        endif
+        if empty(glob('~/.vim/.undo'))
+            call mkdir($HOME . "/.vim/.undo")
+        endif
+        " use local hidden directories if they exist
+        set directory=./.vim-swap//
+        set backupdir=./.vim-backup//
+        set undodir=./.vim-swap//
+        " otherwise use directories in ~/.vim
+        set directory+=~/.vim/.swap//
+        set backupdir+=~/.vim/.backup//
+        set undodir+=~/.vim/.undo//
+        " viewdir only accepts a single directory
+        set viewdir=~/.vim/.view
+        set viewoptions=folds,options,cursor,unix,slash
 
+        set swapfile " use swap files
+        if has('persistent_undo')
+            set undofile " use persistent undo
+            set undolevels=1000
+            set undoreload=10000
+        endif
+        set nobackup " no permanent backups
+        set writebackup " make a temporary backup before overwriting a file
+    " }}}
 " }}}
 " {{{ Plugins
 " Allow :Man lookups
@@ -124,12 +143,21 @@ runtime ftplugin/man.vim
 
 " Manage plugins with vim-plug
 call plug#begin('~/.vim/plugged')
+
+" colorschemes
+" I use my own based on wombat, but sometimes I need a light scheme.
+Plug 'yfiua/vim-github-colorscheme'
+Plug 'jonathanfilip/vim-lucius'
+Plug 'SimonGreenhill/summerfruit256.vim'
+
+" others
 Plug 'PProvost/vim-ps1'
 Plug 'dag/vim-fish'
 
-Plug 'Twinside/vim-hoogle'
-Plug 'Twinside/vim-syntax-haskell-cabal'
+Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
+Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell' }
 
+Plug 'kien/ctrlp.vim'
 Plug 'bkad/CamelCaseMotion'
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'godlygeek/tabular'
@@ -137,7 +165,6 @@ Plug 'junegunn/vim-easy-align'
 Plug 'kannokanno/previm'
 Plug 'kergoth/vim-hilinks'
 Plug 'majutsushi/tagbar'
-Plug 'nelstrom/vim-markdown-folding'
 Plug 'scrooloose/syntastic'
 Plug 'tmhedberg/matchit'
 Plug 'tomtom/tcomment_vim'
@@ -146,16 +173,22 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-dispatch'
 
 Plug 'tyru/open-browser.vim'
 Plug 'vimoutliner/vimoutliner'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'nelstrom/vim-markdown-folding'
 
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
 
+Plug 'vim-scripts/a.vim'
+
 Plug 'idbrii/vim-focusclip', empty($MSYSTEM) ? {} : { 'for': [] }
+Plug 'sjl/gundo.vim', has('python3') ? {} : has('python') ? {} : { 'for': [] }
 
 Plug 'wincent/terminus'
 Plug 'christoomey/vim-tmux-navigator'
@@ -169,6 +202,17 @@ call plug#end()
 " }}}
 " Editor {{{
 
+" enable the mouse
+if has('mouse')
+    set mouse=a
+endif
+
+set shortmess+=filmnrxoOtT      " Abbreviate messages (no 'hit enter')
+set hidden                      " keep hidden buffers on window close
+set iskeyword-=.                " don't treat these characters as ...?
+set iskeyword-=#
+set iskeyword-=-
+
 " Use all filetype-dependent settings
 filetype plugin indent on
 
@@ -176,7 +220,6 @@ filetype plugin indent on
 set spelllang=en_us
 
 " essentials
-set hidden              " keep hidden buffers on window close
 set history=100         " keep 100 lines of command line history
 set switchbuf=usetab    " when executing quickfix or buffer split command, look for existing window before opening a new one
 if has("linebreak")
@@ -306,11 +349,11 @@ endif
 " Appearance {{{
 
 set guioptions=m        " hide all gui stuff except menu bar
-set laststatus=1        " hide status line for single window
+set laststatus=2        " always show status line
 set ruler               " show the cursor position all the time
 set showcmd             " display incomplete commands
 set cc=80               " highlight column 80
-if has('win32') || has('win64')
+if WINDOWS()
     " Gnome has this as an option, but windows always makes a ding
     set visualbell          " get rid of the stupid noise
 endif
@@ -320,7 +363,7 @@ set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
 
 " Set windows font and color scheme
 colorscheme numbat
-if has('win32') || has('win64')
+if WINDOWS()
     set guifont=Consolas:h8
     set guifontwide=MS_Gothic:h8:cSHIFTJIS
 endif
@@ -386,7 +429,7 @@ au VimEnter * normal a
 if has("gui_running")
     " GUI is running or is about to start.
     set lines=48 columns=161
-    "if has('win32') || has('win64')
+    "if WINDOWS()
     "    " Maximize window with the worst hack possible (English Windows)
     "    if has("autocmd")
     "        au GUIEnter * simalt ~x
@@ -398,7 +441,7 @@ endif
 " Mappings {{{
 
 " Don't use Ex mode, use Q for formatting
-map Q gq
+" map Q gq
 
 " CTRL-U (delete entered text on current line) in insert mode deletes a lot.
 " Use CTRL-G u to first break undo, so that you can undo CTRL-U after
@@ -410,14 +453,14 @@ inoremap <c-w> <c-g>u<c-w>
 cmap W! w !sudo tee >/dev/null %
 
 " remove middle mouse button paste mapping
-map <MiddleMouse> <Nop>
-imap <MiddleMouse> <Nop>
-map <2-MiddleMouse> <Nop>
-imap <2-MiddleMouse> <Nop>
-map <3-MiddleMouse> <Nop>
-imap <3-MiddleMouse> <Nop>
-map <4-MiddleMouse> <Nop>
-imap <4-MiddleMouse> <Nop>
+" map <MiddleMouse> <Nop>
+" imap <MiddleMouse> <Nop>
+" map <2-MiddleMouse> <Nop>
+" imap <2-MiddleMouse> <Nop>
+" map <3-MiddleMouse> <Nop>
+" imap <3-MiddleMouse> <Nop>
+" map <4-MiddleMouse> <Nop>
+" imap <4-MiddleMouse> <Nop>
 
 " Get rid of F1 help
 map <F1> <Nop>
@@ -567,7 +610,7 @@ call camelcasemotion#CreateMotionMappings('<Leader>')
 set tags=./tags;,~/.vimtags " add upward search for local tags files
 let g:easytags_dynamic_files = 1 " write to first available tags file from above list
 let g:easytags_async = 1
-if has('win32') || has('win64')
+if WINDOWS()
     let g:easytags_file = '~/.vimtags'
 else
     let g:easytags_file = '~/.vimtags-$USER'
@@ -636,7 +679,7 @@ let g:markdown_fold_style = 'nested'
 " disable tmux-navigator default mappings
 let g:tmux_navigator_no_mappings = 1
 " }}}
-" Neovim Options {{{
+" Neovim {{{
 if has('nvim')
     set termguicolors
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
