@@ -160,6 +160,7 @@ Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell' }
 Plug 'kien/ctrlp.vim'
 Plug 'bkad/CamelCaseMotion'
 Plug 'equalsraf/neovim-gui-shim'
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'godlygeek/tabular'
 Plug 'junegunn/vim-easy-align'
 Plug 'kannokanno/previm'
@@ -178,8 +179,10 @@ Plug 'tpope/vim-dispatch'
 
 Plug 'tyru/open-browser.vim'
 Plug 'vimoutliner/vimoutliner'
+
+Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'nelstrom/vim-markdown-folding'
+Plug 'vim-pandoc/vim-pandoc-after'
 
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
@@ -209,7 +212,7 @@ endif
 
 set shortmess+=filmnrxoOtT      " Abbreviate messages (no 'hit enter')
 set hidden                      " keep hidden buffers on window close
-set iskeyword-=.                " don't treat these characters as ...?
+set iskeyword-=.
 set iskeyword-=#
 set iskeyword-=-
 
@@ -283,8 +286,7 @@ set wildmode=full
 " This is a compromise configuration in which tabs are always 8 spaces wide, 
 " except at the beginning of a line where 4 space indents are used.  This way 
 " all you need to do to edit tab-delimited files is "set noexpandtab".
-set autoindent          " use automatic indenting
-set smartindent         " use 'C-lite' indent rules for filetypes that don't define rules
+set autoindent          " use automatic indent hanging
 set tabstop=8           " literal tabs are 8 spaces wide
 set softtabstop=8       " expanded tabs are 8 spaced wide
 set shiftwidth=4        " indent code by 4 spaces
@@ -523,12 +525,14 @@ nnoremap <silent> <F10> :<C-u>TagbarToggle<CR>
 " inoremap <F11> <Esc>:w<CR>:silent !plantuml %<CR>
 " vnoremap <F11> <C-U>:w<CR>:silent !plantuml %<CR>
 
-" Fullscreen on F11
+" Fullscreen on F11 for Windows gvim
 " using dll from asins/gvimfullscreen_win32
-if has('win64')
-    map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
-elseif has('win32')
-    map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen_x32.dll", "ToggleFullScreen", 0)<CR>
+if has('gui_running')
+    if has('win64')
+	map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+    elseif has('win32')
+	map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen_x32.dll", "ToggleFullScreen", 0)<CR>
+    endif
 endif
 
 " }}}
@@ -678,6 +682,18 @@ let g:markdown_fold_style = 'nested'
 
 " disable tmux-navigator default mappings
 let g:tmux_navigator_no_mappings = 1
+
+" pandoc options
+let g:pandoc#after#modules#enabled = ["tablemode"]
+let g:pandoc#modules#disabled = []
+let g:pandoc#folding#fold_fenced_codeblocks = 1
+let g:pandoc#formatting#mode = 'ha'
+let g:pandoc#syntax#conceal#urls = 0
+let g:pandoc#syntax#codeblocks#embeds#use = 1
+let g:pandoc#syntax#codeblocks#embeds#langs = ["c","cpp","sh","vhdl","makefile=make", "asm"]
+let g:pandoc#syntax#style#emphases = 1
+let g:pandoc#syntax#style#underline_special = 1
+let g:pandoc#syntax#style#use_definition_lists = 1
 " }}}
 " Neovim {{{
 if has('nvim')

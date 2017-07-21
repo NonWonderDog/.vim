@@ -9,6 +9,6 @@ set errorformat+=**\ %tarning:\ %f(%l):\ %m
 set errorformat+=%Dmake[%*\\d]:\ Entering\ directory\ `%f',%Xmake[%*\\d]:\ Leaving\ directory\ `%f'
 
 " auto comment stuff
-set comments=:--!,:-- "normal and doxygen comments
-set fo-=t fo+=croqlj
+setlocal comments=:--!,:-- "normal and doxygen comments
+setlocal fo-=t fo+=croqlj
 

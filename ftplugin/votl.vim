@@ -1,2 +1,2 @@
-set softtabstop=4
+setlocal softtabstop=4
 colorscheme votl_dark
