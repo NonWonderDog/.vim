@@ -22,86 +22,227 @@ set cpo&vim
 " case is not significant in VHDL
 syn case ignore
 
-" horrifically complicated syntax folding
-syn region vhdlPackage
-        \ start="\%(\<package\>\)\@<=.*\<is\>"
-        \ end="\<end\%(\s\+\(entity\|architecture\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>"
-        \ keepend fold transparent
-syn keyword vhdlStatement   package
-
+" Entity regions begin with "entity", except after "end", and end with ";".  
+" They may contain a nested declaration region that begins with "is" and ends 
+" with either "begin", "end", or "end entity".  The declaration region may be 
+" followed by a code region that begins with "begin" and ends with either "end" 
+" or "end entity".
+" Yes, entities can have code regions.  About the only useful thing you can put 
+" in there is "assert", though.
 syn region vhdlEntity
-        \ start="\%(\<entity\>\)\@<=.*\<is\>$"
-        \ end="\<end\%(\s\+\(package\|architecture\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>"
-        \ fold keepend transparent
-syn keyword vhdlStatement   entity
-
-syn region vhdlArchCont
-        \ start="\%(\<architecture\>\)\@<=.*\<is\>$"
-        \ end="\<end\%(\s\+\(package\|entity\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>"
-        \ keepend transparent
-        \ contains=vhdlArchitecture,vhdlBegin,vhdlArchOf
-syn region vhdlArchitecture
-        \ start="\<is\>"
-        \ end="\<begin\>"me=s-1
-        \ fold transparent contained
-        \ contains=TOP
-syn region vhdlBegin
         \ matchgroup=vhdlStatement
-        \ start="\<begin\>"
-        \ end="\<end\>"
-        \ fold transparent contained
+        \ start="\%(\<end\>\)\@3<!\s*\<entity\>"
+        \ end="\ze;"
+        \ fold keepend extend transparent
+        \ contains=vhdlEntVars,vhdlEntCode
+syn region vhdlEntVars
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<is\>"
+        \ end="\%(\ze\<begin\>\|\<end\>\%(\s\+\<entity\>\)\?\)"
+        \ keepend extend transparent
         \ contains=TOP
-syn keyword vhdlArchOf      of
-syn keyword vhdlStatement   architecture
-
-syn region vhdlFunction
-        \ start="\%(\<function\>\)\@<=.*\<is\>$"
-        \ end="\<end\%(\s\+\(package\|entity\|architecture\|procedure\|process\|component\|record\|if\|case\)\)\@!\>"
+syn region vhdlEntCode
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<begin\>"
+        \ end="\<end\>\%(\s\+\<entity\>\)\?"
         \ fold keepend extend transparent
-syn keyword vhdlStatement   function
+        \ contains=TOP
 
-syn region vhdlProcedure
-        \ start="\%(\<procedure\>\)\@<=.*\<is\>$"
-        \ end="\<end\%(\s\+\(package\|entity\|architecture\|function\|process\|component\|record\|if\|case\)\)\@!\>"
+" Architecture regions begin with "architecture", except after "end", and end 
+" with ";".  They may contain a nested declaration region that begins with "is" 
+" and ends with "begin".  The declaration region, if it exists, is followed 
+" immediately by a code region that begins with "begin" and ends with either 
+" "end" or "end architecture".
+syn region vhdlArchitecture
+        \ matchgroup=vhdlStatement
+        \ start="\%(\<end\>\)\@3<!\s*\<architecture\>"
+        \ end="\ze;"
         \ fold keepend extend transparent
-syn keyword vhdlStatement   procedure
+        \ contains=vhdlArchVars,vhdlArchCode,vhdlStatement
+syn region vhdlArchVars
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<is\>"
+        \ end="\ze\%(\<begin\>\)"
+        \ keepend extend transparent
+        \ contains=TOP
+syn region vhdlArchCode
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<begin\>"
+        \ end="\<end\>\%(\s\+\<architecture\>\)\?"
+        \ fold keepend extend transparent
+        \ contains=TOP
+syn keyword vhdlStatement of
 
+" Process regions begin with "process", except after "end", and end with ";".  
+" They contain a declaration region that starts at "process" and ends at 
+" "begin".  The declaration region is followed by a sequential code region that 
+" starts at "begin" and ends at either "end" or "end process".
 syn region vhdlProcess
         \ matchgroup=vhdlStatement
-        \ start="\<process\>"
-        \ end="\<end\s\+process\>"
+        \ start="\%(\<end\>\)\@3<!\ze\s*\<process\>"
+        \ end="\ze;"
         \ fold keepend extend transparent
+        \ contains=vhdlProcessVars,vhdlProcessCode
+syn region vhdlProcessVars
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<process\>"
+        \ end="\ze\%(\<begin\>\)"
+        \ keepend extend transparent
+        \ contains=TOP
+syn region vhdlProcessCode
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<begin\>"
+        \ end="\%(\<end\>\)\@3<=\%(\s\+\<process\>\)\?"
+        \ fold keepend extend transparent
+        \ contains=TOP
 
+" Function regions begin with "function", except after "end", and end with ";".  
+" They contain a nested parameter region that begins with "(" and ends with 
+" ")".  They may contain a nested declaration region that begins with "is" and 
+" ends with "begin".  The declaration region, if it exists, is followed 
+" immediately by a code region that begins with "begin" and ends with either 
+" "end" or "end function".
+syn region vhdlFunction
+        \ matchgroup=vhdlStatement
+        \ start="\%(\<end\>\)\@3<!\s*\<function\>"
+        \ end="\ze;"
+        \ fold keepend extend transparent
+        \ contains=vhdlFuncParams,vhdlFuncVars,vhdlFuncCode,vhdlStatement
+syn region vhdlFuncParams
+        \ matchgroup=vhdlSpecial
+        \ contained
+        \ start="("
+        \ end=")"
+        \ keepend extend transparent
+        \ contains=TOP
+syn region vhdlFuncVars
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<is\>"
+        \ end="\ze\%(\<begin\>\)"
+        \ keepend extend transparent
+        \ contains=TOP
+syn region vhdlFuncCode
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<begin\>"
+        \ end="\<end\>\%(\s\+\<function\>\)\?"
+        \ fold keepend extend transparent
+        \ contains=TOP
+syn keyword vhdlStatement return
+
+" Procedure regions begin with "procedure", except after "end", and end with 
+" ";".  They contain a nested parameter region that begins with "(" and ends 
+" with ")".  They may contain a nested declaration region that begins with "is" 
+" and ends with "begin".  The declaration region, if it exists, is followed 
+" immediately by a code region that begins with "begin" and ends with either 
+" "end" or "end procedure".
+syn region vhdlProcedure
+        \ matchgroup=vhdlStatement
+        \ start="\%(\<end\>\)\@3<!\s*\<procedure\>"
+        \ end="\ze;"
+        \ fold keepend extend transparent
+        \ contains=vhdlProcParams,vhdlProcVars,vhdlProcCode,vhdlStatement
+syn region vhdlProcParams
+        \ matchgroup=vhdlSpecial
+        \ contained
+        \ start="("
+        \ end=")"
+        \ keepend extend transparent
+        \ contains=TOP
+syn region vhdlProcVars
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<is\>"
+        \ end="\ze\%(\<begin\>\)"
+        \ keepend extend transparent
+        \ contains=TOP
+syn region vhdlProcCode
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<begin\>"
+        \ end="\<end\>\%(\s\+\<procedure\>\)\?"
+        \ fold keepend extend transparent
+        \ contains=TOP
+
+" Package and Package Body regions begin with "package", except after "end" and 
+" end with ";".  They contain a code region that starts with "is" and ends with 
+" either "end" or "end package".
+syn region vhdlPackage
+        \ matchgroup=vhdlStatement
+        \ start="\<package\>"
+        \ end="\ze;"
+        \ fold keepend extend transparent
+        \ contains=vhdlPackCode,vhdlStatement
+syn region vhdlPackCode
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<is\>"
+        \ end="\<end\>\%(\s\+\<package\>\)\?"
+        \ keepend extend transparent
+        \ contains=TOP
+syn keyword vhdlStatement body
+
+" The rest are easy
 syn region vhdlComponent
         \ matchgroup=vhdlStatement
         \ start="\<component\>"
-        \ end="\<end\s\+component\>"
+        \ end="\<end\>\%(\s\+\<component\>\)\?"
         \ fold keepend extend transparent
+syn keyword vhdlStatement component
+
 syn region vhdlRecord
         \ matchgroup=vhdlStatement
         \ start="\<record\>"
         \ end="\<end\s\+record\>"
         \ fold keepend extend transparent
 
+syn region vhdlIf
+        \ matchgroup=vhdlConditional
+        \ start="\<if\>"
+        \ end="\<end\s\+if\>"
+        \ fold keepend extend transparent
+
+syn region vhdlCase
+        \ matchgroup=vhdlConditional
+        \ start="\<case\>"
+        \ end="\<end\s\+case\>"
+        \ fold keepend extend transparent
+
+syn region vhdlLoop
+        \ matchgroup=vhdlConditional
+        \ start="\<loop\>"
+        \ end="\<end\s\+loop\>"
+        \ fold keepend extend transparent
+
+syn region vhdlGenerate
+        \ matchgroup=vhdlConditional
+        \ start="\<generate\>"
+        \ end="\<end\s\+generate\>"
+        \ fold keepend extend transparent
+
 " conditional statements
 syn match   vhdlConditional  "\<then\>"
 syn match   vhdlConditional  "\<else\>"
-syn match   vhdlConditional  "\<end\s\+if\>"
-syn match   vhdlConditional  "\<end\s\+case\>"
 syn match   vhdlError        "\<else\s\+if\>"
-syn keyword vhdlConditional  if case
 syn keyword vhdlConditional  elsif when
 
 " VHDL keywords
 syn keyword vhdlStatement after all assert
 syn keyword vhdlStatement attribute
-syn keyword vhdlStatement begin block body buffer bus
+syn keyword vhdlStatement block buffer bus
 syn keyword vhdlStatement configuration context
 syn keyword vhdlStatement disconnect downto
 syn keyword vhdlStatement end exit
 syn keyword vhdlStatement file
-syn keyword vhdlStatement generate generic group guarded
-syn keyword vhdlStatement impure in inertial inout is
+syn keyword vhdlStatement generic group guarded
+syn keyword vhdlStatement impure in inertial inout
 syn keyword vhdlStatement label library linkage literal
 syn keyword vhdlStatement map
 syn keyword vhdlStatement new next null
@@ -118,7 +259,7 @@ syn keyword vhdlType note warning error failure
 syn keyword vhdlStorageClass access array constant range
 syn keyword vhdlStatement alias subtype type units
 
-syn keyword vhdlRepeat  while wait for loop
+syn keyword vhdlRepeat  while wait for
 
 " Predefined VHDL types
 syn keyword vhdlType bit bit_vector
@@ -223,15 +364,17 @@ syn match vhdlAttribute "\'value"
 
 syn keyword vhdlBoolean true false
 
-" for std_logic values case is significant
-syn case match
-syn match vhdlVector "\'[0L1HXWZU\-\?]\'"
-syn match vhdlVector "[0-9]*[SU]\=B\"[0L1HXWZU\-\?_]\+\""
-syn match vhdlVector "[0-9]*[SU]\=O\"[0-7LHXWZU\-\?_]\+\""
-syn match vhdlVector "[0-9]*[SU]\=X\"[0-9a-fLHXWZU\-\?_]\+\""
-syn case ignore
-
 syn region vhdlString start=+"+  end=+"+ contains=@Spell
+
+" IEEE std_logic
+" case is significant
+syn case match
+syn match vhdlLogic "\'[0L1HXWZU\-\?]\'"
+syn match vhdlLogic "\"[0L1HXWZU\-\?_]\+\""
+syn match vhdlLogic "[0-9]*[SsUu]\=[Bb]\"[0L1HXWZU\-\?_]\+\""
+syn match vhdlLogic "[0-9]*[SsUu]\=[Oo]\"[0-7LHXWZU\-\?_]\+\""
+syn match vhdlLogic "[0-9]*[SsUu]\=[Xx]\"[0-9a-fA-FLHXWZU\-\?_]\+\""
+syn case ignore
 
 " characters
 syn match  vhdlCharacter "'.'"
@@ -290,7 +433,6 @@ syn region  vhdlComment
 " Define the default highlighting.
 highlight def link vhdlLabel            Label
 highlight def link vhdlSpecial          Special
-highlight def link vhdlArchOf           Statement
 highlight def link vhdlStatement        Statement
 highlight def link vhdlStorageClass     StorageClass
 highlight def link vhdlTypedef          Typedef
@@ -298,10 +440,10 @@ highlight def link vhdlConditional      Conditional
 highlight def link vhdlRepeat           Repeat
 highlight def link vhdlCharacter        Character
 highlight def link vhdlString           String
-highlight def link vhdlVector           String
 highlight def link vhdlBoolean          Boolean
 highlight def link vhdlComment          Comment
 highlight def link vhdlSpecialComment   SpecialComment
+highlight def link vhdlLogic            Number
 highlight def link vhdlNumber           Number
 highlight def link vhdlFloat            Float
 highlight def link vhdlType             Type
@@ -311,9 +453,9 @@ highlight def link vhdlError            Error
 highlight def link vhdlAttribute        Type
 highlight def link vhdlTodo             Todo
 
-" We shouldn't need to look backwards to highlight, with the possible exception 
-" of external identifiers.  And they don't work anyway...
-syntax sync minlines=1 maxlines=1
+" Unfortunately the syntax folding requires we start from the beginning every 
+" time.
+syntax sync fromstart
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
