@@ -23,19 +23,29 @@ set cpo&vim
 syn case ignore
 
 " Entity regions begin with "entity", except after "end", and end with ";".  
-" They may contain a nested declaration region that begins with "is" and ends 
+" They may contain a nested definition region that begins with "is" and ends 
 " with either "begin", "end", or "end entity".  The declaration region may be 
 " followed by a code region that begins with "begin" and ends with either "end" 
 " or "end entity".
 " Yes, entities can have code regions.  About the only useful thing you can put 
 " in there is "assert", though.
+" An entity region may also contain "port map" and "generic map" directives, 
+" which are represented with a region beginning with either "port" or "generic" 
+" and ending with ";".  This ends the entity region.
 syn region vhdlEntity
         \ matchgroup=vhdlStatement
         \ start="\%(\<end\>\)\@3<!\s*\<entity\>"
         \ end="\ze;"
         \ fold keepend extend transparent
-        \ contains=vhdlEntVars,vhdlEntCode
-syn region vhdlEntVars
+        \ contains=vhdlEntMap,vhdlEntDef,vhdlEntCode
+syn region vhdlEntMap
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\%(\<port\>\|\<generic\>\)"
+        \ end="\ze;"
+        \ keepend extend transparent
+        \ contains=TOP
+syn region vhdlEntDef
         \ matchgroup=vhdlStatement
         \ contained
         \ start="\<is\>"
