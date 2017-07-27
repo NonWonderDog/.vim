@@ -1,20 +1,20 @@
 " Vim syntax file
-" Language:	VHDL
-" Maintainer:	Robert Morris <nonwonderdog@gmail.com>
-" Credits:	Czo <Olivier.Sirol@lip6.fr>
-"		Stephan Hegel <stephan.hegel@snc.siemens.com.cn>
-" Last Change:	2014 Apr 16
+" Language:     VHDL
+" Maintainer:   Robert Morris <nonwonderdog@gmail.com>
+" Credits:      Czo <Olivier.Sirol@lip6.fr>
+"               Stephan Hegel <stephan.hegel@snc.siemens.com.cn>
+" Last Change:  2014 Apr 16
 
 " VHSIC Hardware Description Language
 " Very High Scale Integrated Circuit
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
-if version < 600
-  syntax clear
-elseif exists("b:current_syntax")
+if exists("b:current_syntax") || version < 600
   finish
 endif
+
+let b:current_syntax = "vhdl"
 
 let s:cpo_save = &cpo
 set cpo&vim
@@ -23,37 +23,74 @@ set cpo&vim
 syn case ignore
 
 " horrifically complicated syntax folding
-syn region vhdlPackage	    start="\%(\<package\>\)\@<=.*\<is\>" end="\<end\%(\s\+\(entity\|architecture\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>" skip="--.*\n" keepend fold transparent
+syn region vhdlPackage
+        \ start="\%(\<package\>\)\@<=.*\<is\>"
+        \ end="\<end\%(\s\+\(entity\|architecture\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>"
+        \ keepend fold transparent
 syn keyword vhdlStatement   package
 
-syn region vhdlEntity	    start="\%(\<entity\>\)\@<=.*\<is\>$" end="\<end\%(\s\+\(package\|architecture\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>" skip="--.*\n" fold keepend transparent
+syn region vhdlEntity
+        \ start="\%(\<entity\>\)\@<=.*\<is\>$"
+        \ end="\<end\%(\s\+\(package\|architecture\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>"
+        \ fold keepend transparent
 syn keyword vhdlStatement   entity
 
-syn region vhdlArchCont	    start="\%(\<architecture\>\)\@<=.*\<is\>$" end="\<end\%(\s\+\(package\|entity\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>" skip="--.*\n" keepend transparent contains=vhdlArchitecture,vhdlBegin,vhdlArchOf
-syn region vhdlArchitecture start="\<is\>" end="\<begin\>"me=s-1 skip="--.*\n" fold transparent contained contains=TOP
-syn region vhdlBegin	    matchgroup=vhdlStatement start="\<begin\>" end="\<end\>" skip="--.*\n" fold transparent contained contains=TOP
-syn keyword vhdlArchOf	    of
+syn region vhdlArchCont
+        \ start="\%(\<architecture\>\)\@<=.*\<is\>$"
+        \ end="\<end\%(\s\+\(package\|entity\|function\|procedure\|process\|component\|record\|if\|case\)\)\@!\>"
+        \ keepend transparent
+        \ contains=vhdlArchitecture,vhdlBegin,vhdlArchOf
+syn region vhdlArchitecture
+        \ start="\<is\>"
+        \ end="\<begin\>"me=s-1
+        \ fold transparent contained
+        \ contains=TOP
+syn region vhdlBegin
+        \ matchgroup=vhdlStatement
+        \ start="\<begin\>"
+        \ end="\<end\>"
+        \ fold transparent contained
+        \ contains=TOP
+syn keyword vhdlArchOf      of
 syn keyword vhdlStatement   architecture
 
-syn region vhdlFunction	    start="\%(\<function\>\)\@<=.*\<is\>$" end="\<end\%(\s\+\(package\|entity\|architecture\|procedure\|process\|component\|record\|if\|case\)\)\@!\>" skip="--.*\n" fold keepend extend transparent
+syn region vhdlFunction
+        \ start="\%(\<function\>\)\@<=.*\<is\>$"
+        \ end="\<end\%(\s\+\(package\|entity\|architecture\|procedure\|process\|component\|record\|if\|case\)\)\@!\>"
+        \ fold keepend extend transparent
 syn keyword vhdlStatement   function
 
-syn region vhdlProcedure    start="\%(\<procedure\>\)\@<=.*\<is\>$" end="\<end\%(\s\+\(package\|entity\|architecture\|function\|process\|component\|record\|if\|case\)\)\@!\>" skip="--.*\n" fold keepend extend transparent
+syn region vhdlProcedure
+        \ start="\%(\<procedure\>\)\@<=.*\<is\>$"
+        \ end="\<end\%(\s\+\(package\|entity\|architecture\|function\|process\|component\|record\|if\|case\)\)\@!\>"
+        \ fold keepend extend transparent
 syn keyword vhdlStatement   procedure
 
-syn region vhdlProcess	    matchgroup=vhdlStatement start="\<process\>" end="\<end\s\+process\>" skip="--.*\n" fold keepend extend transparent
+syn region vhdlProcess
+        \ matchgroup=vhdlStatement
+        \ start="\<process\>"
+        \ end="\<end\s\+process\>"
+        \ fold keepend extend transparent
 
-syn region vhdlComponent    matchgroup=vhdlStatement start="\<component\>" end="\<end\s\+component\>" skip="--.*\n" fold keepend extend transparent
-syn region vhdlRecord	    matchgroup=vhdlStatement start="\<record\>" end="\<end\s\+record\>" skip="--.*\n" fold keepend extend transparent
+syn region vhdlComponent
+        \ matchgroup=vhdlStatement
+        \ start="\<component\>"
+        \ end="\<end\s\+component\>"
+        \ fold keepend extend transparent
+syn region vhdlRecord
+        \ matchgroup=vhdlStatement
+        \ start="\<record\>"
+        \ end="\<end\s\+record\>"
+        \ fold keepend extend transparent
 
 " conditional statements
-syn region  vhdlIf	    matchgroup=vhdlConditional	start="\<if\>" end="\<end\s\+if\>" skip="--.*\n" fold keepend extend transparent contains=TOP
-syn match   vhdlConditional "\<else\>"
-syn match   vhdlError	    "\<else\s\+if\>"
-syn keyword vhdlConditional then elsif
-
-syn region  vhdlCase	    matchgroup=vhdlConditional	start="\<case\>?\?" end="\<end\s\+case\>?\?" skip="--.*\n" fold keepend extend transparent contains=TOP
-syn keyword vhdlConditional when
+syn match   vhdlConditional  "\<then\>"
+syn match   vhdlConditional  "\<else\>"
+syn match   vhdlConditional  "\<end\s\+if\>"
+syn match   vhdlConditional  "\<end\s\+case\>"
+syn match   vhdlError        "\<else\s\+if\>"
+syn keyword vhdlConditional  if case
+syn keyword vhdlConditional  elsif when
 
 " VHDL keywords
 syn keyword vhdlStatement after all assert
@@ -81,7 +118,7 @@ syn keyword vhdlType note warning error failure
 syn keyword vhdlStorageClass access array constant range
 syn keyword vhdlStatement alias subtype type units
 
-syn keyword vhdlRepeat	while wait for loop
+syn keyword vhdlRepeat  while wait for loop
 
 " Predefined VHDL types
 syn keyword vhdlType bit bit_vector
@@ -127,7 +164,6 @@ syn keyword vhdlType round_type
 syn keyword vhdlFunction to_float
 " VHDL 2008 additions
 syn keyword vhdlStatement force release
-syn match   vhdlSpecial "[@\^]"
 syn keyword vhdlType boolean_vector integer_vector time_vector real_vector
 syn keyword vhdlType unresolved_signed unresolved_unsigned u_signed u_unsigned
 syn keyword vhdlFunction to_string to_bstring to_ostring to_hstring justify
@@ -187,18 +223,14 @@ syn match vhdlAttribute "\'value"
 
 syn keyword vhdlBoolean true false
 
-" for this vector values case is significant
+" for std_logic values case is significant
 syn case match
-" Values for standard VHDL types
 syn match vhdlVector "\'[0L1HXWZU\-\?]\'"
-" Values for non standard VHDL types qsim_12state for Mentor Graphics Sys1076/QuickHDL
-syn keyword vhdlVector S0S S1S SXS S0R S1R SXR S0Z S1Z SXZ S0I S1I SXI
+syn match vhdlVector "[0-9]*[SU]\=B\"[0L1HXWZU\-\?_]\+\""
+syn match vhdlVector "[0-9]*[SU]\=O\"[0-7LHXWZU\-\?_]\+\""
+syn match vhdlVector "[0-9]*[SU]\=X\"[0-9a-fLHXWZU\-\?_]\+\""
 syn case ignore
 
-" logic vectors
-syn match  vhdlVector "[0-9]*[SU]\=B\"[0L1HXWZU\-\?_]\+\""
-syn match  vhdlVector "[0-9]*[SU]\=O\"[0-7LHXWZU\-\?_]\+\""
-syn match  vhdlVector "[0-9]*[SU]\=X\"[0-9a-fLHXWZU\-\?_]\+\""
 syn region vhdlString start=+"+  end=+"+ contains=@Spell
 
 " characters
@@ -209,8 +241,15 @@ syn keyword vhdlCharacter DEL c128 c129 c130 c131 c132 c133 c134 c135 c136 c137 
 syn keyword vhdlCharacter c140 c141 c142 c143 c144 c145 c146 c147 c148 c149 c150 c151
 syn keyword vhdlCharacter c152 c153 c154 c155 c156 c157 c158 c159
 
+" extended identifier
+syn region vhdlLabel start="\\" end="\\"
+
+" external identifier
+syn region vhdlLabel start="<<" end=">>"
+
 " illegal characters (@ and ^ are allowed in external names as of VHDL-2008)
 syn match vhdlError "[$~!#%{}]"
+syn match vhdlSpecial "[@\^]"
 " integers
 syn match vhdlNumber "-\=\<[0-9_]\+\>"
 syn match vhdlNumber "-\=\<[0-9_]\+[eE][+]\=[0-9_]\+\>"
@@ -225,6 +264,8 @@ syn match vhdlFloat "0*16#[0-9a-f_]\+\.[0-9a-f_]\+#\%([eE][+-]\=\d\+\)\="
 syn match vhdlNumber "\<\d\+\s\+\%(\%([fpnum]s\)\|\%(sec\)\|\%(min\)\|\%(hr\)\)\>"
 syn match vhdlNumber "\<\d\+\.\d\+\s\+\%(\%([fpnum]s\)\|\%(sec\)\|\%(min\)\|\%(hr\)\)\>"
 " operators
+" no attempt here to separate signal assignment from less than or equal, both 
+" represented by "<="
 syn keyword vhdlFunction minimum maximum rising_edge falling_edge now
 syn keyword vhdlOperator and nand or nor xor xnor
 syn keyword vhdlOperator rol ror sla sll sra srl
@@ -234,57 +275,45 @@ syn keyword vhdlOperator **
 syn match   vhdlOperator "?\=[/<>]\=="
 syn match   vhdlOperator "??"
 syn keyword vhdlOperator =>
-syn match   vhdlSpecial  "[\[\]:;.,]"
+syn match   vhdlSpecial  "[\[\]:;().,]"
 syn match   vhdlOperator ":="
-syn region  parens	matchgroup=vhdlSpecial	start="(" end=")" fold transparent
-" extended identifier
-syn match   vhdlSpecial	"\\.\{-}\\"
 
 " comments
-"syn include @doxygen syntax/doxygen.vim
-"syn include @plantuml syntax/plantuml.vim
-syn match   vhdlComment "--.*$" contains=@Spell,vhdlTodo
-syn keyword vhdlTodo	contained TODO FIXME XXX
+syn keyword vhdlTodo    contained TODO FIXME XXX NOTE
+
+syn region  vhdlComment
+            \ oneline 
+            \ contains=vhdlTodo,@Spell
+            \ start="--"
+            \ end="$"
 
 " Define the default highlighting.
-" For version 5.7 and earlier: only when not done already
-" For version 5.8 and later: only when an item doesn't have highlighting yet
-if version >= 508 || !exists("did_vhdl_syntax_inits")
-  if version < 508
-    let did_vhdl_syntax_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
+highlight def link vhdlLabel            Label
+highlight def link vhdlSpecial          Special
+highlight def link vhdlArchOf           Statement
+highlight def link vhdlStatement        Statement
+highlight def link vhdlStorageClass     StorageClass
+highlight def link vhdlTypedef          Typedef
+highlight def link vhdlConditional      Conditional
+highlight def link vhdlRepeat           Repeat
+highlight def link vhdlCharacter        Character
+highlight def link vhdlString           String
+highlight def link vhdlVector           String
+highlight def link vhdlBoolean          Boolean
+highlight def link vhdlComment          Comment
+highlight def link vhdlSpecialComment   SpecialComment
+highlight def link vhdlNumber           Number
+highlight def link vhdlFloat            Float
+highlight def link vhdlType             Type
+highlight def link vhdlOperator         Operator
+highlight def link vhdlFunction         Function
+highlight def link vhdlError            Error
+highlight def link vhdlAttribute        Type
+highlight def link vhdlTodo             Todo
 
-  HiLink vhdlLabel	    Label
-  HiLink vhdlSpecial	    Special
-  HiLink vhdlArchOf	    Statement
-  HiLink vhdlStatement	    Statement
-  HiLink vhdlStorageClass   StorageClass
-  HiLink vhdlTypedef	    Typedef
-  HiLink vhdlConditional    Conditional
-  HiLink vhdlRepeat	    Repeat
-  HiLink vhdlCharacter	    Character
-  HiLink vhdlString	    String
-  HiLink vhdlVector	    String
-  HiLink vhdlBoolean	    Boolean
-  HiLink vhdlComment	    Comment
-  HiLink vhdlSpecialComment SpecialComment
-  HiLink vhdlNumber	    Number
-  HiLink vhdlFloat	    Float
-  HiLink vhdlType	    Type
-  HiLink vhdlOperator	    Operator
-  HiLink vhdlFunction	    Function
-  HiLink vhdlError	    Error
-  HiLink vhdlAttribute	    Type
-  HiLink vhdlTodo	    Todo
-
-  delcommand HiLink
-endif
-
-let b:current_syntax = "vhdl"
+" We shouldn't need to look backwards to highlight, with the possible exception 
+" of external identifiers.  And they don't work anyway...
+syntax sync minlines=1 maxlines=1
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
-" vim: ts=8
