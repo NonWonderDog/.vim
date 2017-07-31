@@ -87,6 +87,24 @@ syn region vhdlArchCode
         \ contains=TOP
 syn keyword vhdlStatement of
 
+" Configuration regions begin with "configuration", except after "end", and end 
+" with ";".  They may contain a nested declaration region that begins with "is" 
+" and ends with ";".
+syn region vhdlConfiguration
+        \ matchgroup=vhdlStatement
+        \ start="\%(\<end\>\)\@3<!\s*\<configuration\>"
+        \ end="\ze;"
+        \ fold keepend extend transparent
+        \ contains=vhdlConfigDecl,vhdlStatement
+syn region vhdlConfigDecl
+        \ matchgroup=vhdlStatement
+        \ contained
+        \ start="\<is\>"
+        \ end="\ze;"
+        \ keepend extend transparent
+        \ contains=TOP
+syn keyword vhdlStatement of
+
 " Process regions begin with "process", except after "end", and end with ";".  
 " They contain a declaration region that starts at "process" and ends at 
 " "begin".  The declaration region is followed by a sequential code region that 
@@ -112,16 +130,16 @@ syn region vhdlProcessCode
         \ fold keepend extend transparent
         \ contains=TOP
 
-" Function regions begin with "function", except after "end", and end with ";".  
-" They contain a nested parameter region that begins with "(" and ends with 
-" ")".  They may contain a nested declaration region that begins with "is" and 
-" ends with "begin".  The declaration region, if it exists, is followed 
-" immediately by a code region that begins with "begin" and ends with either 
-" "end" or "end function".
-syn region vhdlFunction
+" Function regions begin with "function", except after "end", and end with ";" 
+" or "<>".  They may contain a nested parameter region that begins with "(" and 
+" ends with ")".  They may contain a nested declaration region that begins with 
+" "is" and ends with either "begin" or "<>".  The declaration region, if it 
+" exists, may be followed immediately by a code region that begins with "begin" 
+" and ends with either "end" or "end function".
+syn region vhdlFunc
         \ matchgroup=vhdlStatement
         \ start="\%(\<end\>\)\@3<!\s*\<function\>"
-        \ end="\ze;"
+        \ end="\ze\%(;\|<>\)"
         \ fold keepend extend transparent
         \ contains=vhdlFuncParams,vhdlFuncVars,vhdlFuncCode,vhdlStatement
 syn region vhdlFuncParams
@@ -135,7 +153,7 @@ syn region vhdlFuncVars
         \ matchgroup=vhdlStatement
         \ contained
         \ start="\<is\>"
-        \ end="\ze\%(\<begin\>\)"
+        \ end="\ze\%(<>\|\<begin\>\)"
         \ keepend extend transparent
         \ contains=TOP
 syn region vhdlFuncCode
@@ -153,6 +171,7 @@ syn keyword vhdlStatement return
 " and ends with "begin".  The declaration region, if it exists, is followed 
 " immediately by a code region that begins with "begin" and ends with either 
 " "end" or "end procedure".
+" I don't know of empty procedures as package generics are allowed.
 syn region vhdlProcedure
         \ matchgroup=vhdlStatement
         \ start="\%(\<end\>\)\@3<!\s*\<procedure\>"
@@ -198,6 +217,16 @@ syn region vhdlPackCode
         \ keepend extend transparent
         \ contains=TOP
 syn keyword vhdlStatement body
+
+" Parens need to be an "extend" region to allow nesting within function 
+" parameter lists
+syn region vhdlParen
+        \ matchgroup=vhdlSpecial
+        \ start="("
+        \ end=")"
+        \ skip="--.*"
+        \ keepend extend transparent
+        \ contains=TOP
 
 " The rest are easy
 syn region vhdlComponent
@@ -247,7 +276,7 @@ syn keyword vhdlConditional  elsif when
 syn keyword vhdlStatement after all assert
 syn keyword vhdlStatement attribute
 syn keyword vhdlStatement block buffer bus
-syn keyword vhdlStatement configuration context
+syn keyword vhdlStatement context
 syn keyword vhdlStatement disconnect downto
 syn keyword vhdlStatement end exit
 syn keyword vhdlStatement file
@@ -394,12 +423,6 @@ syn keyword vhdlCharacter DEL c128 c129 c130 c131 c132 c133 c134 c135 c136 c137 
 syn keyword vhdlCharacter c140 c141 c142 c143 c144 c145 c146 c147 c148 c149 c150 c151
 syn keyword vhdlCharacter c152 c153 c154 c155 c156 c157 c158 c159
 
-" extended identifier
-syn region vhdlLabel start="\\" end="\\"
-
-" external identifier
-syn region vhdlLabel start="<<" end=">>"
-
 " illegal characters (@ and ^ are allowed in external names as of VHDL-2008)
 syn match vhdlError "[$~!#%{}]"
 syn match vhdlSpecial "[@\^]"
@@ -423,16 +446,22 @@ syn keyword vhdlFunction minimum maximum rising_edge falling_edge now
 syn keyword vhdlOperator and nand or nor xor xnor
 syn keyword vhdlOperator rol ror sla sll sra srl
 syn keyword vhdlOperator mod rem abs not
-syn match   vhdlOperator "[-+*/<>&]"
+syn keyword vhdlOperator =>
 syn keyword vhdlOperator **
+syn match   vhdlOperator "[-+*/<>&]<\@!"
 syn match   vhdlOperator "?\=[/<>]\=="
 syn match   vhdlOperator "??"
-syn keyword vhdlOperator =>
-syn match   vhdlSpecial  "[\[\]:;().,]"
+syn match   vhdlSpecial  "[\[\]:;.,]"
 syn match   vhdlOperator ":="
 
+" extended identifier
+syn region vhdlSpecial start="\\" end="\\"
+
+" external identifier
+syn region vhdlSpecial start="<<" end=">>" contains=vhdlStatementrvhdlType
+
 " comments
-syn keyword vhdlTodo    contained TODO FIXME XXX NOTE
+syn keyword vhdlTodo contained TODO FIXME XXX NOTE
 
 syn region  vhdlComment
             \ oneline 
