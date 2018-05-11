@@ -445,8 +445,12 @@ endif
 " }}}
 " Mappings {{{
 
-" Don't use Ex mode, use Q for formatting
-" map Q gq
+" Don't use Ex mode, use Q to replay the q macro
+nnoremap Q @q
+vnoremap Q :norm @q<cr>
+
+" more logical Y mapping
+nnoremap Y y$
 
 " CTRL-U (delete entered text on current line) in insert mode deletes a lot.
 " Use CTRL-G u to first break undo, so that you can undo CTRL-U after
@@ -512,9 +516,9 @@ else
 endif
 
 " Make with F5
-nnoremap <F5> :w<CR>:make<CR>
-inoremap <F5> <Esc>:w<CR>:make<CR>
-vnoremap <F5> :<C-u>w<CR>:make<CR>
+nnoremap <F5> :make<CR>
+inoremap <F5> <Esc>:make<CR>
+vnoremap <F5> :<C-u>make<CR>
 
 " Step through quickfix with F7 F8
 nnoremap <silent> <F7> :<C-u>cp<CR>
@@ -543,6 +547,7 @@ endif
 
 " CDC = Change to Directory of Current file
 command CDC cd %:p:h
+command LCDC lcd %:p:h
 
 " Output,OutputWin,OutputTab simplify grabbing output from ex commands
 function! RedirMessages(msgcmd, destcmd)
@@ -573,6 +578,12 @@ endfunction
 command! -nargs=+ -complete=command Output call RedirMessages(<q-args>, ''       )
 command! -nargs=+ -complete=command OutputWin call RedirMessages(<q-args>, 'new'    )
 command! -nargs=+ -complete=command OutputTab call RedirMessages(<q-args>, 'tabnew' )
+
+" commands for scratch buffers
+command! -complete=command Scratch  :new    | :setlocal buftype=nofile | :setlocal noswapfile
+command! -complete=command EScratch :enew   | :setlocal buftype=nofile | :setlocal noswapfile
+command! -complete=command VScratch :vnew   | :setlocal buftype=nofile | :setlocal noswapfile
+command! -complete=command TScratch :tabnew | :setlocal buftype=nofile | :setlocal noswapfile
 
 " }}}
 " Autocommands {{{
