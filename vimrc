@@ -338,7 +338,10 @@ set errorformat+=#%t%*[^\ ]\ %*[^\ ]\ %f:%l(%c+%*[0-9])\ %m
 " use side-by-side diffs
 set diffopt+=vertical
 
-" little tweaks
+" more natural split directions
+set splitbelow
+set splitright
+
 if has("autocmd")
     " Jump to the last cursor position when opening a buffer
     autocmd BufReadPost *
@@ -478,7 +481,7 @@ nnoremap <NL> i<CR><ESC>
 " Clear highlighting with <C-l>
 nnoremap <silent> <C-l> :<C-U>noh<CR><C-l>
 
-" Open folds with spacebar
+" Toggle folds with spacebar
 nnoremap <S-Space> zA
 nnoremap <Space> za
 
