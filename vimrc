@@ -157,23 +157,24 @@ Plug 'dag/vim-fish'
 Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell' }
 
+Plug 'Konfekt/FastFold'
 Plug 'kien/ctrlp.vim'
 Plug 'bkad/CamelCaseMotion'
 Plug 'equalsraf/neovim-gui-shim'
-Plug 'dhruvasagar/vim-table-mode'
 Plug 'godlygeek/tabular'
 Plug 'junegunn/vim-easy-align'
 Plug 'kannokanno/previm'
 Plug 'kergoth/vim-hilinks'
-Plug 'majutsushi/tagbar'
-Plug 'scrooloose/syntastic'
+" Plug 'majutsushi/tagbar'
 Plug 'tmhedberg/matchit'
 Plug 'tomtom/tcomment_vim'
+
+Plug 'mbbill/undotree'
+Plug 'machakann/vim-sandwich'
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-dispatch'
 
@@ -183,16 +184,15 @@ Plug 'vimoutliner/vimoutliner'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-pandoc/vim-pandoc-after'
+Plug 'vim-scripts/a.vim'
+
+Plug 'w0rp/ale'
 
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
 
-Plug 'vim-scripts/a.vim'
-
 Plug 'idbrii/vim-focusclip', empty($MSYSTEM) ? {} : { 'for': [] }
-Plug 'sjl/gundo.vim', has('python3') ? {} : has('python') ? {} : { 'for': [] }
-
 Plug 'wincent/terminus'
 Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
@@ -629,18 +629,6 @@ let g:easytags_languages = {
 \       'recurse_flag': '-R'
 \   }
 \}
-
-" Syntastic Options
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
-let g:syntastic_enable_signs = 1
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " TagBar Options
 " Add arduino support
