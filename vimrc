@@ -339,7 +339,7 @@ set errorformat+=#%t%*[^\ ]\ %*[^\ ]\ %f:%l(%c+%*[0-9])\ %m
 set diffopt+=vertical
 
 " more natural split directions
-set splitbelow
+" set splitbelow
 set splitright
 
 if has("autocmd")
