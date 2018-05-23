@@ -3,8 +3,6 @@
 " Tested on Windows 7 and Ubuntu 16.04
 " Using Vim 7.4
 
-" vim:fdm=marker
-
 " Environment {{{
     " Identify platform {{{
         silent function! OSX()
@@ -125,7 +123,7 @@
         set undodir+=~/.vim/.undo//
         " viewdir only accepts a single directory
         set viewdir=~/.vim/.view
-        set viewoptions=folds,options,cursor,unix,slash
+        set viewoptions=folds,cursor,unix,slash
 
         set swapfile " use swap files
         if has('persistent_undo')
@@ -163,7 +161,6 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'godlygeek/tabular'
 Plug 'junegunn/vim-easy-align'
-Plug 'kannokanno/previm'
 Plug 'kergoth/vim-hilinks'
 " Plug 'majutsushi/tagbar'
 Plug 'tmhedberg/matchit'
@@ -178,7 +175,6 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-dispatch'
 
-Plug 'tyru/open-browser.vim'
 Plug 'vimoutliner/vimoutliner'
 
 Plug 'vim-pandoc/vim-pandoc'
@@ -212,9 +208,6 @@ endif
 
 set shortmess+=filmnrxoOtT      " Abbreviate messages (no 'hit enter')
 set hidden                      " keep hidden buffers on window close
-set iskeyword-=.
-set iskeyword-=#
-set iskeyword-=-
 
 " Use all filetype-dependent settings
 filetype plugin indent on
@@ -588,16 +581,36 @@ command! -complete=command TScratch :tabnew | :setlocal buftype=nofile | :setloc
 " }}}
 " Autocommands {{{
 if has("autocmd")
+    let g:skipview_files = [
+                \ 'COMMIT_EDITMSG'
+                \ ]
+    function! MakeViewCheck()
+        if has('quickfix') && &buftype =~ 'nofile'
+            " Buffer is marked as not a file
+            return 0
+        endif
+        if empty(glob(expand('%:p')))
+            " File does not exist on disk
+            return 0
+        endif
+        if len($TEMP) && expand('%:p:h') == $TEMP
+            " We're in a temp dir
+            return 0
+        endif
+        if len($TMP) && expand('%:p:h') == $TMP
+            " Also in temp dir
+            return 0
+        endif
+        if index(g:skipview_files, expand('%:t')) >= 0
+            " File is in skip list
+            return 0
+        endif
+        return 1
+    endfunction
     augroup vimrc
         " save folds and cursor position on save
-        autocmd BufWritePost *
-        \   if expand('%') != '' && &buftype !~ 'nofile'
-        \|      mkview
-        \|  endif
-        autocmd BufRead *
-        \   if expand('%') != '' && &buftype !~ 'nofile'
-        \|      silent loadview
-        \|  endif
+        autocmd BufWritePost ?* if MakeViewCheck() | mkview! | endif
+        autocmd BufReadPre ?* if MakeViewCheck() | silent loadview | endif
 
         " save clipboard on exit
         if executable("xsel")
@@ -685,14 +698,28 @@ let g:markdown_fold_style = 'nested'
 " disable tmux-navigator default mappings
 let g:tmux_navigator_no_mappings = 1
 
+" unbreak sentence motions
+" vim-sandwich defines `is` and `as`; move them to `iq` and `aq`
+let g:textobj_sandwich_no_default_key_mappings = 1
+xmap ib <Plug>(textobj-sandwich-auto-i)
+omap ib <Plug>(textobj-sandwich-auto-i)
+xmap ab <Plug>(textobj-sandwich-auto-a)
+omap ab <Plug>(textobj-sandwich-auto-a)
+
+xmap iq <Plug>(textobj-sandwich-query-i)
+omap iq <Plug>(textobj-sandwich-query-i)
+xmap aq <Plug>(textobj-sandwich-query-a)
+omap aq <Plug>(textobj-sandwich-query-a)
+
 " pandoc options
 let g:pandoc#after#modules#enabled = ["tablemode"]
 let g:pandoc#modules#disabled = []
 let g:pandoc#folding#fold_fenced_codeblocks = 1
+let g:pandoc#folding#fdc = 4
 let g:pandoc#formatting#mode = 'ha'
 let g:pandoc#syntax#conceal#urls = 0
 let g:pandoc#syntax#codeblocks#embeds#use = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["c","cpp","sh","vhdl","makefile=make", "asm"]
+let g:pandoc#syntax#codeblocks#embeds#langs = ["c","cpp","forth","sh","vhdl","makefile=make", "asm"]
 let g:pandoc#syntax#style#emphases = 1
 let g:pandoc#syntax#style#underline_special = 1
 let g:pandoc#syntax#style#use_definition_lists = 1
@@ -703,3 +730,4 @@ if has('nvim')
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 " }}}
+" vim:fdm=marker
