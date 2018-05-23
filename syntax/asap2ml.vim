@@ -16,7 +16,7 @@ set cpo&vim
 " Characters allowed in keywords
 setlocal iskeyword=a-z,A-Z,48-57,_
 
-syn region asap2ml matchgroup=asap2mlKeyword start="/begin\s\+asap2ml\>" end="/end\s\+asap2ml\>" fold transparent
+syn region asap2ml matchgroup=asap2mlKeyword start="/begin\s\+A2ML\>" end="/end\s\+A2ML\>" fold transparent
 
 syn region asap2mlInclude display contained start=+"+ end=+"+
 syn match  asap2mlInclude "[-./[:alnum:]_~]\+" display contained
@@ -47,17 +47,17 @@ syn region  asap2mlComment start="//" end="$" keepend contains=@Spell,asap2mlTod
 syn region  asap2mlComment start="/\*" end="\*/" contains=@Spell,asap2mlTodo fold extend
 
 " Default style links
-hi def link asap2mlComment         Comment
-hi def link asap2mlFloat           Float
-hi def link asap2mlKeyword         Keyword
-hi def link asap2mlInclude         Include
-hi def link asap2mlNumber          Number
-hi def link asap2mlSpecial         Special
-hi def link asap2mlString          String
-hi def link asap2mlStructure       Structure
-hi def link asap2mlType            Type
-hi def link asap2mlOperator        Operator
-hi def link asap2mlTodo            Todo
+hi def link asap2mlComment      Comment
+hi def link asap2mlFloat        Float
+hi def link asap2mlKeyword      Keyword
+hi def link asap2mlInclude      Include
+hi def link asap2mlNumber       Number
+hi def link asap2mlSpecial      Special
+hi def link asap2mlString       String
+hi def link asap2mlStructure    Structure
+hi def link asap2mlType         Type
+hi def link asap2mlOperator     Operator
+hi def link asap2mlTodo         Todo
 
 syntax sync fromstart
 
