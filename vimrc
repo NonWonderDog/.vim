@@ -1,7 +1,7 @@
 " Bob Morris .vimrc file
 " Incorpoating some ideas from spf13
 " Tested on Windows 7 and Ubuntu 16.04
-" Using Vim 7.4
+" Using Vim 8.0
 
 " Environment {{{
     " Identify platform {{{
@@ -135,7 +135,7 @@
         set writebackup " make a temporary backup before overwriting a file
     " }}}
 " }}}
-" {{{ Plugins
+" Plugins {{{
 " Allow :Man lookups
 runtime ftplugin/man.vim
 
@@ -151,6 +151,8 @@ Plug 'SimonGreenhill/summerfruit256.vim'
 " others
 Plug 'PProvost/vim-ps1'
 Plug 'dag/vim-fish'
+
+Plug 'bimlas/vim-eightheader'
 
 Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell' }
@@ -253,9 +255,21 @@ if &t_Co > 2 || has("gui_running")
     set hlsearch
 endif
 
-" start with folding on
+" better folding
 set foldmethod=syntax
-set foldlevelstart=0
+set foldlevelstart=1
+
+if !empty(glob("plugged/vim-eightheader"))
+    function! FoldText()
+        let l:text  = matchstr(foldtext(), '\(: \)\@<=.*')
+        let l:count = v:foldend - v:foldstart + 1
+        let l:start = '+' . v:folddashes
+        let l:end   = '(' . l:count . ' lines)'
+        return EightHeaderCall(l:text, &textwidth, 'left', [ l:start, '-', ' ' ], l:end, '\=" ".s:str." "' )
+    endfunction
+    set foldtext=FoldText()
+endif
+
 
 " use autoformatting
 set textwidth=79        " autoformat to 79-column text
@@ -481,6 +495,8 @@ nnoremap <silent> <C-l> :<C-U>noh<CR><C-l>
 " Toggle folds with spacebar
 nnoremap <S-Space> zA
 nnoremap <Space> za
+vnoremap <S-Space> zA
+vnoremap <Space> za
 
 " Exit insert mode with jj or jk
 inoremap jj <Esc>
@@ -609,7 +625,7 @@ if has("autocmd")
     endfunction
     augroup vimrc
         " save folds and cursor position on save
-        autocmd BufWritePost ?* if MakeViewCheck() | mkview! | endif
+        autocmd BufWritePost ?* if MakeViewCheck() | mkview | endif
         autocmd BufReadPre ?* if MakeViewCheck() | silent loadview | endif
 
         " save clipboard on exit
