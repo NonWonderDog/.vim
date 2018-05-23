@@ -259,7 +259,7 @@ endif
 set foldmethod=syntax
 set foldlevelstart=1
 
-if !empty(glob("plugged/vim-eightheader"))
+if !empty(glob("~/.vim/plugged/vim-eightheader"))
     function! FoldText()
         let l:text  = matchstr(foldtext(), '\(: \)\@<=.*')
         let l:count = v:foldend - v:foldstart + 1
