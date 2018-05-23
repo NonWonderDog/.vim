@@ -526,7 +526,7 @@ syn match   vhdlOperator "?\=[/<>]\=="
 syn match   vhdlOperator "?[<>]"
 syn match   vhdlOperator "??"
 syn match   vhdlParens   "[()]"
-syn match   vhdlSpecial  "[\[\];.,]"
+syn match   vhdlSpecial  "[|\[\];.,]"
 syn match   vhdlOperator ":="
 syn match   vhdlSpecial  "<>" " make sure this isn't confused with 'not equal'
 highlight def link vhdlParens vhdlSpecial
