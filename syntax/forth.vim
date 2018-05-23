@@ -1,11 +1,11 @@
 " Vim syntax file
 " Language:    FORTH
-" Maintainer:  Christian V. J. Brüssow <cvjb@cvjb.de>
-" Last Change: 2017-10-11
+" Maintainer:  Robert Morris <robert.morris@roush.com>
+" Last Change: 2018-05-22
 " Filenames:   *.fs,*.ft
-" Version:     1.20
-" URL:	       http://www.cvjb.de/comp/vim/forth.vim
-" Many Thanks to Christian V. J. Brüssow <cvjb@cvjb.de> for forth.vim v1.14
+" Version:     2.00
+" Many Thanks to Christian V. J. Brüssow <cvjb@cvjb.de> for forth.vim v1.20
+" TODO word folding from `:` to `;`, including `DOES>`, `;CODE`, etc.
 
 " quit when a syntax file was already loaded
 if exists("b:current_syntax")
@@ -14,10 +14,6 @@ endif
 
 let s:cpo_save = &cpo
 set cpo&vim
-
-" Synchronization method
-syn sync ccomment
-syn sync maxlines=200
 
 " I use gforth, so I set this to case ignore
 syn case ignore
@@ -44,7 +40,7 @@ endif
 
 " basic mathematical and logical operators
 syn keyword forthOperators + - * / MOD /MOD NEGATE ABS MIN MAX
-syn keyword forthOperators AND OR XOR NOT LSHIFT RSHIFT INVERT 2* 2/ 1+
+syn keyword forthOperators AND OR XOR NOT LSHIFT RSHIFT ARSHIFT INVERT 2* 2/ 1+
 syn keyword forthOperators 1- 2+ 2- 8* UNDER+
 syn keyword forthOperators M+ */ */MOD M* UM* M*/ UM/MOD FM/MOD SM/REM
 syn keyword forthOperators D+ D- DNEGATE DABS DMIN DMAX D2* D2/
@@ -82,7 +78,7 @@ syn keyword forthMemBlks MOVE ERASE CMOVE CMOVE> FILL BLANK
 
 " conditionals
 syn keyword forthCond IF ELSE ENDIF THEN CASE OF ENDOF ENDCASE ?DUP-IF
-syn keyword forthCond ?DUP-0=-IF AHEAD CS-PICK CS-ROLL CATCH THROW WITHIN
+syn keyword forthCond ?DUP-0=-IF AHEAD CS-PICK CS-ROLL CATCH THROW
 
 " iterations
 syn keyword forthLoop BEGIN WHILE REPEAT UNTIL AGAIN
@@ -100,7 +96,7 @@ syn keyword forthEndOfObjectDef ;OBJECT
 syn keyword forthDefine CONSTANT 2CONSTANT FCONSTANT VARIABLE 2VARIABLE
 syn keyword forthDefine FVARIABLE CREATE USER VALUE DEFER IS ACTION-OF DOES>
 syn keyword forthDefine IMMEDIATE COMPILE-ONLY COMPILE RESTRICT INTERPRET
-syn keyword forthDefine POSTPONE EXECUTE LITERAL CREATE-INTERPRET/COMPILE
+syn keyword forthDefine EXECUTE LITERAL CREATE-INTERPRET/COMPILE
 syn keyword forthDefine INTERPRETATION> <INTERPRETATION ] LASTXT
 syn keyword forthDefine COMPILATION> <COMPILATION COMP' POSTPONE, FIND-NAME
 syn keyword forthDefine NAME>INT NAME?INT NAME>COMP NAME>STRING STATE C;
@@ -121,11 +117,14 @@ syn match forthDefine "\<\[UNTIL]\>"
 syn match forthDefine "\<\[AGAIN]\>"
 syn match forthDefine "\<\[WHILE]\>"
 syn match forthDefine "\<\[REPEAT]\>"
-syn match forthDefine "\<\[COMP']\>"
-syn match forthDefine "\<'\>"
 syn match forthDefine "\<\[\>"
-syn match forthDefine "\<\[']\>"
-syn match forthDefine "\<\[COMPILE]\>"
+
+" Interpting words
+syn match forthDefine 'POSTPONE\s\+\k\+'
+syn match forthDefine '\[COMPILE\]\s\+\k\+'
+syn match forthDefine '\'\s\+\k\+'
+syn match forthDefine '\[\'\]\s\+\k\+'
+syn match forthDefine '\[COMP\'\]\s\+\k\+'
 
 " debugging
 syn keyword forthDebug PRINTDEBUGDATA .DEBUGLINE
@@ -201,6 +200,34 @@ syn region forthComment start='\<\\\>' end='$' contains=@Spell,forthTodo,forthSp
 syn region forthComment start='\<\.(\>' end='\()\|$\)' contains=@Spell,forthTodo,forthSpaceError
 syn region forthComment start='\<(\>' end=')' contains=@Spell,forthTodo,forthSpaceError
 
+" gforth has its makedoc.fs, then runs the result through Texinfo
+syn region forthSpecialComment start='\<\\G\>' end='$' contains=@Spell,forthSpaceError
+
+" Custom Documentation
+syn region forthSpecialComment start='\<\\!\>'  end='$' contains=@Spell,forthDocCmd,forthDocPrmCmd,forthDocTodo oneline keepend
+syn region forthSpecialComment start='\<\\\\\>' end='$' contains=@Spell,forthDocCmd,forthDocPrmCmd,forthDocTodo oneline keepend
+syn region forthSpecialComment start='\<\\>\>'  end='$' contains=@Spell,forthDocCmd,forthDocPrmCmd,forthDocTodo oneline keepend
+syn region forthSpecialComment start='\<\\<\>'  end='$' contains=@Spell,forthDocCmd,forthDocPrmCmd,forthDocTodo oneline keepend
+
+syn match forthDocSinglePar "\k\+\>" contained " one word parameter
+
+syn match forthDocError  "\S\+\>"              contained " malformed A2L parameter
+syn match forthDocA2lPar "[][A-Za-z_0-9.]\+\>" contained " A2L-compatible parameter
+syn cluster forthDocA2lPar contains=forthDocError,forthDocA2lPar
+
+syn keyword forthDocCmd contained @brief @details
+syn keyword forthDocCmd contained @{ @}
+
+syn keyword forthDocCmd contained @param @return @returns @retval           nextgroup=forthDocSinglePar skipwhite
+syn keyword forthDocCmd contained @defgroup @ingroup @addtogroup @weakgroup nextgroup=@forthDocA2lPar   skipwhite
+syn keyword forthDocCmd contained @prgtype                                  nextgroup=@forthDocA2lPar   skipwhite
+syn keyword forthDocCmd contained @module                                   nextgroup=@forthDocA2lPar   skipwhite
+
+syn region forthDocPrmCmd contained matchgroup=forthDocCommand start="@version " end="$" oneline
+syn region forthDocPrmCmd contained matchgroup=forthDocCommand start="@req "     end="$" oneline
+
+syn keyword forthDocTodo contained @todo @bug @note @warning @attention
+
 " Include files
 syn match forthInclude '^INCLUDE\s\+\k\+'
 syn match forthInclude '^require\s\+\k\+'
@@ -212,47 +239,51 @@ syn region forthLocals start='{\s' start='{$' end='\s}' end='^}'
 syn match forthLocals '{ }' " otherwise, at least two spaces between
 syn region forthDeprecated start='locals|' end='|'
 
-" Define the default highlighting.
-" Only when an item doesn't have highlighting yet
-
-" The default methods for highlighting. Can be overridden later.
-hi def link forthTodo Todo
-hi def link forthOperators Operator
-hi def link forthMath Number
-hi def link forthInteger Number
-hi def link forthFloat Float
-hi def link forthStack Special
-hi def link forthRstack Special
-hi def link forthFStack Special
-hi def link forthSP Special
-hi def link forthMemory Function
-hi def link forthAdrArith Function
-hi def link forthMemBlks Function
-hi def link forthCond Conditional
-hi def link forthLoop Repeat
-hi def link forthColonDef Define
-hi def link forthEndOfColonDef Define
-hi def link forthDefine Define
-hi def link forthDebug Debug
-hi def link forthAssembler Include
-hi def link forthCharOps Character
-hi def link forthConversion String
-hi def link forthForth Statement
-hi def link forthVocs Statement
-hi def link forthString String
-hi def link forthComment Comment
-hi def link forthClassDef Define
-hi def link forthEndOfClassDef Define
-hi def link forthObjectDef Define
+hi def link forthTodo           Todo
+hi def link forthOperators      Operator
+hi def link forthMath           Number
+hi def link forthInteger        Number
+hi def link forthFloat          Float
+hi def link forthStack          Special
+hi def link forthRstack         Special
+hi def link forthFStack         Special
+hi def link forthSP             Special
+hi def link forthMemory         Function
+hi def link forthAdrArith       Function
+hi def link forthMemBlks        Function
+hi def link forthCond           Conditional
+hi def link forthLoop           Repeat
+hi def link forthColonDef       Define
+hi def link forthEndOfColonDef  Define
+hi def link forthDefine         Define
+hi def link forthDebug          Debug
+hi def link forthAssembler      Include
+hi def link forthCharOps        Character
+hi def link forthConversion     String
+hi def link forthForth          Statement
+hi def link forthVocs           Statement
+hi def link forthString         String
+hi def link forthComment        Comment
+hi def link forthSpecialComment SpecialComment
+hi def link forthDocCmd         Special
+hi def link forthDocPrmCmd      String
+hi def link forthDocSinglePar   Identifier
+hi def link forthDocA2lPar   Identifier
+hi def link forthDocTodo        Todo
+hi def link forthDocError       Error
+hi def link forthClassDef       Define
+hi def link forthEndOfClassDef  Define
+hi def link forthObjectDef      Define
 hi def link forthEndOfObjectDef Define
-hi def link forthInclude Include
-hi def link forthLocals Type " nothing else uses type and locals must stand out
-hi def link forthDeprecated Error " if you must, change to Type
-hi def link forthFileMode Function
-hi def link forthFileWords Statement
-hi def link forthBlocks Statement
-hi def link forthSpaceError Error
+hi def link forthInclude        Include
+hi def link forthLocals         Identifier
+hi def link forthDeprecated     Error
+hi def link forthFileMode       Function
+hi def link forthFileWords      Statement
+hi def link forthBlocks         Statement
+hi def link forthSpaceError     Error
 
+syn sync maxlines=200
 
 let b:current_syntax = "forth"
 
