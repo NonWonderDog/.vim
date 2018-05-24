@@ -1,7 +1,7 @@
 " Vim syntax file
-" Language:    ASAM MCD-2
+" Language:    ASAM MCD-2 MC
 " Maintainer:  Robert Morris <robert.morris@roush.com>
-" Last Change: 2018-05-23
+" Last Change: 2018-05-24
 " Filenames:   *.a2l
 " Version:     0.00
 
