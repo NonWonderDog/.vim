@@ -158,6 +158,7 @@ Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell' }
 
 Plug 'Konfekt/FastFold'
+Plug 'zhimsel/vim-stay'
 Plug 'kien/ctrlp.vim'
 Plug 'bkad/CamelCaseMotion'
 Plug 'equalsraf/neovim-gui-shim'
@@ -269,7 +270,6 @@ if !empty(glob("~/.vim/plugged/vim-eightheader"))
     endfunction
     set foldtext=FoldText()
 endif
-
 
 " use autoformatting
 set textwidth=79        " autoformat to 79-column text
@@ -597,37 +597,7 @@ command! -complete=command TScratch :tabnew | :setlocal buftype=nofile | :setloc
 " }}}
 " Autocommands {{{
 if has("autocmd")
-    let g:skipview_files = [
-                \ 'COMMIT_EDITMSG'
-                \ ]
-    function! MakeViewCheck()
-        if has('quickfix') && &buftype =~ 'nofile'
-            " Buffer is marked as not a file
-            return 0
-        endif
-        if empty(glob(expand('%:p')))
-            " File does not exist on disk
-            return 0
-        endif
-        if len($TEMP) && expand('%:p:h') == $TEMP
-            " We're in a temp dir
-            return 0
-        endif
-        if len($TMP) && expand('%:p:h') == $TMP
-            " Also in temp dir
-            return 0
-        endif
-        if index(g:skipview_files, expand('%:t')) >= 0
-            " File is in skip list
-            return 0
-        endif
-        return 1
-    endfunction
     augroup vimrc
-        " save folds and cursor position on save
-        autocmd BufWritePost ?* if MakeViewCheck() | mkview | endif
-        autocmd BufReadPre ?* if MakeViewCheck() | silent loadview | endif
-
         " save clipboard on exit
         if executable("xsel")
             autocmd VimLeave * call system("xsel -ib", getreg("+"))
@@ -746,4 +716,4 @@ if has('nvim')
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 " }}}
-" vim:fdm=marker
+" vim:fdm=marker:fdl=0:
