@@ -259,6 +259,7 @@ endif
 " better folding
 set foldmethod=syntax
 set foldlevelstart=1
+set foldopen-=block " don't open folds by { } etc. motions
 
 if !empty(glob("~/.vim/plugged/vim-eightheader"))
     function! FoldText()
@@ -493,10 +494,13 @@ nnoremap <NL> i<CR><ESC>
 nnoremap <silent> <C-l> :<C-U>noh<CR><C-l>
 
 " Toggle folds with spacebar
-nnoremap <S-Space> zA
 nnoremap <Space> za
-vnoremap <S-Space> zA
 vnoremap <Space> za
+" Toggle folds recursively with S-Space (gui) or C-Space (terminal)
+nnoremap <S-Space> zA
+vnoremap <S-Space> zA
+nnoremap <NUL> zA
+nnoremap <NUL> zA
 
 " Exit insert mode with jj or jk
 inoremap jj <Esc>
