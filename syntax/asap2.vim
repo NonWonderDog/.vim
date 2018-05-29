@@ -14,7 +14,7 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 " Characters allowed in keywords
-setlocal iskeyword=a-z,A-Z,48-57,_
+setlocal iskeyword=a-z,A-Z,48-57,_,.
 
 " Control Words
 syn region asap2Section matchgroup=asap2Keyword start="/begin" end="/end" fold transparent
@@ -69,7 +69,7 @@ syn keyword asap2Function GROUP GUARD_RAILS
 
 syn keyword asap2Function HEADER
 
-syn keyword asap2Function IDENTIFICATION IN_DATA IN_MEASUREMENT
+syn keyword asap2Function IDENTIFICATION IF_DATA IN_MEASUREMENT
 syn keyword asap2Function INPUT_QUANTITY INSTANCE
 
 syn keyword asap2Function LAYOUT LEFT_SHFIT LIMITS LOC_MEASUREMENT
@@ -147,7 +147,7 @@ syn keyword asap2IOrder INDEX_INCR INDEX_DECR
 
 " Includes
 syn region asap2Include display contained start=+"+ end=+"+
-syn match  asap2Include "[-./[:alnum:]_~]\+" display contained
+syn match  asap2Include "[-.[:alnum:]_]\+" display contained
 syn match  asap2Keyword display "^\s*/include" nextgroup=asap2Include skipwhite
 
 " Comments
