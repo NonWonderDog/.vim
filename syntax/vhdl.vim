@@ -3,8 +3,8 @@
 " Maintainer:   Robert Morris <nonwonderdog@gmail.com>
 " Todo:         Don't fold between `:` and `;` in i/o lists.
 "               Define syntax clusters for combinatorial, sequential, etc.
-" VHSIC Hardware Description Language
-" Very High Scale Integrated Circuit
+"               Don't fold labelled processes, etc. twice
+" VHSIC (Very High Scale Integrated Circuit) Hardware Description Language
 
 if exists("b:current_syntax") || version < 600
   finish
@@ -44,7 +44,7 @@ syn region vhdlEntMap
         \ transparent
         \ contains=TOP
 syn region vhdlEntDef
-        \ matchgroup=vhdlStatement
+        \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
         \ end="\%(\ze\<begin\>\|\<end\>\%(\s\+\<entity\>\)\?\)"
@@ -68,9 +68,9 @@ syn region vhdlArchitecture
         \ start="\%(\<end\>\)\@3<!\s*\<architecture\>"
         \ end="\ze;"
         \ fold transparent
-        \ contains=vhdlArchVars,vhdlArchCode,vhdlStatement
+        \ contains=vhdlArchVars,vhdlArchCode,vhdlStatement,vhdlOf
 syn region vhdlArchVars
-        \ matchgroup=vhdlStatement
+        \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
         \ end="\ze\%(\<begin\>\)"
@@ -83,7 +83,6 @@ syn region vhdlArchCode
         \ end="\<end\>\%(\s\+\<architecture\>\)\?"
         \ transparent
         \ contains=TOP
-syn keyword vhdlStatement of
 
 " Configuration regions begin with "configuration", except after "end", and end 
 " with ";".  They may contain a nested declaration region that begins with "is" 
@@ -93,15 +92,39 @@ syn region vhdlConfiguration
         \ start="\%(\<end\>\)\@3<!\s*\<configuration\>"
         \ end="\ze;"
         \ fold transparent
-        \ contains=vhdlConfigDecl,vhdlStatement
+        \ contains=vhdlConfigDecl,vhdlStatement,vhdlOf
 syn region vhdlConfigDecl
-        \ matchgroup=vhdlStatement
+        \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
         \ end="\ze;"
         \ transparent
         \ contains=TOP
-syn keyword vhdlStatement of
+
+" Attribute regions begin with "attribute", and end with ";".  They may contain 
+" a nested target region that begins with "of" and ends with ";", and may 
+" contain a declaration region that begins with "is" and ends with ";".
+syn region vhdlAttributeRegion
+        \ matchgroup=vhdlStatement
+        \ start="\<attribute\>"
+        \ end="\ze;"
+        \ fold transparent
+        \ contains=@vhdlNormal,vhdlAttributeTargetRegion
+syn region vhdlAttributeTargetRegion
+        \ matchgroup=vhdlOf
+        \ contained
+        \ start="\<of\>"
+        \ end="\ze;"
+        \ transparent
+        \ contains=vhdlSpecial,vhdlReturn,vhdlAttributeTarget,vhdlAttributeDecl
+syn region vhdlAttributeDecl
+        \ matchgroup=vhdlIs
+        \ contained
+        \ start="\<is\>"
+        \ end="\ze;"
+        \ transparent
+        \ contains=@vhdlNormal
+syn keyword vhdlAttributeTarget contained package architecture configuration component entity function procedure process type subtype signal variable constant literal label
 
 " Process regions begin with "process", except after "end", and end with ";".  
 " They contain a declaration region that starts at "process" and ends at 
@@ -148,7 +171,7 @@ syn region vhdlFuncParams
         \ transparent
         \ contains=vhdlFuncParams,@vhdlNormal
 syn region vhdlFuncVars
-        \ matchgroup=vhdlStatement
+        \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
         \ end="\ze\%(<>\|\<begin\>\)"
@@ -161,8 +184,6 @@ syn region vhdlFuncCode
         \ end="\<end\>\%(\s*\<function\>\)\?"
         \ transparent
         \ contains=TOP
-syn keyword vhdlStatement return
-syn match vhdlSpecial contained ":"
 
 " Procedure regions begin with "procedure", except after "end", and end with 
 " ";".  They contain a nested parameter region that begins with "(" and ends 
@@ -185,7 +206,7 @@ syn region vhdlProcParams
         \ transparent
         \ contains=vhdlProcParams,@vhdlNormal
 syn region vhdlProcVars
-        \ matchgroup=vhdlStatement
+        \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
         \ end="\ze\%(\<begin\>\)"
@@ -212,7 +233,7 @@ syn region vhdlPackage
         \ fold transparent
         \ contains=vhdlPackBody,vhdlPackCode,vhdlPackMap
 syn region vhdlPackCode
-        \ matchgroup=vhdlStatement
+        \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
         \ end="\(\<new\>\|\<end\>\%(\s*\<package\>\)\?\)"
@@ -240,7 +261,7 @@ syn region vhdlAlias
         \ fold transparent
         \ contains=vhdlAliasType,vhdlTypeDefinition
 syn region vhdlAliasType
-        \ matchgroup=vhdlSpecial
+        \ matchgroup=vhdlIs
         \ start=":"
         \ end="\ze\<is\>"
         \ fold transparent
@@ -257,7 +278,7 @@ syn region vhdlType
         \ fold transparent
         \ contains=vhdlTypeDefinition
 syn region vhdlTypeDefinition
-        \ matchgroup=vhdlStatement
+        \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
         \ end="\ze;"
@@ -330,7 +351,7 @@ syn region vhdlCase
         \ fold transparent
         \ contains=vhdlCaseDef,vhdlParens,@vhdlNormal
 syn region vhdlCaseDef
-        \ matchgroup=vhdlConditional
+        \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
         \ end="\ze\<end\s\+case\>"
@@ -343,7 +364,6 @@ syn keyword vhdlConditional  else elsif when
 
 " VHDL keywords
 syn keyword vhdlStatement after all assert
-syn keyword vhdlStatement attribute
 syn keyword vhdlStatement block buffer bus
 syn keyword vhdlStatement context
 syn keyword vhdlStatement disconnect downto
@@ -354,13 +374,16 @@ syn keyword vhdlStatement impure in inertial inout
 syn keyword vhdlStatement label library linkage literal
 syn keyword vhdlStatement map
 syn keyword vhdlStatement new next null
-syn keyword vhdlStatement of on open others out
+syn keyword vhdlStatement on open others out
 syn keyword vhdlStatement port postponed pure
-syn keyword vhdlStatement register reject report return
+syn keyword vhdlStatement register reject report
 syn keyword vhdlStatement select severity signal shared
 syn keyword vhdlStatement to transport
 syn keyword vhdlStatement unaffected until use
 syn keyword vhdlStatement variable with
+syn keyword vhdlReturn return
+syn keyword vhdlOf contained of
+syn keyword vhdlIs contained is
 
 syn keyword vhdlType note warning error failure
 
@@ -529,6 +552,7 @@ syn match   vhdlParens   "[()]"
 syn match   vhdlSpecial  "[|\[\];.,]"
 syn match   vhdlOperator ":="
 syn match   vhdlSpecial  "<>" " make sure this isn't confused with 'not equal'
+syn match   vhdlSpecial contained ":"
 highlight def link vhdlParens vhdlSpecial
 
 
@@ -551,6 +575,10 @@ syn region  vhdlComment
 highlight def link vhdlLabel            Label
 highlight def link vhdlSpecial          Special
 highlight def link vhdlStatement        Statement
+highlight def link vhdlReturn           Statement
+highlight def link vhdlOf               Statement
+highlight def link vhdlIs               Statement
+highlight def link vhdlAttributeTarget  Type
 highlight def link vhdlStorageClass     StorageClass
 highlight def link vhdlTypedef          Typedef
 highlight def link vhdlConditional      Conditional
