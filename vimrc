@@ -625,7 +625,9 @@ let g:markdown_fenced_languages = [
 " Plugin Settings {{{
 
 " CamelCaseMotion Options
-call camelcasemotion#CreateMotionMappings('<Leader>')
+if !empty(glob("~/.vim/plugged/CamelCaseMotion/"))
+    call camelcasemotion#CreateMotionMappings('<Leader>')
+endif
 
 " Easytags Options
 set tags=./tags;,~/.vimtags " add upward search for local tags files
