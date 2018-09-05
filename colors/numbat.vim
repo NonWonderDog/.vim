@@ -409,6 +409,42 @@ call <SID>X('Function',         s:green,    '',         'none')
 call <SID>X('Keyword',          s:blue,     '',         'none')
 call <SID>X('SpecialComment',   s:cyan,     '',         'none')
 
+" VimOutliner headings
+call <SID>X('OL1',      s:bwhite, '', 'bold')
+call <SID>X('OL2',      s:red,    '', 'bold')
+call <SID>X('OL3',      s:bblue,  '', 'bold')
+call <SID>X('OL4',      s:orange, '', 'bold')
+call <SID>X('OL5',      s:green,  '', 'bold')
+call <SID>X('OL6',      s:blue,   '', 'bold')
+call <SID>X('OL7',      s:yellow, '', 'bold')
+call <SID>X('OL8',      s:violet, '', 'bold')
+call <SID>X('OL9',      s:bwhite, '', 'bold')
+
+" VimOutliner tags
+call <SID>X('outlTags', s:red,    '', 'none')
+
+" VimOutliner body text
+call <SID>X('BT1',      s:bgreen, '', 'none')
+call <SID>X('BT2',      s:bgreen, '', 'none')
+call <SID>X('BT3',      s:bgreen, '', 'none')
+call <SID>X('BT4',      s:bgreen, '', 'none')
+call <SID>X('BT5',      s:bgreen, '', 'none')
+call <SID>X('BT6',      s:bgreen, '', 'none')
+call <SID>X('BT7',      s:bgreen, '', 'none')
+call <SID>X('BT8',      s:bgreen, '', 'none')
+call <SID>X('BT9',      s:bgreen, '', 'none')
+
+" VimOutliner pre-formatted text
+call <SID>X('PT1',      s:cyan,   '', 'none')
+call <SID>X('PT2',      s:cyan,   '', 'none')
+call <SID>X('PT3',      s:cyan,   '', 'none')
+call <SID>X('PT4',      s:cyan,   '', 'none')
+call <SID>X('PT5',      s:cyan,   '', 'none')
+call <SID>X('PT6',      s:cyan,   '', 'none')
+call <SID>X('PT7',      s:cyan,   '', 'none')
+call <SID>X('PT8',      s:cyan,   '', 'none')
+call <SID>X('PT9',      s:cyan,   '', 'none')
+
 " delete functions {{{
 delf <SID>X
 delf <SID>rgb
