@@ -164,6 +164,7 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'godlygeek/tabular'
 Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-peekaboo'
 Plug 'kergoth/vim-hilinks'
 " Plug 'majutsushi/tagbar'
 Plug 'tmhedberg/matchit'
@@ -232,6 +233,9 @@ set display+=lastline   " show partial lines when wrapping
 set noequalalways       " don't resize windows on close or split
 set ttimeoutlen=10      " 10 ms delay for terminal escape codes
 set title               " update window title in console
+
+" Change shown characters for list mode
+set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
 
 " set session saving options
 set sessionoptions=help,sesdir,tabpages,winsize
@@ -307,6 +311,7 @@ set cinoptions+=g0      " don't indent C++ scope declarations
 set cinoptions+=N-s     " don't indent after namespace declaration
 
 set nowrap              " turn off text wrap
+set sidescroll=1        " better unwrapped text scrolling
 
 " Use explicit tab characters in makefiles
 autocmd FileType make setlocal noexpandtab
@@ -362,6 +367,7 @@ endif
 " Appearance {{{
 
 set guioptions=m        " hide all gui stuff except menu bar
+set guioptions+=A       " copy to clipboard on modeless selection
 set laststatus=2        " always show status line
 set ruler               " show the cursor position all the time
 set showcmd             " display incomplete commands
@@ -370,9 +376,6 @@ if WINDOWS()
     " Gnome has this as an option, but windows always makes a ding
     set visualbell          " get rid of the stupid noise
 endif
-
-" Change shown characters for list mode
-set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
 
 " Set windows font and color scheme
 colorscheme numbat
@@ -496,7 +499,7 @@ nnoremap <silent> <C-l> :<C-U>noh<CR><C-l>
 " Toggle folds with spacebar
 nnoremap <Space> za
 vnoremap <Space> za
-" Toggle folds recursively with S-Space (gui) or C-Space (terminal)
+" Toggle folds recursively with S-Space (gui) or C-Space
 nnoremap <S-Space> zA
 vnoremap <S-Space> zA
 nnoremap <NUL> zA
