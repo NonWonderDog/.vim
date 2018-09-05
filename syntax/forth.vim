@@ -20,7 +20,7 @@ syn case ignore
 
 " Some special, non-FORTH keywords
 syn keyword forthTodo contained TODO FIXME XXX
-syn match forthTodo contained 'Copyright\(\s([Cc])\)\=\(\s[0-9]\{2,4}\)\='
+syn match forthTodo contained 'Copyright\%(\s([Cc])\)\=\%(\s[0-9]\{2,4}\)\='
 
 " Characters allowed in keywords
 " I don't know if 128-255 are allowed in ANS-FORTH
@@ -134,8 +134,8 @@ syn match forthDebug "\<\~\~\>"
 syn keyword forthAssembler ASSEMBLER CODE END-CODE ;CODE FLUSH-ICACHE C,
 
 " basic character operations
-syn keyword forthCharOps (.) CHAR EXPECT FIND WORD TYPE -TRAILING EMIT KEY
-syn keyword forthCharOps KEY? TIB CR
+syn keyword forthCharOps (.) EXPECT FIND WORD TYPE -TRAILING EMIT KEY
+syn keyword forthCharOps KEY? TIB CR BL
 " recognize 'char (' or '[char] (' correctly, so it doesn't
 " highlight everything after the paren as a comment till a closing ')'
 syn match forthCharOps '\<char\s*\S\>'
@@ -191,23 +191,31 @@ syn region forthComment start='0 \[if\]' end='\[endif\]' end='\[then\]' contains
 
 " Strings
 " Just match anything that ends with " as starting a string of some sort.
-syn region forthString start=+\S*\"+ end=+"+ end=+$+ contains=@Spell
+syn region forthString matchgroup=forthString start=+S\\"+ end=+"+ end=+$+ contains=@Spell,forthEscape
+syn region forthString start=+\%([^\\]\&\S\)\+\"+ end=+"+ end=+$+ contains=@Spell
+syn keyword forthEscape \a \b \e \f \l \m \n \q \r \t \v \z \" \\ contained
+syn match forthEscape +\\"+ contained display
+syn match forthEscape "\\x\x\x" contained display
 " syn region forthString start=+S\"+ end=+"+ end=+$+ contains=@Spell
 " syn region forthString start=+C\"+ end=+"+ end=+$+ contains=@Spell
 
+" gforth dynamic strings
+syn keyword forthMemory $@ $! $+! $@len $!len $off
+syn keyword forthOperators $del $ins $split $iter
+
 " Comments
 syn region forthComment start='\<\\\>' end='$' contains=@Spell,forthTodo,forthSpaceError
-syn region forthComment start='\<\.(\>' end='\()\|$\)' contains=@Spell,forthTodo,forthSpaceError
+syn region forthComment start='\<\.(\>' end='\%()\|$\)' contains=@Spell,forthTodo,forthSpaceError
 syn region forthComment start='\<(\>' end=')' contains=@Spell,forthTodo,forthSpaceError
 
 " gforth has its makedoc.fs, then runs the result through Texinfo
 syn region forthSpecialComment start='\<\\G\>' end='$' contains=@Spell,forthSpaceError
 
 " Custom Documentation
-syn region forthSpecialComment start='\<\\!\>'  end='$' contains=@Spell,forthDocCmd,forthDocPrmCmd,forthDocTodo oneline keepend
-syn region forthSpecialComment start='\<\\\\\>' end='$' contains=@Spell,forthDocCmd,forthDocPrmCmd,forthDocTodo oneline keepend
-syn region forthSpecialComment start='\<\\>\>'  end='$' contains=@Spell,forthDocCmd,forthDocPrmCmd,forthDocTodo oneline keepend
-syn region forthSpecialComment start='\<\\<\>'  end='$' contains=@Spell,forthDocCmd,forthDocPrmCmd,forthDocTodo oneline keepend
+syn region forthSpecialComment start='\<\\!\>'  end='$' contains=@Spell,forthDocCmd,forthDocEscape,forthDocPrmCmd,forthDocTodo oneline keepend
+syn region forthSpecialComment start='\<\\\\\>' end='$' contains=@Spell,forthDocCmd,forthDocEscape,forthDocPrmCmd,forthDocTodo oneline keepend
+syn region forthSpecialComment start='\<\\>\>'  end='$' contains=@Spell,forthDocCmd,forthDocEscape,forthDocPrmCmd,forthDocTodo oneline keepend
+syn region forthSpecialComment start='\<\\<\>'  end='$' contains=@Spell,forthDocCmd,forthDocEscape,forthDocPrmCmd,forthDocTodo oneline keepend
 
 syn match forthDocSinglePar "\k\+\>" contained " one word parameter
 
@@ -215,16 +223,23 @@ syn match forthDocError  "\S\+\>"              contained " malformed A2L paramet
 syn match forthDocA2lPar "[][A-Za-z_0-9.]\+\>" contained " A2L-compatible parameter
 syn cluster forthDocA2lPar contains=forthDocError,forthDocA2lPar
 
+syn match forthDocNumPar "[][0-9.]\+\>" contained " A2L-compatible parameter
+syn cluster forthDocNumPar contains=forthDocError,forthDocNumPar
+
 syn keyword forthDocCmd contained @brief @details
 syn keyword forthDocCmd contained @{ @}
+syn keyword forthDocCmd contained @root
+syn match forthDocEscape contained "\s@@"
 
-syn keyword forthDocCmd contained @param @return @returns @retval           nextgroup=forthDocSinglePar skipwhite
-syn keyword forthDocCmd contained @defgroup @ingroup @addtogroup @weakgroup nextgroup=@forthDocA2lPar   skipwhite
-syn keyword forthDocCmd contained @prgtype                                  nextgroup=@forthDocA2lPar   skipwhite
-syn keyword forthDocCmd contained @module                                   nextgroup=@forthDocA2lPar   skipwhite
+syn keyword forthDocCmd contained @param @retval                 nextgroup=forthDocSinglePar skipwhite
+syn keyword forthDocCmd contained @defgroup @ingroup @addtogroup nextgroup=@forthDocA2lPar   skipwhite
+syn keyword forthDocCmd contained @prgtype                       nextgroup=@forthDocA2lPar   skipwhite
+syn keyword forthDocCmd contained @module                        nextgroup=@forthDocA2lPar   skipwhite
+syn keyword forthDocCmd contained @num @den @offset @min @max    nextgroup=@forthDocNumPar   skipwhite
 
-syn region forthDocPrmCmd contained matchgroup=forthDocCommand start="@version " end="$" oneline
-syn region forthDocPrmCmd contained matchgroup=forthDocCommand start="@req "     end="$" oneline
+syn region forthDocPrmCmd contained matchgroup=forthDocCmd start="@req "     end="\%($\|\s@\%(\S\&[^@]\)\)"me=s-1 oneline contains=forthDocEscape
+syn region forthDocPrmCmd contained matchgroup=forthDocCmd start="@unit "    end="\%($\|\s@\%(\S\&[^@]\)\)"me=s-1 oneline contains=forthDocEscape
+syn region forthDocPrmCmd contained matchgroup=forthDocCmd start="@version " end="\%($\|\s@\%(\S\&[^@]\)\)"me=s-1 oneline contains=forthDocEscape
 
 syn keyword forthDocTodo contained @todo @bug @note @warning @attention
 
@@ -263,12 +278,15 @@ hi def link forthConversion     String
 hi def link forthForth          Statement
 hi def link forthVocs           Statement
 hi def link forthString         String
+hi def link forthEscape         Special
 hi def link forthComment        Comment
 hi def link forthSpecialComment SpecialComment
 hi def link forthDocCmd         Special
+hi def link forthDocEscape      Character
 hi def link forthDocPrmCmd      String
 hi def link forthDocSinglePar   Identifier
-hi def link forthDocA2lPar   Identifier
+hi def link forthDocA2lPar      Identifier
+hi def link forthDocNumPar      Number
 hi def link forthDocTodo        Todo
 hi def link forthDocError       Error
 hi def link forthClassDef       Define

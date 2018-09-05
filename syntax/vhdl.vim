@@ -35,7 +35,7 @@ syn region vhdlEntity
         \ start="\%(\<end\>\)\@3<!\s*\<entity\>"
         \ end="\ze;"
         \ fold transparent
-        \ contains=vhdlEntMap,vhdlEntDef,vhdlEntCode
+        \ contains=vhdlEntMap,vhdlEntDef,vhdlEntCode,vhdlParens,vhdlSpecial,vhdlComment
 syn region vhdlEntMap
         \ matchgroup=vhdlStatement
         \ contained
@@ -162,7 +162,7 @@ syn region vhdlFunc
         \ start="\%(\<end\>\)\@3<!\s*\<function\>"
         \ end="\ze\%(;\|<>\)"
         \ fold transparent
-        \ contains=vhdlFuncParams,vhdlFuncVars,vhdlFuncCode,vhdlStatement,vhdlType
+        \ contains=vhdlFuncParams,vhdlFuncVars,vhdlFuncCode,vhdlStatement,vhdlType,vhdlReturn
 syn region vhdlFuncParams
         \ matchgroup=vhdlSpecial
         \ contained
@@ -249,11 +249,9 @@ syn region vhdlPackMap
 syn keyword vhdlPackBody body
 highlight def link vhdlPackBody vhdlStatement
 
-" Type regions begin with "type" and end with ";".  They may contain a type 
+" Alias regions begin with "alias" and end with ";".  They may contain a type 
 " region that starts with ":" and ends with "is".  They contain a definition 
-" regision that starts with "is" and ends with ";".  The definition region may 
-" contain a record region that begins with "record" and ends with "end record".
-" Subtypes and aliases are also covered here.
+" regision that starts with "is" and ends with ";".
 syn region vhdlAlias
         \ matchgroup=vhdlStatement
         \ start="\<alias\>"
@@ -271,6 +269,8 @@ syn region vhdlAliasType
 " region that starts with "is" and ends with ";".  The definition region may 
 " contain a record region that begins with "record" and ends with "end record".
 " Subtypes and aliases are also covered here.
+" TODO Need to add "is protected" and "is protected body", but I don't 
+" understand them.
 syn region vhdlType
         \ matchgroup=vhdlStatement
         \ start="\%(\<subtype\>\|\<type\>\)"
@@ -283,13 +283,14 @@ syn region vhdlTypeDefinition
         \ start="\<is\>"
         \ end="\ze;"
         \ transparent
-        \ contains=TOP
+        \ contains=vhdlRecord,vhdlParens,vhdlOf,@vhdlNormal
 syn region vhdlRecord
         \ matchgroup=vhdlStatement
+        \ contained
         \ start="\<record\>"
         \ end="\<end\s\+record\>"
         \ transparent
-        \ contains=TOP
+        \ contains=vhdlParens,@vhdlNormal
 
 " Fold every labelled statement, from colon to semicolon.
 syn region vhdlLabel
@@ -346,15 +347,15 @@ syn region vhdlComponent
 
 syn region vhdlCase
         \ matchgroup=vhdlConditional
-        \ start="\<case\>"
-        \ end="\<end\s\+case\>"
+        \ start="\<case\>?\?"
+        \ end="\<end\s\+case\>?\?"
         \ fold transparent
         \ contains=vhdlCaseDef,vhdlParens,@vhdlNormal
 syn region vhdlCaseDef
         \ matchgroup=vhdlIs
         \ contained
         \ start="\<is\>"
-        \ end="\ze\<end\s\+case\>"
+        \ end="\ze\<end\s\+case\>?\?"
         \ transparent
         \ contains=TOP
 
@@ -413,7 +414,7 @@ syn keyword vhdlFloat MATH_PI MATH_2_PI MATH_1_OVER_PI MATH_PI_OVER_2 MATH_PI_OV
 syn keyword vhdlFloat MATH_LOG_OF_2 MATH_LOG_OF_10 MATH_LOG2_OF_E MATH_LOG10_OF_E
 syn keyword vhdlFloat MATH_SQRT_2 MATH_1_OVER_SQRT_PI
 syn keyword vhdlFloat MATH_DEG_TO_RAD MATH_RAD_TO_DEG
-syn keyword vhdlFunction sign ceil floor round trunc realmax realmin uniform sqrt cbrt exp log log2 log10
+syn keyword vhdlFunction abs sign ceil floor round trunc realmax realmin uniform sqrt cbrt exp log log2 log10
 syn keyword vhdlFunction sin cos tan arcsin arccos arctan sinh cosh tanh arcsinh arccosh arctanh
 " TEXtIO functions
 syn keyword vhdlFunction readline writeline
@@ -541,7 +542,7 @@ syn match vhdlNumber "\<\d\+\.\d\+\s\+\%(\%([fpnum]s\)\|\%(sec\)\|\%(min\)\|\%(h
 syn keyword vhdlFunction minimum maximum rising_edge falling_edge now
 syn keyword vhdlOperator and nand or nor xor xnor
 syn keyword vhdlOperator rol ror sla sll sra srl
-syn keyword vhdlOperator mod rem abs not
+syn keyword vhdlOperator mod rem not
 syn keyword vhdlOperator =>
 syn keyword vhdlOperator **
 syn match   vhdlOperator "[-+*/<>&][<>]\@!"
