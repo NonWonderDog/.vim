@@ -195,7 +195,8 @@ Plug 'w0rp/ale'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
 
-Plug 'idbrii/vim-focusclip', empty($MSYSTEM) ? {} : { 'for': [] }
+Plug 'idbrii/vim-focusclip', and(has('clipboard'),empty($MSYSTEM)) ? {} : { 'for': [] }
+Plug 'kana/vim-fakeclip', has('clipboard') ? { 'for': [] } : {}
 Plug 'wincent/terminus'
 Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
