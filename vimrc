@@ -735,6 +735,7 @@ let g:pandoc#syntax#style#use_definition_lists = 1
 
 "ale
 let g:ale_linters = {'rust': ['rls']}
+let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fixers = {'rust': ['rustfmt']}
 
 "rust
