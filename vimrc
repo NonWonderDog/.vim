@@ -546,9 +546,9 @@ endif
 " nnoremap <F5> :make<CR>
 " inoremap <F5> <Esc>:make<CR>
 " vnoremap <F5> :<C-u>make<CR>
-nnoremap <F5> :botright copen \| wincmd p \| AsyncRun -program=make @<CR>
-inoremap <F5> <Esc>:botright copen \| wincmd p \| AsyncRun -program=make @<CR>
-vnoremap <F5> :<C-u>botright copen \| wincmd p \| AsyncRun -program=make @<CR>
+nnoremap <F5> :AsyncRun -program=make @<CR>
+inoremap <F5> <Esc>:AsyncRun -program=make @<CR>
+vnoremap <F5> :<C-u>AsyncRun -program=make @<CR>
 
 " Step through quickfix with F7 F8
 nnoremap <silent> <F7> :<C-u>cp<CR>
@@ -740,6 +740,12 @@ let g:ale_fixers = {'rust': ['rustfmt']}
 
 "rust
 let g:cargo_makeprg_params = 'build'
+
+"asyncrun
+" refresh quickfix list after completion
+let g:asyncrun_exit = "silent copen | wincmd p"
+let g:asyncrun_open = 10
+let g:asyncrun_trim = 1
 " }}}
 " Neovim {{{
 if has('nvim')
