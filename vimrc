@@ -173,6 +173,10 @@ Plug 'tomtom/tcomment_vim'
 Plug 'mbbill/undotree'
 Plug 'machakann/vim-sandwich'
 
+Plug 'rust-lang/rust.vim'
+
+Plug 'skywind3000/asyncrun.vim'
+
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
@@ -188,7 +192,6 @@ Plug 'vim-scripts/a.vim'
 
 Plug 'w0rp/ale'
 
-Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
 
@@ -525,6 +528,14 @@ if $TERM =~ "^tmux"
     nnoremap <silent> <A-k> :<C-u>TmuxNavigateUp<CR>     
     nnoremap <silent> <A-l> :<C-u>TmuxNavigateRight<CR>  
 else
+    tnoremap <silent> <Esc>h <C-w>h
+    tnoremap <silent> <Esc>j <C-w>j
+    tnoremap <silent> <Esc>k <C-w>k
+    tnoremap <silent> <Esc>l <C-w>l
+    nnoremap <silent> <Esc>h :<C-u>wincmd h<CR>
+    nnoremap <silent> <Esc>j :<C-u>wincmd j<CR>
+    nnoremap <silent> <Esc>k :<C-u>wincmd k<CR>
+    nnoremap <silent> <Esc>l :<C-u>wincmd l<CR>
     nnoremap <silent> <A-h> :<C-u>wincmd h<CR>
     nnoremap <silent> <A-j> :<C-u>wincmd j<CR>
     nnoremap <silent> <A-k> :<C-u>wincmd k<CR>
@@ -532,9 +543,12 @@ else
 endif
 
 " Make with F5
-nnoremap <F5> :make<CR>
-inoremap <F5> <Esc>:make<CR>
-vnoremap <F5> :<C-u>make<CR>
+" nnoremap <F5> :make<CR>
+" inoremap <F5> <Esc>:make<CR>
+" vnoremap <F5> :<C-u>make<CR>
+nnoremap <F5> :botright copen \| wincmd p \| AsyncRun -program=make @<CR>
+inoremap <F5> <Esc>:botright copen \| wincmd p \| AsyncRun -program=make @<CR>
+vnoremap <F5> :<C-u>botright copen \| wincmd p \| AsyncRun -program=make @<CR>
 
 " Step through quickfix with F7 F8
 nnoremap <silent> <F7> :<C-u>cp<CR>
@@ -718,6 +732,13 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["c","cpp","forth","sh","vhdl","ma
 let g:pandoc#syntax#style#emphases = 1
 let g:pandoc#syntax#style#underline_special = 1
 let g:pandoc#syntax#style#use_definition_lists = 1
+
+"ale
+let g:ale_linters = {'rust': ['rls']}
+let g:ale_fixers = {'rust': ['rustfmt']}
+
+"rust
+let g:cargo_makeprg_params = 'build'
 " }}}
 " Neovim {{{
 if has('nvim')
