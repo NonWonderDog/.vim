@@ -547,9 +547,9 @@ endif
 " nnoremap <F5> :make<CR>
 " inoremap <F5> <Esc>:make<CR>
 " vnoremap <F5> :<C-u>make<CR>
-nnoremap <F5> :AsyncRun -program=make<CR>
-inoremap <F5> <Esc>:AsyncRun -program=make<CR>
-vnoremap <F5> :<C-u>AsyncRun -program=make<CR>
+nnoremap <F5> :AsyncRun -cwd=<root> -program=make<CR>
+inoremap <F5> <Esc>:AsyncRun -cwd=<root> -program=make<CR>
+vnoremap <F5> :<C-u>AsyncRun -cwd=<root> -program=make<CR>
 
 " Make tests with F6
 nnoremap <F6> :AsyncRun -program=make test<CR>
@@ -751,6 +751,8 @@ let g:ale_fixers = {'rust': ['rustfmt']}
 " refresh quickfix list after completion
 let g:asyncrun_exit = "silent copen | wincmd p"
 let g:asyncrun_open = 10
+let g:asyncrun_save = 1
+let g:asyncrun_auto = "make"
 " }}}
 " Neovim {{{
 if has('nvim')
