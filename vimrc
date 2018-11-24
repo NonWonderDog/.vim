@@ -181,7 +181,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-characterize'
 
 Plug 'vimoutliner/vimoutliner'
 
@@ -547,9 +547,14 @@ endif
 " nnoremap <F5> :make<CR>
 " inoremap <F5> <Esc>:make<CR>
 " vnoremap <F5> :<C-u>make<CR>
-nnoremap <F5> :AsyncRun -program=make @<CR>
-inoremap <F5> <Esc>:AsyncRun -program=make @<CR>
-vnoremap <F5> :<C-u>AsyncRun -program=make @<CR>
+nnoremap <F5> :AsyncRun -program=make<CR>
+inoremap <F5> <Esc>:AsyncRun -program=make<CR>
+vnoremap <F5> :<C-u>AsyncRun -program=make<CR>
+
+" Make tests with F6
+nnoremap <F6> :AsyncRun -program=make test<CR>
+inoremap <F6> <Esc>:AsyncRun -program=make test<CR>
+vnoremap <F6> :<C-u>AsyncRun -program=make test<CR>
 
 " Step through quickfix with F7 F8
 nnoremap <silent> <F7> :<C-u>cp<CR>
@@ -579,6 +584,9 @@ endif
 " CDC = Change to Directory of Current file
 command CDC cd %:p:h
 command LCDC lcd %:p:h
+
+" Make = asynchronous :make
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 
 " Output,OutputWin,OutputTab simplify grabbing output from ex commands
 function! RedirMessages(msgcmd, destcmd)
@@ -739,14 +747,10 @@ let g:ale_linters = {'rust': ['rls']}
 let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fixers = {'rust': ['rustfmt']}
 
-"rust
-let g:cargo_makeprg_params = 'build'
-
 "asyncrun
 " refresh quickfix list after completion
 let g:asyncrun_exit = "silent copen | wincmd p"
 let g:asyncrun_open = 10
-let g:asyncrun_trim = 1
 " }}}
 " Neovim {{{
 if has('nvim')
