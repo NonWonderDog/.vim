@@ -63,7 +63,7 @@
             "        set shellredir=>%s\ 2>&1
             "    endif
             "    set shellslash
-            "    " set shell configuration here to avoid confusing early-loading 
+            "    " set shell configuration here to avoid confusing early-loading
             "    " plugins
             "    set shellcmdflag=-c
             "    set shellpipe=>
@@ -191,6 +191,7 @@ Plug 'vim-pandoc/vim-pandoc-after'
 Plug 'vim-scripts/a.vim'
 
 Plug 'w0rp/ale'
+Plug 'markonm/traces.vim'
 
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-reload'
@@ -297,7 +298,7 @@ set synmaxcol=400
 set wildmenu
 set wildmode=full
 
-" Tabs should align to 8 columns to match posix terminal output (and github), 
+" Tabs should align to 8 columns to match posix terminal output (and github),
 " but I prefer 4 spaces for indentation.
 " This is a compromise configuration in which tabs are always 8 spaces wide, 
 " except at the beginning of a line where 4 space indents are used.  This way 
@@ -406,7 +407,7 @@ if $COLORTERM == "gnome-terminal"
     " Use 256 color mode
     set t_Co=256
     " use autocommands since DECSCUSR isn't supported yet
-    " This isn't really optimal since it changes the default profile for all 
+    " This isn't really optimal since it changes the default profile for all
     " terminal windows, but it's the only solution that works.
     let &t_SI=""
     let &t_EI=""
@@ -524,10 +525,10 @@ if $TERM =~ "^tmux"
     nnoremap <silent> <Esc>j :<C-u>TmuxNavigateDown<CR>
     nnoremap <silent> <Esc>k :<C-u>TmuxNavigateUp<CR>
     nnoremap <silent> <Esc>l :<C-u>TmuxNavigateRight<CR>
-    nnoremap <silent> <A-h> :<C-u>TmuxNavigateLeft<CR>   
-    nnoremap <silent> <A-j> :<C-u>TmuxNavigateDown<CR>   
-    nnoremap <silent> <A-k> :<C-u>TmuxNavigateUp<CR>     
-    nnoremap <silent> <A-l> :<C-u>TmuxNavigateRight<CR>  
+    nnoremap <silent> <A-h> :<C-u>TmuxNavigateLeft<CR>
+    nnoremap <silent> <A-j> :<C-u>TmuxNavigateDown<CR>
+    nnoremap <silent> <A-k> :<C-u>TmuxNavigateUp<CR>
+    nnoremap <silent> <A-l> :<C-u>TmuxNavigateRight<CR>
 else
     tnoremap <silent> <Esc>h <C-w>h
     tnoremap <silent> <Esc>j <C-w>j
@@ -551,7 +552,7 @@ nnoremap <F5> :AsyncRun -cwd=<root> -program=make<CR>
 inoremap <F5> <Esc>:AsyncRun -cwd=<root> -program=make<CR>
 vnoremap <F5> :<C-u>AsyncRun -cwd=<root> -program=make<CR>
 
-" Make tests with F6
+" Run tests with F6
 nnoremap <F6> :AsyncRun -program=make test<CR>
 inoremap <F6> <Esc>:AsyncRun -program=make test<CR>
 vnoremap <F6> :<C-u>AsyncRun -program=make test<CR>
@@ -737,15 +738,24 @@ let g:pandoc#folding#fdc = 4
 let g:pandoc#formatting#mode = 'ha'
 let g:pandoc#syntax#conceal#urls = 0
 let g:pandoc#syntax#codeblocks#embeds#use = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["c","cpp","forth","sh","vhdl","makefile=make", "asm"]
+let g:pandoc#syntax#codeblocks#embeds#langs = ["c","cpp","sh","vhdl","makefile=make","asm"] " 'forth' breaks word boundaries...
 let g:pandoc#syntax#style#emphases = 1
 let g:pandoc#syntax#style#underline_special = 1
 let g:pandoc#syntax#style#use_definition_lists = 1
 
 "ale
-let g:ale_linters = {'rust': ['rls']}
+let g:ale_linters = {
+\   'cpp': ['clangd','clangcheck','clangtidy'],
+\   'rust': ['rls']
+\}
 let g:ale_rust_rls_toolchain = 'stable'
-let g:ale_fixers = {'rust': ['rustfmt']}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines'],
+\   'cpp': ['clang-format'],
+\   'rust': ['rustfmt']
+\}
+let g:ale_cpp_gcc_options = '-std=c++17 -Wall -Wextra'
+let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wextra'
 
 "asyncrun
 " refresh quickfix list after completion
