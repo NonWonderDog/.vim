@@ -18,7 +18,7 @@ set cpo&vim
 " case is not significant in VHDL
 syn case ignore
 
-syn cluster vhdlNormal contains=vhdlComment,vhdlSpecial,vhdlStorageClass,vhdlStatement,vhdlFunction,vhdlOperator,vhdlNumber,vhdlFloat,vhdlLogic,vhdlBoolean,vhdlString,vhdlCharacter,vhdlAttribute,vhdlType
+syn cluster vhdlNormal contains=vhdlComment,vhdlStorageClass,vhdlStatement,vhdlFunction,vhdlOperator,vhdlNumber,vhdlFloat,vhdlLogic,vhdlBoolean,vhdlString,vhdlCharacter,vhdlAttribute,vhdlType,vhdlSpecial
 
 " Entity regions begin with "entity", except after "end", and end with ";".  
 " They may contain a nested definition region that begins with "is" and ends 
@@ -553,7 +553,7 @@ syn match   vhdlParens   "[()]"
 syn match   vhdlSpecial  "[|\[\];.,]"
 syn match   vhdlOperator ":="
 syn match   vhdlSpecial  "<>" " make sure this isn't confused with 'not equal'
-syn match   vhdlSpecial contained ":"
+syn match   vhdlSpecial contained ":=\@!"
 highlight def link vhdlParens vhdlSpecial
 
 
