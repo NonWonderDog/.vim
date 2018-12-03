@@ -93,14 +93,14 @@ syn match forthColonDef '\<macro:\s*[^ \t]\+\>'
 syn keyword forthEndOfColonDef ; ;M
 syn keyword forthEndOfClassDef ;CLASS
 syn keyword forthEndOfObjectDef ;OBJECT
-syn keyword forthDefine CONSTANT 2CONSTANT FCONSTANT VARIABLE 2VARIABLE
-syn keyword forthDefine FVARIABLE CREATE USER VALUE DEFER IS ACTION-OF DOES>
+syn keyword forthDefine VARIABLE 2VARIABLE FVARIABLE CVARIABLE
+syn keyword forthDefine CREATE USER VALUE DEFER IS DOES>
 syn keyword forthDefine IMMEDIATE COMPILE-ONLY COMPILE RESTRICT INTERPRET
 syn keyword forthDefine EXECUTE LITERAL CREATE-INTERPRET/COMPILE
-syn keyword forthDefine INTERPRETATION> <INTERPRETATION ] LASTXT
+syn keyword forthDefine INTERPRETATION> <INTERPRETATION ] ]L LASTXT
 syn keyword forthDefine COMPILATION> <COMPILATION COMP' POSTPONE, FIND-NAME
 syn keyword forthDefine NAME>INT NAME?INT NAME>COMP NAME>STRING STATE C;
-syn keyword forthDefine CVARIABLE , 2, F, C,
+syn keyword forthDefine , 2, F, C,
 syn match forthDefine "\<\[IF]\>"
 syn match forthDefine "\<\[IFDEF]\>"
 syn match forthDefine "\<\[IFUNDEF]\>"
@@ -119,12 +119,17 @@ syn match forthDefine "\<\[WHILE]\>"
 syn match forthDefine "\<\[REPEAT]\>"
 syn match forthDefine "\<\[\>"
 
+" set constants to a different color because they're treated differently in my 
+" FORTH
+syn keyword forthConstant CONSTANT 2CONSTANT FCONSTANT
+
 " Interpting words
-syn match forthDefine 'POSTPONE\s\+\k\+'
-syn match forthDefine '\[COMPILE\]\s\+\k\+'
-syn match forthDefine '\'\s\+\k\+'
-syn match forthDefine '\[\'\]\s\+\k\+'
-syn match forthDefine '\[COMP\'\]\s\+\k\+'
+syn match forthDefine '\<POSTPONE\s\+\k\+'
+syn match forthDefine '\<\[COMPILE\]\s\+\k\+'
+syn match forthDefine '\<\'\s\+\k\+'
+syn match forthDefine '\<\[\'\]\s\+\k\+'
+syn match forthDefine '\<ACTION-OF\s\+\k\+'
+syn match forthDefine '\<\[COMP\'\]\s\+\k\+'
 
 " debugging
 syn keyword forthDebug PRINTDEBUGDATA .DEBUGLINE
@@ -154,7 +159,7 @@ syn keyword forthForth BODY> ASSERT( ASSERT0( ASSERT1( ASSERT2( ASSERT3( )
 
 " vocabularies
 syn keyword forthVocs ONLY FORTH ALSO ROOT SEAL VOCS ORDER CONTEXT PREVIOUS #VOCS
-syn keyword forthVocs VOCABULARY DEFINITIONS
+syn keyword forthVocs VOCABULARY DEFINITIONS WORDLIST
 
 " File keywords
 syn keyword forthFileMode R/O R/W W/O BIN
@@ -191,10 +196,10 @@ syn region forthComment start='0 \[if\]' end='\[endif\]' end='\[then\]' contains
 
 " Strings
 " Just match anything that ends with " as starting a string of some sort.
-syn region forthString matchgroup=forthString start=+S\\"+ end=+"+ end=+$+ contains=@Spell,forthEscape
-syn region forthString start=+\%([^\\]\&\S\)\+\"+ end=+"+ end=+$+ contains=@Spell
-syn keyword forthEscape \a \b \e \f \l \m \n \q \r \t \v \z \" \\ contained
-syn match forthEscape +\\"+ contained display
+syn region forthString matchgroup=forthString start=+S\\"\>+ end=+"+ end=+$+ contains=@Spell,forthEscape
+syn region forthString matchgroup=forthString start=+.\\"\>+ end=+"+ end=+$+ contains=@Spell,forthEscape
+syn region forthString start=+\%([^\\]\&\S\)\+\"\>+ end=+"+ end=+$+ contains=@Spell
+syn match forthEscape +\\[\"abeflmnqrtvz]+ contained display
 syn match forthEscape "\\x\x\x" contained display
 " syn region forthString start=+S\"+ end=+"+ end=+$+ contains=@Spell
 " syn region forthString start=+C\"+ end=+"+ end=+$+ contains=@Spell
@@ -223,19 +228,23 @@ syn match forthDocError  "\S\+\>"              contained " malformed A2L paramet
 syn match forthDocA2lPar "[][A-Za-z_0-9.]\+\>" contained " A2L-compatible parameter
 syn cluster forthDocA2lPar contains=forthDocError,forthDocA2lPar
 
-syn match forthDocNumPar "[][0-9.]\+\>" contained " A2L-compatible parameter
+syn match forthDocNumPar "[][A-Fa-fx0-9.]\+\>" contained " A2L-compatible parameter
 syn cluster forthDocNumPar contains=forthDocError,forthDocNumPar
 
-syn keyword forthDocCmd contained @brief @details
+syn match forthDocNumPar1 "[][A-Fa-fx0-9.]\+\>" contained nextgroup=@forthDocA2lPar skipwhite " A2L-compatible parameter
+syn cluster forthDocNumTextPar contains=forthDocError,forthDocNumPar1
+
+syn keyword forthDocCmd contained @brief @details @n @file
 syn keyword forthDocCmd contained @{ @}
 syn keyword forthDocCmd contained @root
 syn match forthDocEscape contained "\s@@"
 
-syn keyword forthDocCmd contained @param @retval                 nextgroup=forthDocSinglePar skipwhite
-syn keyword forthDocCmd contained @defgroup @ingroup @addtogroup nextgroup=@forthDocA2lPar   skipwhite
-syn keyword forthDocCmd contained @prgtype                       nextgroup=@forthDocA2lPar   skipwhite
-syn keyword forthDocCmd contained @module                        nextgroup=@forthDocA2lPar   skipwhite
-syn keyword forthDocCmd contained @num @den @offset @min @max    nextgroup=@forthDocNumPar   skipwhite
+syn keyword forthDocCmd contained @param @retval                    nextgroup=forthDocSinglePar   skipwhite
+syn keyword forthDocCmd contained @defgroup @ingroup @addtogroup    nextgroup=@forthDocA2lPar     skipwhite
+syn keyword forthDocCmd contained @prgtype                          nextgroup=@forthDocA2lPar     skipwhite
+syn keyword forthDocCmd contained @module                           nextgroup=@forthDocA2lPar     skipwhite
+syn keyword forthDocCmd contained @num @den @offset @min @max @enum nextgroup=@forthDocNumPar     skipwhite
+syn keyword forthDocCmd contained @bitmask                          nextgroup=@forthDocNumTextPar skipwhite
 
 syn region forthDocPrmCmd contained matchgroup=forthDocCmd start="@req "     end="\%($\|\s@\%(\S\&[^@]\)\)"me=s-1 oneline contains=forthDocEscape
 syn region forthDocPrmCmd contained matchgroup=forthDocCmd start="@unit "    end="\%($\|\s@\%(\S\&[^@]\)\)"me=s-1 oneline contains=forthDocEscape
@@ -271,6 +280,7 @@ hi def link forthLoop           Repeat
 hi def link forthColonDef       Define
 hi def link forthEndOfColonDef  Define
 hi def link forthDefine         Define
+hi def link forthConstant       Type
 hi def link forthDebug          Debug
 hi def link forthAssembler      Include
 hi def link forthCharOps        Character
@@ -287,6 +297,7 @@ hi def link forthDocPrmCmd      String
 hi def link forthDocSinglePar   Identifier
 hi def link forthDocA2lPar      Identifier
 hi def link forthDocNumPar      Number
+hi def link forthDocNumPar1     Number
 hi def link forthDocTodo        Todo
 hi def link forthDocError       Error
 hi def link forthClassDef       Define
