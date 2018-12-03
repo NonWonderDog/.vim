@@ -193,8 +193,7 @@ Plug 'vim-scripts/a.vim'
 Plug 'w0rp/ale'
 Plug 'markonm/traces.vim'
 
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-reload'
+" Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'idbrii/vim-focusclip', and(has('clipboard'),empty($MSYSTEM)) ? {} : { 'for': [] }
 Plug 'kana/vim-fakeclip', has('clipboard') ? { 'for': [] } : {}
@@ -286,7 +285,8 @@ set textwidth=79        " autoformat to 79-column text
 set formatoptions-=t    " don't autoformat text (=code) by default
 set formatoptions+=cjwa " use auto-format for comments, using trailing space for continuation
 set formatoptions+=1    " don't break after single letter words
-set formatoptions+=mB   " support CJK line break rules more properly
+" set formatoptions+=mB   " support CJK line break rules more properly
+set formatoptions+=M    " support unicode math more properly
 
 " set compatibility options
 set cpoptions+=J        " sentences are separated by two spaces
@@ -529,11 +529,15 @@ if $TERM =~ "^tmux"
     nnoremap <silent> <A-j> :<C-u>TmuxNavigateDown<CR>
     nnoremap <silent> <A-k> :<C-u>TmuxNavigateUp<CR>
     nnoremap <silent> <A-l> :<C-u>TmuxNavigateRight<CR>
+    tnoremap <silent> <Esc>h <C-w>:<C-u>TmuxNavigateLeft<CR>
+    tnoremap <silent> <Esc>j <C-w>:<C-u>TmuxNavigateDown<CR>
+    tnoremap <silent> <Esc>k <C-w>:<C-u>TmuxNavigateUp<CR>
+    tnoremap <silent> <Esc>l <C-w>:<C-u>TmuxNavigateRight<CR>
+    tnoremap <silent> <A-h> <C-w>:<C-u>TmuxNavigateLeft<CR>
+    tnoremap <silent> <A-j> <C-w>:<C-u>TmuxNavigateDown<CR>
+    tnoremap <silent> <A-k> <C-w>:<C-u>TmuxNavigateUp<CR>
+    tnoremap <silent> <A-l> <C-w>:<C-u>TmuxNavigateRight<CR>
 else
-    tnoremap <silent> <Esc>h <C-w>h
-    tnoremap <silent> <Esc>j <C-w>j
-    tnoremap <silent> <Esc>k <C-w>k
-    tnoremap <silent> <Esc>l <C-w>l
     nnoremap <silent> <Esc>h :<C-u>wincmd h<CR>
     nnoremap <silent> <Esc>j :<C-u>wincmd j<CR>
     nnoremap <silent> <Esc>k :<C-u>wincmd k<CR>
@@ -542,6 +546,14 @@ else
     nnoremap <silent> <A-j> :<C-u>wincmd j<CR>
     nnoremap <silent> <A-k> :<C-u>wincmd k<CR>
     nnoremap <silent> <A-l> :<C-u>wincmd l<CR>
+    tnoremap <silent> <Esc>h <C-w>h
+    tnoremap <silent> <Esc>j <C-w>j
+    tnoremap <silent> <Esc>k <C-w>k
+    tnoremap <silent> <Esc>l <C-w>l
+    tnoremap <silent> <A-h> <C-w>h
+    tnoremap <silent> <A-j> <C-w>j
+    tnoremap <silent> <A-k> <C-w>k
+    tnoremap <silent> <A-l> <C-w>l
 endif
 
 " Make with F5
