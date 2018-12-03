@@ -18,3 +18,6 @@ plugged
 
 # silly Windows recursive symlink??
 init.vim
+
+# gutentags something or other
+tags.temp
