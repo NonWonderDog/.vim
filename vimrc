@@ -649,6 +649,8 @@ if has("autocmd")
 endif
 " }}}
 " Syntax Options {{{
+" Load doxygen in supported files
+let g:load_doxygen_syntax=1
 " Use LaTeX instead of TeX
 let g:tex_flavor = "latex"
 " Apply language-specific highlighting inside markdown fenced code blocks
