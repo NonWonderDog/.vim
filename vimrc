@@ -1,139 +1,141 @@
 " Bob Morris .vimrc file
 " Incorpoating some ideas from spf13
-" Tested on Windows 7 and Ubuntu 16.04
+" Tested on Windows 10 and Arch Linux
 " Using Vim 8.0
 
 " Environment {{{
-    " Identify platform {{{
-        silent function! OSX()
-            return has('macunix')
-        endfunction
-        silent function! LINUX()
-            return has('unix') && !has('macunix') && !has('win32unix')
-        endfunction
-        silent function! WINDOWS()
-            return  (has('win32') || has('win64'))
-        endfunction
-    " }}}
+" Identify platform {{{
+silent function! OSX()
+    return has('macunix')
+endfunction
 
-    " Basics {{{
-        set nocompatible
-        if !WINDOWS()
-            set shell=sh
-        endif
-    " }}}
+silent function! LINUX()
+    return has('unix') && !has('macunix') && !has('win32unix')
+endfunction
 
-    " Unicode/Japanese Support {{{
-        if has("multi_byte")
-            " use unicode
-            set encoding=utf-8
-            set fileencoding=utf-8
-            scriptencoding utf-8
-            if WINDOWS()
-                " The "default" codepage on English Windows is "latin1", which 
-                " is wrong. It should be "cp1252".  Unfortunately that means we 
-                " can't use "default" here, so you have to change this if 
-                " you're on non-English Windows.
-                setglobal fileencodings=ucs-bom,utf-8,sjis,cp1252
-            else
-                " recognize SJIS on Linux
-                setglobal fileencodings=ucs-bom,utf-8,sjis,default,latin1
-            end
-            " default to IME off
-            set iminsert=0
-            set imsearch=-1
-        endif
-    " }}}
+silent function! WINDOWS()
+    return  (has('win32') || has('win64'))
+endfunction
+" }}}
 
-    " Windows/Linux Compatibility {{{
-        if WINDOWS()
-            " use '.vim' instead of 'vimfiles', and use .viminfo
-            if !has('nvim')
-                set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
-                set viminfo+=n~/.viminfo
-            endif
-            " using a shell other than cmd causes too many plugin issues
-            " if executable("bash") || executable("tcsh")
-            "    " Use *nix shell if available
-            "    if executable("tcsh")
-            "        set shell=tcsh
-            "        set shellredir=>&
-            "    elseif executable("bash")
-            "        set shell=bash
-            "        set shellredir=>%s\ 2>&1
-            "    endif
-            "    set shellslash
-            "    " set shell configuration here to avoid confusing early-loading
-            "    " plugins
-            "    set shellcmdflag=-c
-            "    set shellpipe=>
-            "    set shellxquote=\"
-            " else
-            "    set shell=cmd
-            " endif
-            if executable("tee")
-                " Make build output show up on the screen, just like in *nix
-                " noshelltemp and nomore ideally would be set only during make
-                set shellpipe=2>&1\|\ tee
-                if &shell =~ "csh"
-                    set shellpipe=\|&\ tee
-                endif
-                set noshelltemp
-                set nomore
-            endif
-        endif
-    " }}}
+" Basics {{{
+set nocompatible
+if !WINDOWS()
+    set shell=sh
+endif
+" }}}
 
-    " Grep program {{{
-        if executable('ag')
-            set grepprg=ag\ --nogroup\ --nocolor
-        elseif executable('ack')
-            set grepprg=ack\ --nogroup\ --nocolor
-        elseif executable("grep")
-            if WINDOWS()
-                if executable("sed")
-                    " call sed to replace posix /c/ paths with c:/
-                    let &grepprg='grep -n -H $* \| sed \"s_^/\\(.\\)._\\1:/_\"'
-                else
-                    set grepprg=grep\ -n\ -H
-                endif
-            endif
-        endif
-    " }}}
+" Unicode/Japanese Support {{{
+if has("multi_byte")
+    " use unicode
+    set encoding=utf-8
+    set fileencoding=utf-8
+    scriptencoding utf-8
+    if WINDOWS()
+        " The "default" codepage on English Windows is "latin1", which 
+        " is wrong. It should be "cp1252".  Unfortunately that means we 
+        " can't use "default" here, so you have to change this if 
+        " you're on non-English Windows.
+        setglobal fileencodings=ucs-bom,utf-8,sjis,cp1252
+    else
+        " recognize SJIS on Linux
+        setglobal fileencodings=ucs-bom,utf-8,sjis,default,latin1
+    end
+    " default to IME off
+    set iminsert=0
+    set imsearch=-1
+endif
+" }}}
 
-    " Temp Files {{{
-        " keep swap, backup, undo, and view files tidy
-        " create directories if they don't exist
-        if empty(glob('~/.vim/.backup'))
-            call mkdir($HOME . "/.vim/.backup")
+" Windows/Linux Compatibility {{{
+if WINDOWS()
+    " use '.vim' instead of 'vimfiles', and use .viminfo
+    if !has('nvim')
+        set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
+        set viminfo+=n~/.viminfo
+    endif
+    " using a shell other than cmd causes too many plugin issues
+    " if executable("bash") || executable("tcsh")
+    "    " Use *nix shell if available
+    "    if executable("tcsh")
+    "        set shell=tcsh
+    "        set shellredir=>&
+    "    elseif executable("bash")
+    "        set shell=bash
+    "        set shellredir=>%s\ 2>&1
+    "    endif
+    "    set shellslash
+    "    " set shell configuration here to avoid confusing early-loading
+    "    " plugins
+    "    set shellcmdflag=-c
+    "    set shellpipe=>
+    "    set shellxquote=\"
+    " else
+    "    set shell=cmd
+    " endif
+    if executable("tee")
+        " Make build output show up on the screen, just like in *nix
+        " noshelltemp and nomore ideally would be set only during make
+        set shellpipe=2>&1\|\ tee
+        if &shell =~ "csh"
+            set shellpipe=\|&\ tee
         endif
-        if empty(glob('~/.vim/.swap'))
-            call mkdir($HOME . "/.vim/.swap")
-        endif
-        if empty(glob('~/.vim/.undo'))
-            call mkdir($HOME . "/.vim/.undo")
-        endif
-        " use local hidden directories if they exist
-        set directory=./.vim-swap//
-        set backupdir=./.vim-backup//
-        set undodir=./.vim-swap//
-        " otherwise use directories in ~/.vim
-        set directory+=~/.vim/.swap//
-        set backupdir+=~/.vim/.backup//
-        set undodir+=~/.vim/.undo//
-        " viewdir only accepts a single directory
-        set viewdir=~/.vim/.view
-        set viewoptions=folds,cursor,unix,slash
+        set noshelltemp
+        set nomore
+    endif
+endif
+" }}}
 
-        set swapfile " use swap files
-        if has('persistent_undo')
-            set undofile " use persistent undo
-            set undolevels=1000
-            set undoreload=10000
+" Grep program {{{
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --nocolor
+elseif executable('ack')
+    set grepprg=ack\ --nogroup\ --nocolor
+elseif executable("grep")
+    if WINDOWS()
+        if executable("sed")
+            " call sed to replace posix /c/ paths with c:/
+            let &grepprg='grep -n -H $* \| sed \"s_^/\\(.\\)._\\1:/_\"'
+        else
+            set grepprg=grep\ -n\ -H
         endif
-        set nobackup " no permanent backups
-        set writebackup " make a temporary backup before overwriting a file
-    " }}}
+    endif
+endif
+" }}}
+
+" Temp Files {{{
+" keep swap, backup, undo, and view files tidy
+" create directories if they don't exist
+if empty(glob('~/.vim/.backup'))
+    call mkdir($HOME . "/.vim/.backup")
+endif
+if empty(glob('~/.vim/.swap'))
+    call mkdir($HOME . "/.vim/.swap")
+endif
+if empty(glob('~/.vim/.undo'))
+    call mkdir($HOME . "/.vim/.undo")
+endif
+" use local hidden directories if they exist
+set directory=./.vim-swap//
+set backupdir=./.vim-backup//
+set undodir=./.vim-swap//
+" otherwise use directories in ~/.vim
+set directory+=~/.vim/.swap//
+set backupdir+=~/.vim/.backup//
+set undodir+=~/.vim/.undo//
+" viewdir only accepts a single directory
+set viewdir=~/.vim/.view
+set viewoptions=folds,cursor,unix,slash
+
+set swapfile " use swap files
+if has('persistent_undo')
+    set undofile " use persistent undo
+    set undolevels=1000
+    set undoreload=10000
+endif
+set nobackup " no permanent backups
+set writebackup " make a temporary backup before overwriting a file
+" }}}
 " }}}
 " Plugins {{{
 " Allow :Man lookups
@@ -190,6 +192,7 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-pandoc/vim-pandoc-after'
 Plug 'vim-scripts/a.vim'
 
+Plug 'Kuniwak/vint'
 Plug 'w0rp/ale'
 Plug 'markonm/traces.vim'
 
@@ -585,11 +588,14 @@ nnoremap <silent> <F10> :<C-u>TagbarToggle<CR>
 " using dll from asins/gvimfullscreen_win32
 if has('gui_running')
     if has('win64')
-	map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+        map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
     elseif has('win32')
-	map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen_x32.dll", "ToggleFullScreen", 0)<CR>
+        map <F11> :<C-u>call libcallnr($HOME."/.vim/gvimfullscreen_x32.dll", "ToggleFullScreen", 0)<CR>
     endif
 endif
+
+" clang-format with <leader>=
+nmap <leader>= <Plug>(ale_fix)
 
 " }}}
 " Commands {{{
@@ -681,49 +687,49 @@ else
 endif
 " add arduino support
 let g:easytags_languages = {
-\   'arduino': {
-\       'cmd': 'ctags',
-\       'args': [],
-\       'fileoutput_opt': '-f',
-\       'stdout_opt': '-f-',
-\       'recurse_flag': '-R'
-\   }
-\}
+            \   'arduino': {
+            \       'cmd': 'ctags',
+            \       'args': [],
+            \       'fileoutput_opt': '-f',
+            \       'stdout_opt': '-f-',
+            \       'recurse_flag': '-R'
+            \   }
+            \}
 
 " TagBar Options
 " Add arduino support
 let g:tagbar_type_arduino = {
-    \ 'ctagstype' : 'c++',
-    \ 'kinds'     : [
-        \ 'd:macros:1:0',
-        \ 'p:prototypes:1:0',
-        \ 'g:enums',
-        \ 'e:enumerators:0:0',
-        \ 't:typedefs:0:0',
-        \ 'n:namespaces',
-        \ 'c:classes',
-        \ 's:structs',
-        \ 'u:unions',
-        \ 'f:functions',
-        \ 'm:members:0:0',
-        \ 'v:variables:0:0'
-    \ ],
-    \ 'sro'        : '::',
-    \ 'kind2scope' : {
-        \ 'g' : 'enum',
-        \ 'n' : 'namespace',
-        \ 'c' : 'class',
-        \ 's' : 'struct',
-        \ 'u' : 'union'
-    \ },
-    \ 'scope2kind' : {
-        \ 'enum'      : 'g',
-        \ 'namespace' : 'n',
-        \ 'class'     : 'c',
-        \ 'struct'    : 's',
-        \ 'union'     : 'u'
-    \ }
-\ }
+            \ 'ctagstype' : 'c++',
+            \ 'kinds'     : [
+            \ 'd:macros:1:0',
+            \ 'p:prototypes:1:0',
+            \ 'g:enums',
+            \ 'e:enumerators:0:0',
+            \ 't:typedefs:0:0',
+            \ 'n:namespaces',
+            \ 'c:classes',
+            \ 's:structs',
+            \ 'u:unions',
+            \ 'f:functions',
+            \ 'm:members:0:0',
+            \ 'v:variables:0:0'
+            \ ],
+            \ 'sro'        : '::',
+            \ 'kind2scope' : {
+            \ 'g' : 'enum',
+            \ 'n' : 'namespace',
+            \ 'c' : 'class',
+            \ 's' : 'struct',
+            \ 'u' : 'union'
+            \ },
+            \ 'scope2kind' : {
+            \ 'enum'      : 'g',
+            \ 'namespace' : 'n',
+            \ 'class'     : 'c',
+            \ 'struct'    : 's',
+            \ 'union'     : 'u'
+            \ }
+            \ }
 
 " vim-markdown-folding Options
 let g:markdown_fold_style = 'nested'
@@ -759,17 +765,37 @@ let g:pandoc#syntax#style#use_definition_lists = 1
 
 "ale
 let g:ale_linters = {
-\   'cpp': ['clangd','clangcheck','clangtidy'],
-\   'rust': ['rls']
-\}
+            \   'cpp': ['clangd','clangtidy'],
+            \   'rust': ['rls']
+            \}
 let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fixers = {
-\   '*': ['remove_trailing_lines'],
-\   'cpp': ['clang-format'],
-\   'rust': ['rustfmt']
-\}
-let g:ale_cpp_gcc_options = '-std=c++17 -Wall -Wextra'
-let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wextra'
+            \   '*': ['remove_trailing_lines'],
+            \   'cpp': ['clang-format'],
+            \   'rust': ['rustfmt']
+            \}
+" let g:ale_cpp_gcc_options = '-std=c++17 -Wall -Wextra'
+" let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wextra'
+" let g:ale_cpp_clangtidy_options = '-std=c++17 -Wall -Wextra -x c++'
+" let g:ale_cpp_clangcheck_options = '-- -std=c++17 -Wall -Wextra -x c++'
+let g:ale_cpp_gcc_options = '-std=c++17 -Wall -Wextra -I' . getcwd()
+let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wextra -I' . getcwd()
+let g:ale_cpp_clangtidy_options = '-std=c++17 -Wall -Wextra -x c++ -I' . getcwd()
+let g:ale_cpp_clangtidy_checks = [
+            \    'bugprone-*',
+            \    'cppcoreguidelines-*',
+            \    'modernize-*',
+            \    'performance-*',
+            \    'portability-*',
+            \    'readability-*',
+            \    '-readability-named-parameter',
+            \    '-cppcoreguidelines-pro-bounds-constant-array-index'
+            \]
+let g:ale_cpp_clangcheck_options = '-- -std=c++17 -Wall -Wextra -x c++ -I' . getcwd()
+" let g:ale_c_parse_compile_commands = 1
+" let g:ale_c_parse_makefile = 1
+let g:ale_c_build_dir_names = ['build', 'bin', 'release', 'debug']
+let g:ale_completion_enabled = 1
 
 "asyncrun
 " refresh quickfix list after completion
