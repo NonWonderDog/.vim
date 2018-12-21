@@ -2,7 +2,9 @@ nnoremap <buffer> <F5> :AsyncRun -program=make build<CR>
 inoremap <buffer> <F5> <Esc>:AsyncRun -program=make build<CR>
 vnoremap <buffer> <F5> :<C-u>AsyncRun -program=make build<CR>
 
+setlocal colorcolumn=100
+
 " Run with F9
-nnoremap <F9> :term cargo run"<CR>
-inoremap <F9> <Esc>:term cargo run"<CR>
-vnoremap <F9> :<C-u>term cargo run"<CR>
+nnoremap <F9> :term cargo run<CR>
+inoremap <F9> <Esc>:term cargo run<CR>
+vnoremap <F9> :<C-u>term cargo run<CR>
