@@ -144,67 +144,60 @@ call plug#begin('~/.vim/plugged')
 
 " colorschemes
 " I use my own based on wombat, but sometimes I need a light scheme.
-Plug 'yfiua/vim-github-colorscheme'
-Plug 'jonathanfilip/vim-lucius'
 Plug 'SimonGreenhill/summerfruit256.vim'
+Plug 'jonathanfilip/vim-lucius'
+Plug 'yfiua/vim-github-colorscheme'
 
-" others
+" language support
 Plug 'PProvost/vim-ps1'
-Plug 'dag/vim-fish'
-
-Plug 'bimlas/vim-eightheader'
-
 Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell' }
-
-Plug 'Konfekt/FastFold'
-Plug 'zhimsel/vim-stay'
-Plug 'kien/ctrlp.vim'
-Plug 'bkad/CamelCaseMotion'
-Plug 'equalsraf/neovim-gui-shim'
-Plug 'godlygeek/tabular'
-Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/vim-peekaboo'
-Plug 'kergoth/vim-hilinks'
-" Plug 'majutsushi/tagbar'
-Plug 'tmhedberg/matchit'
-Plug 'tomtom/tcomment_vim'
-
-Plug 'mbbill/undotree'
-Plug 'machakann/vim-sandwich'
-
+Plug 'aklt/plantuml-syntax'
+Plug 'dag/vim-fish'
 Plug 'rust-lang/rust.vim'
-
-Plug 'skywind3000/asyncrun.vim'
-
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-characterize'
-
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-after'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'vim-scripts/a.vim'
 Plug 'vimoutliner/vimoutliner'
 
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'vim-pandoc/vim-pandoc-after'
-Plug 'vim-scripts/a.vim'
-
-Plug 'w0rp/ale'
-Plug 'markonm/traces.vim'
-
-" Plug 'ludovicchabant/vim-gutentags'
-
+" Terminal support
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'idbrii/vim-focusclip', and(has('clipboard'),empty($MSYSTEM)) ? {} : { 'for': [] }
 Plug 'kana/vim-fakeclip', has('clipboard') ? { 'for': [] } : {}
 Plug 'wincent/terminus'
-Plug 'christoomey/vim-tmux-navigator'
+
+" IDE features
+Plug 'kien/ctrlp.vim'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-fugitive'
+Plug 'w0rp/ale'
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'majutsushi/tagbar'
+
+" Ease of use
+Plug 'Konfekt/FastFold'
+Plug 'bkad/CamelCaseMotion'
+Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-peekaboo'
+Plug 'machakann/vim-sandwich'
+Plug 'markonm/traces.vim'
+Plug 'mbbill/undotree'
+Plug 'tmhedberg/matchit'
+
+" others
+Plug 'bimlas/vim-eightheader'
+Plug 'equalsraf/neovim-gui-shim'
+Plug 'kergoth/vim-hilinks'
+Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+Plug 'zhimsel/vim-stay'
+
 call plug#end()
-
-" Use pathogen
-" runtime bundle/vim-pathogen/autoload/pathogen.vim
-" execute pathogen#infect()
-
 
 " }}}
 " Editor {{{
