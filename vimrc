@@ -162,6 +162,7 @@ Plug 'vim-pandoc/vim-pandoc-after'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-scripts/a.vim'
 Plug 'vimoutliner/vimoutliner'
+Plug 'beyondmarc/glsl.vim'
 
 " Terminal support
 Plug 'christoomey/vim-tmux-navigator'
@@ -600,8 +601,11 @@ if has('gui_running')
     endif
 endif
 
-" clang-format with <leader>=
+" ALE mappings
 nmap <leader>= <Plug>(ale_fix)
+nmap <silent> <leader>? <Plug>(ale_detail):set wrap<CR>
+nmap <leader>] <Plug>(ale_next_wrap)
+nmap <leader>[ <Plug>(ale_previous_wrap)
 
 " }}}
 " Commands {{{
