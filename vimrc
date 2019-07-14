@@ -308,6 +308,9 @@ set synmaxcol=400
 set wildmenu
 set wildmode=full
 
+" omni complete options
+set completeopt=menu,menuone,preview,noselect,noinsert
+
 " Tabs should align to 8 columns to match posix terminal output (and github),
 " but I prefer 4 spaces for indentation.
 " This is a compromise configuration in which tabs are always 8 spaces wide, 
@@ -805,7 +808,10 @@ let g:ale_cpp_clangcheck_options = '-- -std=c++17 -Wall -Wextra -x c++ -I' . get
 " let g:ale_c_parse_compile_commands = 1
 " let g:ale_c_parse_makefile = 1
 let g:ale_c_build_dir_names = ['build', 'bin', 'release', 'debug']
+let g:ale_rust_rls_toolchain = 'nightly'
 let g:ale_completion_enabled = 1
+let g:ale_sign_error = "✗"
+let g:ale_sign_warning = "⚠"
 
 "asyncrun
 " refresh quickfix list after completion
