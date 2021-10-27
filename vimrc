@@ -184,7 +184,8 @@ Plug 'Konfekt/FastFold'
 Plug 'bkad/CamelCaseMotion'
 Plug 'godlygeek/tabular'
 Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/vim-peekaboo'
+" Plug 'junegunn/vim-peekaboo' breaks ciw<C-r>0
+" Plug 'ixil/vim-peekaboo' still breaks ciw<C-r>0
 Plug 'machakann/vim-sandwich'
 Plug 'markonm/traces.vim'
 Plug 'mbbill/undotree'

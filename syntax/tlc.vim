@@ -1,10 +1,8 @@
 " Vim syntax file
 " Language:     Matlab Target Language Compiler
-" Current Maintainer:   Derecho (derecho@sector5d.org)
-" Last Change:  2013 Dec 24
-" TODO Implement folding for if-else-endif and switch-endswitch
-" TODO Line continuation of TLC lines
-" TODO More ?
+" Current Maintainer:   Robert Morris
+" Last Change:  2021 Oct 27
+" TODO Line continuation (...)
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
@@ -14,38 +12,70 @@ elseif exists("b:current_syntax")
   finish
 endif
 
-" Read the C++ syntax to start with
-if version < 600
-  so <sfile>:p:h/cpp.vim
-else
-  runtime! syntax/cpp.vim
-  unlet b:current_syntax
-endif
+syn match tlcConditional        "%if\|%else\|%elseif\|%endif\|%switch\|%endswitch"
+syn match tlcLabel              "%case\|%default"
+syn match tlcRepeat             "%foreach\|%for\|%endforeach\|%endfor"
 
-syn match tlcKeyword            contained "if\|else\|elseif\|endif\|switch\|case\|default\|break\|endswitch\|foreach\|continue\|endforeach\|roll\|endroll\|for\|body\|endbody\|endfor\|generatefile\|language\|implements\|openfile\|closefile\|flushfile\|selectfile\|include\|addincludepath\|error\|warning\|trace\|exit\|define\|undef\|assign\|with\|endwith\|return\|MATLAB"
-syn match tlcCommentLineStart   contained "%%"
-syn match tlcCommentLine        "%%.*$" contains=tlcCommentLineStart,cTodo
-syn region tlcCommentBlock       matchgroup=Todo start="/%" end="%/" fold
-syn match tlcLine               "^\s*%\(function\|endfunction\|%\)\@!.*$" contains=tlcKeyword,tlcCommentLine,cString,cCharacter,cNumber
-syn match tlcVar                "%<[^>]*>" contains=cString,cCharacter,cNumber containedin=cString,cCharacter
-syn region tlcFunction          matchgroup=Function start="%function" end="%endfunction" fold transparent
+syn match tlcKeyword            "%break\|%continue"
+syn match tlcKeyword            "%assign"
+syn match tlcKeyword            "%assert"
+syn match tlcKeyword            "%selectfile"
+syn match tlcKeyword            "%function\|%endfunction"
+
+syn match keyword               "%roll\|%endroll"
+syn match keyword               "%body\|%endbody"
+syn match keyword               "%openfile\|%closefile\|%flushfile\|%selectfile\|%generatefile"
+syn match keyword               "%include\|%addincludepath"
+syn match keyword               "%error\|%warning"
+syn match keyword               "%define\|%undef"
+syn match keyword               "%with\|%endwith"
+syn match keyword               "%language"
+syn match keyword               "%implements"
+syn match keyword               "%trace"
+syn match keyword               "%return"
+syn match keyword               "%exit"
+syn match keyword               "%MATLAB"
+
+syn match tlcOperator           "[-+*/<>&!][<>]\@!"
+syn match tlcOperator           "?\=[!<>]\=="
+
+syn keyword tlcFunction         ISFIELD FEVAL ISEMPTY EXISTS SIZE ISEQUAL WHITE_SPACE
+syn keyword tlcFunction         Matrix
+syn keyword tlcConstant         TLC_TRUE TLC_FALSE NULL_FILE
+
+syn keyword tlcTodo             contained TODO FIXME XXX NOTE
+syn region tlcComment           oneline start="%%" end="$" contains=tlcTodo,@spell
+syn region tlcCommentBlock      matchgroup=tlcComment start="/%" end="%/" fold contains=tlcTodo,@spell
+
+syn region tlcString		start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell extend
+" syn match tlcLine               "^\s*%\(function\|endfunction\|%\)\@!.*$" contains=tlcKeyword,tlcCommentLine,cString,cCharacter,cNumber
+syn match tlcVariable           "%<[^>]*>" containedin=tlcString
+
+syn region tlcOutput            oneline start="^\s*[^ %]" end="$" contains=tlcVariable
+
+" syn region tlcFunction          matchgroup=tlcFunction start="%function" end="%endfunction" fold transparent
+
+syn region tlcIf                start="%if\>" end="%endif\>" fold transparent keepend extend
+syn region tlcSwitch            start="%switch\>" end="%endswitch\>" fold transparent keepend extend
+syn region tlcFor               start="%for\>" end="%endfor\>" fold transparent keepend extend
+syn region tlcForEach           start="%foreach\>" end="%endforeach\>" fold transparent keepend extend
+syn region tlcFunctionBlock     start="%function\>" end="%endfunction\>" fold transparent keepend
 
 " Default highlighting
-if version >= 508 || !exists("did_tlc_syntax_inits")
-  if version < 508
-    let did_tlc_syntax_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
-  HiLink tlcKeyword             Statement
-  HiLink tlcCommentLineStart    Comment
-  HiLink tlcCommentLine         Comment
-  HiLink tlcCommentBlock        Comment
-  HiLink tlcLine                PreProc
-  HiLink tlcVar                 PreProc
-  delcommand HiLink
-endif
+hi def link tlcComment          Comment
+hi def link tlcConstant         Constant
+hi def link tlcConditional      Conditional
+hi def link tlcFunction         Function
+hi def link tlcKeyword          Keyword
+hi def link tlcLabel            Label
+hi def link tlcRepeat           Repeat
+hi def link tlcStatement        Statement
+hi def link tlcOutput           PreProc
+hi def link tlcString           String
+hi def link tlcOperator         Operator
+hi def link tlcVariable         Special
+
+syntax sync fromstart
 
 let b:current_syntax = "tlc"
 

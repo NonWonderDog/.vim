@@ -123,7 +123,7 @@ syn region asap2String matchgroup=asap2String start=+"+ skip=+""+ end=+"+ contai
 
 " Numbers
 syn match asap2Number  display "[-+]\=\<\d\+\>"
-syn match asap2Number  display "[-+]\=\<0x[0-9A-F]\+\>"
+syn match asap2Number  display "[-+]\=\<0x[0-9A-Fa-f]\+\>"
 syn match asap2Float   display "[-+]\=\<\d\+\.\d*\(E[-+]\=\d\+\)\="
 syn match asap2Float   display "[-+]\=\<\.\d\+\(E[-+]\=\d\+\)\=\>"
 syn match asap2Float   display "[-+]\=\<\d\+E[-+]\=\d\+\>"
