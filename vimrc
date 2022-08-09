@@ -611,6 +611,10 @@ nmap <silent> <leader>? <Plug>(ale_detail):set wrap<CR>
 nmap <leader>] <Plug>(ale_next_wrap)
 nmap <leader>[ <Plug>(ale_previous_wrap)
 
+" easy-align mappings
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
 " }}}
 " Commands {{{
 
