@@ -656,10 +656,10 @@ command! -nargs=+ -complete=command OutputWin call RedirMessages(<q-args>, 'new'
 command! -nargs=+ -complete=command OutputTab call RedirMessages(<q-args>, 'tabnew' )
 
 " commands for scratch buffers
-command! -complete=command Scratch  :new    | :setlocal buftype=nofile | :setlocal noswapfile
-command! -complete=command EScratch :enew   | :setlocal buftype=nofile | :setlocal noswapfile
-command! -complete=command VScratch :vnew   | :setlocal buftype=nofile | :setlocal noswapfile
-command! -complete=command TScratch :tabnew | :setlocal buftype=nofile | :setlocal noswapfile
+command! Scratch  :new    | :setlocal buftype=nofile | :setlocal noswapfile
+command! EScratch :enew   | :setlocal buftype=nofile | :setlocal noswapfile
+command! VScratch :vnew   | :setlocal buftype=nofile | :setlocal noswapfile
+command! TScratch :tabnew | :setlocal buftype=nofile | :setlocal noswapfile
 
 " }}}
 " Autocommands {{{
