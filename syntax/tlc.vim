@@ -12,7 +12,7 @@ elseif exists("b:current_syntax")
   finish
 endif
 
-syn match tlcConditional        "%if\|%else\|%elseif\|%endif\|%switch\|%endswitch"
+syn match tlcConditional        "%if\|%elseif\|%else\|%endif\|%switch\|%endswitch"
 syn match tlcLabel              "%case\|%default"
 syn match tlcRepeat             "%foreach\|%for\|%endforeach\|%endfor"
 
