@@ -1,4 +1,4 @@
-" Bob Morris .vimrc file
+" .vimrc file
 " Incorpoating some ideas from spf13
 " Tested on Windows 10 and Arch Linux
 " Using Vim 8.0
@@ -154,7 +154,6 @@ Plug 'kana/vim-fakeclip', has('clipboard') ? { 'for': [] } : {}
 Plug 'wincent/terminus'
 
 " IDE features
-Plug 'vim-scripts/a.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'tomtom/tcomment_vim'
@@ -170,7 +169,6 @@ Plug 'godlygeek/tabular'
 Plug 'junegunn/vim-easy-align'
 " Plug 'junegunn/vim-peekaboo' breaks ciw<C-r>0
 " Plug 'ixil/vim-peekaboo' still breaks ciw<C-r>0
-Plug 'machakann/vim-sandwich'
 Plug 'markonm/traces.vim'
 Plug 'mbbill/undotree'
 Plug 'tmhedberg/matchit'
@@ -182,6 +180,7 @@ Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-surround'
 
 Plug 'vimoutliner/vimoutliner'
 
@@ -243,9 +242,10 @@ set virtualedit=block
 set mousemodel=popup_setpos
 
 " better search settings
-set incsearch           " do incremental searching
-set ignorecase          " use case-insensitive searches
-set smartcase           " make only lower-case patterns case-insensitive
+set incsearch   " do incremental searching
+set ignorecase  " use case-insensitive searches
+set smartcase   " make only lower-case patterns case-insensitive
+set scrolloff=8 " keep 8 characters context when scrolling
 
 " Use syntax and search highlighting, when the terminal has colors
 if &t_Co > 2 || has("gui_running")
@@ -452,18 +452,24 @@ endif
 " }}}
 
 " Mappings {{{
-" Don't use Ex mode, use Q to replay the q macro
-nnoremap Q @q
-vnoremap Q :norm @q<cr>
+let g:mapleader = ' '
 
-" more logical Y mapping
-nnoremap Y y$
+" Neovim defaults
+nnoremap <silent> Y y$
+nnoremap <silent> <C-L> <Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>
+inoremap <silent> <C-U> <C-G>u<C-U>
+inoremap <silent> <C-W> <C-G>u<C-W>
+xnoremap <silent> * y/\V<C-R>"<CR>
+xnoremap <silent> # y?\V<C-R>"<CR>
+nnoremap <silent> & :&&<CR>
 
-" CTRL-U (delete entered text on current line) in insert mode deletes a lot.
-" Use CTRL-G u to first break undo, so that you can undo CTRL-U after
-" inserting a line break.  Do the same for CTRL-W (delete word)
-inoremap <C-U> <C-G>u<C-U>
-inoremap <c-w> <c-g>u<c-w>
+" Make Q execute the q macro instead of entering Ex mode
+" (in Neovim Q executes the last recorded macro, no way to do that in vim?)
+nnoremap <silent> Q @q
+vnoremap <silent> Q :norm @q<cr>
+
+" Netrw
+nnoremap <silent> <Leader>e <Cmd>15Lexplore<CR>
 
 " sudo write with W!
 cmap W! w !sudo tee >/dev/null %
@@ -479,27 +485,20 @@ cmap W! w !sudo tee >/dev/null %
 " imap <4-MiddleMouse> <Nop>
 
 " Get rid of F1 help
-map <F1> <Nop>
-imap <F1> <Nop>
-
-" Create Blank Newlines and stay in Normal mode with <Enter>
-"nnoremap <silent> <Enter> o<Esc>
-"nnoremap <silent> <S-Enter> O<Esc>
-
-" Break line with CTRL-J
-nnoremap <NL> i<CR><ESC>
+map  <silent> <F1> <Nop>
+imap <silent> <F1> <Nop>
 
 " Clear highlighting with <C-l>
-nnoremap <silent> <C-l> :<C-U>noh<CR><C-l>
+nnoremap <silent> <C-L> <Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>
 
 " Toggle folds with spacebar
-nnoremap <Space> za
-vnoremap <Space> za
-" Toggle folds recursively with S-Space (gui) or C-Space
-nnoremap <S-Space> zA
-vnoremap <S-Space> zA
-nnoremap <NUL> zA
-vnoremap <NUL> zA
+nnoremap <Leader><Space> za
+vnoremap <Leader><Space> za
+" Toggle folds recursively with C-Space (on terminal this is <NUL> aka <C-@>)
+nnoremap <Leader><C-Space> zA
+vnoremap <Leader><C-Space> zA
+nnoremap <Leader><C-S-2> zA
+vnoremap <Leader><C-S-2> zA
 
 " Exit insert mode with jj or jk
 inoremap jj <Esc>
@@ -546,6 +545,30 @@ else
     tnoremap <silent> <A-k> <C-w>k
     tnoremap <silent> <A-l> <C-w>l
 endif
+
+" Move and autoindent highlighted lines
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" quickfix navigation
+nnoremap <silent> <C-k>   <Cmd>cnext<CR>
+nnoremap <silent> <C-j>   <Cmd>cprev<CR>
+nnoremap <silent> <C-S-K> <Cmd>lnext<CR>
+nnoremap <silent> <C-S-J> <Cmd>lprev<CR>
+
+" Nondestructive delete
+nnoremap <silent> <Leader>d "_d
+vnoremap <silent> <Leader>d "_d
+
+" Clipboard access
+nnoremap <silent> <Leader>y "+y
+vnoremap <silent> <Leader>y "+y
+nnoremap <silent> <Leader>Y "+Y
+nnoremap <silent> <Leader>p "+p
+vnoremap <silent> <Leader>p "+p
+
+" Replace all occurances
+nnoremap <Leader>* :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
 " Make with F5
 " nnoremap <F5> :make<CR>
