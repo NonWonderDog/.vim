@@ -54,25 +54,6 @@ if WINDOWS()
         set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
         set viminfo+=n~/.viminfo
     endif
-    " using a shell other than cmd causes too many plugin issues
-    " if executable("bash") || executable("tcsh")
-    "    " Use *nix shell if available
-    "    if executable("tcsh")
-    "        set shell=tcsh
-    "        set shellredir=>&
-    "    elseif executable("bash")
-    "        set shell=bash
-    "        set shellredir=>%s\ 2>&1
-    "    endif
-    "    set shellslash
-    "    " set shell configuration here to avoid confusing early-loading
-    "    " plugins
-    "    set shellcmdflag=-c
-    "    set shellpipe=>
-    "    set shellxquote=\"
-    " else
-    "    set shell=cmd
-    " endif
     if executable("tee")
         " Make build output show up on the screen, just like in *nix
         " noshelltemp and nomore ideally would be set only during make
@@ -87,8 +68,12 @@ endif
 " }}}
 
 " Grep program {{{
-if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor
+if executable('rg')
+    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+elseif executable('ag')
+    set grepprg=ag\ --vimgrep\ $*
+    set grepformat=%f:%l:%c:%m
 elseif executable('ack')
     set grepprg=ack\ --nogroup\ --nocolor
 elseif executable("grep")
@@ -136,7 +121,7 @@ endif
 set nobackup " no permanent backups
 set writebackup " make a temporary backup before overwriting a file
 " }}}
-" }}}
+
 " Plugins {{{
 " Allow :Man lookups
 runtime ftplugin/man.vim
@@ -155,12 +140,10 @@ Plug 'PProvost/vim-ps1'
 Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell' }
 Plug 'aklt/plantuml-syntax'
-Plug 'dag/vim-fish'
 Plug 'rust-lang/rust.vim'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-after'
 Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'vim-scripts/a.vim'
 Plug 'vimoutliner/vimoutliner'
 Plug 'beyondmarc/glsl.vim'
 
@@ -171,11 +154,12 @@ Plug 'kana/vim-fakeclip', has('clipboard') ? { 'for': [] } : {}
 Plug 'wincent/terminus'
 
 " IDE features
+Plug 'vim-scripts/a.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-fugitive'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 " Plug 'ludovicchabant/vim-gutentags'
 " Plug 'majutsushi/tagbar'
 
@@ -193,33 +177,27 @@ Plug 'tmhedberg/matchit'
 
 " others
 Plug 'bimlas/vim-eightheader'
-Plug 'equalsraf/neovim-gui-shim'
 Plug 'kergoth/vim-hilinks'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-characterize'
 
 Plug 'vimoutliner/vimoutliner'
 
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vim-pandoc/vim-pandoc-after'
-Plug 'vim-scripts/a.vim'
 
 Plug 'Kuniwak/vint'
-Plug 'w0rp/ale'
-Plug 'markonm/traces.vim'
 
 " Plug 'ludovicchabant/vim-gutentags'
 
 call plug#end()
-
 " }}}
-" Editor {{{
+" }}}
 
+" Editor {{{
 " enable the mouse
 if has('mouse')
     set mouse=a
@@ -262,7 +240,7 @@ set backspace=indent,eol,start
 set virtualedit=block
 
 " use popup right-click menu on all platforms
-set mousemodel=popup
+set mousemodel=popup_setpos
 
 " better search settings
 set incsearch           " do incremental searching
@@ -381,10 +359,9 @@ if has("autocmd")
                 \   exe "normal! g`\"" |
                 \ endif
 endif
-
 " }}}
-" Appearance {{{
 
+" Appearance {{{
 set guioptions=m        " hide all gui stuff except menu bar
 set guioptions+=A       " copy to clipboard on modeless selection
 set laststatus=2        " always show status line
@@ -404,6 +381,7 @@ if WINDOWS()
 endif
 
 if $TERM =~ "^xterm"
+    set termguicolors
     if empty($ConEmuBuild)
         " set xterm escape sequences
         let &t_ZH="\e[3m"       " start italics
@@ -471,10 +449,9 @@ if has("gui_running")
     "    endif
     "endif
 endif
-
 " }}}
-" Mappings {{{
 
+" Mappings {{{
 " Don't use Ex mode, use Q to replay the q macro
 nnoremap Q @q
 vnoremap Q :norm @q<cr>
@@ -522,7 +499,7 @@ vnoremap <Space> za
 nnoremap <S-Space> zA
 vnoremap <S-Space> zA
 nnoremap <NUL> zA
-nnoremap <NUL> zA
+vnoremap <NUL> zA
 
 " Exit insert mode with jj or jk
 inoremap jj <Esc>
@@ -614,10 +591,9 @@ nmap <leader>[ <Plug>(ale_previous_wrap)
 " easy-align mappings
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-
 " }}}
-" Commands {{{
 
+" Commands {{{
 " CDC = Change to Directory of Current file
 command CDC cd %:p:h
 command LCDC lcd %:p:h
@@ -660,8 +636,8 @@ command! Scratch  :new    | :setlocal buftype=nofile | :setlocal noswapfile
 command! EScratch :enew   | :setlocal buftype=nofile | :setlocal noswapfile
 command! VScratch :vnew   | :setlocal buftype=nofile | :setlocal noswapfile
 command! TScratch :tabnew | :setlocal buftype=nofile | :setlocal noswapfile
-
 " }}}
+
 " Autocommands {{{
 if has("autocmd")
     augroup vimrc
@@ -672,6 +648,7 @@ if has("autocmd")
     augroup END
 endif
 " }}}
+
 " Syntax Options {{{
 " Load doxygen in supported files
 let g:load_doxygen_syntax=1
@@ -687,8 +664,8 @@ let g:markdown_fenced_languages = [
             \ 'vhdl', 'verilog', 'tcl'
             \ ]
 " }}}
-" Plugin Settings {{{
 
+" Plugin Settings {{{
 " CamelCaseMotion Options
 if !empty(glob("~/.vim/plugged/CamelCaseMotion/"))
     call camelcasemotion#CreateMotionMappings('<Leader>')
@@ -824,11 +801,5 @@ let g:asyncrun_exit = "silent copen | wincmd p"
 let g:asyncrun_open = 10
 let g:asyncrun_save = 1
 let g:asyncrun_auto = "make"
-" }}}
-" Neovim {{{
-if has('nvim')
-    set termguicolors
-    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-endif
 " }}}
 " vim:fdm=marker:fdl=0:
