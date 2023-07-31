@@ -12,6 +12,7 @@ spell
 
 # local plugin files
 plugged
+autoload/plug.vim.old
 
 # vim doctags
 **/doc/tags
