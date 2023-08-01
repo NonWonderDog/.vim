@@ -61,7 +61,7 @@ endif
 
     " functions {{{
     " returns an approximate grey index for the given grey level
-    fun <SID>grey_number(x)
+    fun s:grey_number(x)
         if &t_Co == 88
             if a:x < 23
                 return 0
@@ -100,7 +100,7 @@ endif
     endfun
 
     " returns the actual grey level represented by the grey index
-    fun <SID>grey_level(n)
+    fun s:grey_level(n)
         if &t_Co == 88
             if a:n == 0
                 return 0
@@ -133,7 +133,7 @@ endif
     endfun
 
     " returns the palette index for the given grey index
-    fun <SID>grey_color(n)
+    fun s:grey_color(n)
         if &t_Co == 88
             if a:n == 0
                 return 16
@@ -154,7 +154,7 @@ endif
     endfun
 
     " returns an approximate color index for the given color level
-    fun <SID>rgb_number(x)
+    fun s:rgb_number(x)
         if &t_Co == 88
             if a:x < 69
                 return 0
@@ -181,7 +181,7 @@ endif
     endfun
 
     " returns the actual color level for the given color index
-    fun <SID>rgb_level(n)
+    fun s:rgb_level(n)
         if &t_Co == 88
             if a:n == 0
                 return 0
@@ -202,7 +202,7 @@ endif
     endfun
 
     " returns the palette index for the given R/G/B color indices
-    fun <SID>rgb_color(x, y, z)
+    fun s:rgb_color(x, y, z)
         if &t_Co == 88
             return 16 + (a:x * 16) + (a:y * 4) + a:z
         else
@@ -211,65 +211,65 @@ endif
     endfun
 
     " returns the palette index to approximate the given R/G/B color levels
-    fun <SID>color(r, g, b)
+    fun s:color(r, g, b)
         " get the closest grey
-        let l:gx = <SID>grey_number(a:r)
-        let l:gy = <SID>grey_number(a:g)
-        let l:gz = <SID>grey_number(a:b)
+        let l:gx = s:grey_number(a:r)
+        let l:gy = s:grey_number(a:g)
+        let l:gz = s:grey_number(a:b)
 
         " get the closest color
-        let l:x = <SID>rgb_number(a:r)
-        let l:y = <SID>rgb_number(a:g)
-        let l:z = <SID>rgb_number(a:b)
+        let l:x = s:rgb_number(a:r)
+        let l:y = s:rgb_number(a:g)
+        let l:z = s:rgb_number(a:b)
 
         if l:gx == l:gy && l:gy == l:gz
             " there are two possibilities
-            let l:dgr = <SID>grey_level(l:gx) - a:r
-            let l:dgg = <SID>grey_level(l:gy) - a:g
-            let l:dgb = <SID>grey_level(l:gz) - a:b
+            let l:dgr = s:grey_level(l:gx) - a:r
+            let l:dgg = s:grey_level(l:gy) - a:g
+            let l:dgb = s:grey_level(l:gz) - a:b
             let l:dgrey = (l:dgr * l:dgr) + (l:dgg * l:dgg) + (l:dgb * l:dgb)
-            let l:dr = <SID>rgb_level(l:gx) - a:r
-            let l:dg = <SID>rgb_level(l:gy) - a:g
-            let l:db = <SID>rgb_level(l:gz) - a:b
+            let l:dr = s:rgb_level(l:gx) - a:r
+            let l:dg = s:rgb_level(l:gy) - a:g
+            let l:db = s:rgb_level(l:gz) - a:b
             let l:drgb = (l:dr * l:dr) + (l:dg * l:dg) + (l:db * l:db)
             if l:dgrey < l:drgb
                 " use the grey
-                return <SID>grey_color(l:gx)
+                return s:grey_color(l:gx)
             else
                 " use the color
-                return <SID>rgb_color(l:x, l:y, l:z)
+                return s:rgb_color(l:x, l:y, l:z)
             endif
         else
             " only one possibility
-            return <SID>rgb_color(l:x, l:y, l:z)
+            return s:rgb_color(l:x, l:y, l:z)
         endif
     endfun
 
     " returns the palette index to approximate the 'rrggbb' hex string
-    fun <SID>rgb(rgb)
+    fun s:rgb(rgb)
         let l:r = ("0x" . strpart(a:rgb, 0, 2)) + 0
         let l:g = ("0x" . strpart(a:rgb, 2, 2)) + 0
         let l:b = ("0x" . strpart(a:rgb, 4, 2)) + 0
 
-        return <SID>color(l:r, l:g, l:b)
+        return s:color(l:r, l:g, l:b)
     endfun
 
     " sets the highlighting for the given group
-    fun <SID>X(group, fg, bg, attr)
+    fun s:X(group, fg, bg, attr)
         let l:fg = substitute(a:fg, '#','','')
         let l:bg = substitute(a:bg, '#','','')
         if l:fg != ""
             if l:fg ==? "none"
                 exec "hi " . a:group . " guifg=NONE" . " ctermfg=NONE"
             else
-                exec "hi " . a:group . " guifg=#" . l:fg . " ctermfg=" . <SID>rgb(l:fg)
+                exec "hi " . a:group . " guifg=#" . l:fg . " ctermfg=" . s:rgb(l:fg)
             endif
         endif
         if l:bg != ""
             if l:bg ==? "none"
                 exec "hi " . a:group . " guibg=NONE" . " ctermbg=NONE"
             else
-                exec "hi " . a:group . " guibg=#" . l:bg . " ctermbg=" . <SID>rgb(l:bg)
+                exec "hi " . a:group . " guibg=#" . l:bg . " ctermbg=" . s:rgb(l:bg)
             endif
         endif
         if a:attr != ""
@@ -344,117 +344,117 @@ let s:grey100   = '#ffffff'
 " }}}
 
 " General colors
-call <SID>X('Normal',           s:bwhite,   s:grey15,   'none') 
-call <SID>X('SpecialKey',       s:grey30,   '',         'none')
-call <SID>X('NonText',          s:grey30,   '',         'none')
-call <SID>X('Directory',        s:cyan1,    '',         'none')
-call <SID>X('ErrorMsg',         s:grey100,  s:red1,     'none')
-call <SID>X('IncSearch',        '',         '',         'inverse')
-call <SID>X('Search',           s:grey11,   s:yellow,   'none')
-call <SID>X('MoreMsg',          s:green4,   'none',     'bold')
-call <SID>X('ModeMsg',          s:red,      '',         'bold')
-call <SID>X('LineNr',           s:grey46,   s:grey19,   'none')
-call <SID>X('CursorLineNr',     s:grey54,   '',         'bold')
-call <SID>X('Question',         s:green2,   '',         'bold')
-call <SID>X('StatusLine',       s:bwhite,   s:grey27,   'none')
-call <SID>X('StatusLineNC',     s:grey46,   s:grey27,   'none')
-call <SID>X('VertSplit',        s:grey27,   s:grey27,   'none')
-call <SID>X('Title',            s:red,      '',         'bold')
-call <SID>X('Visual',           s:bwhite,   s:grey27,   'none')
-call <SID>X('VisualNOS',        s:bwhite,   s:grey27,   'bold,underline')
-call <SID>X('WarningMsg',       s:red1,     '',         'none')
-call <SID>X('WildMenu',         s:grey11,   s:yellow,   'none')
-call <SID>X('Folded',           s:grey46,   s:grey19,   'none')
-call <SID>X('FoldColumn',       s:grey46,   s:grey19,   'none')
-call <SID>X('DiffAdd',          '',         '005f5f',   'none')
-call <SID>X('DiffDelete',       '87afd7',   '005f5f',   'none')
-call <SID>X('DiffChange',       '',         '005f87',   'none')
-call <SID>X('DiffText',         '',         s:red4,     'none')
-call <SID>X('SignColumn',       s:cyan,     s:grey19,   'none')
-call <SID>X('Conceal',          s:yellow,   'none',     'none')
+call s:X('Normal',           s:bwhite,   s:grey15,   'none') 
+call s:X('SpecialKey',       s:grey30,   '',         'none')
+call s:X('NonText',          s:grey30,   '',         'none')
+call s:X('Directory',        s:cyan1,    '',         'none')
+call s:X('ErrorMsg',         s:grey100,  s:red1,     'none')
+call s:X('IncSearch',        '',         '',         'inverse')
+call s:X('Search',           s:grey11,   s:yellow,   'none')
+call s:X('MoreMsg',          s:green4,   'none',     'bold')
+call s:X('ModeMsg',          s:red,      '',         'bold')
+call s:X('LineNr',           s:grey46,   s:grey19,   'none')
+call s:X('CursorLineNr',     s:grey54,   '',         'bold')
+call s:X('Question',         s:green2,   '',         'bold')
+call s:X('StatusLine',       s:bwhite,   s:grey27,   'none')
+call s:X('StatusLineNC',     s:grey46,   s:grey27,   'none')
+call s:X('VertSplit',        s:grey27,   s:grey27,   'none')
+call s:X('Title',            s:red,      '',         'bold')
+call s:X('Visual',           s:bwhite,   s:grey27,   'none')
+call s:X('VisualNOS',        s:bwhite,   s:grey27,   'bold,underline')
+call s:X('WarningMsg',       s:red1,     '',         'none')
+call s:X('WildMenu',         s:grey11,   s:yellow,   'none')
+call s:X('Folded',           s:grey46,   s:grey19,   'none')
+call s:X('FoldColumn',       s:grey46,   s:grey19,   'none')
+call s:X('DiffAdd',          '',         '005f5f',   'none')
+call s:X('DiffDelete',       '87afd7',   '005f5f',   'none')
+call s:X('DiffChange',       '',         '005f87',   'none')
+call s:X('DiffText',         '',         s:red4,     'none')
+call s:X('SignColumn',       s:cyan,     s:grey19,   'none')
+call s:X('Conceal',          s:yellow,   'none',     'none')
 hi SpellBad     guisp=red       gui=undercurl   ctermfg=196 ctermbg=NONE    cterm=underline
 hi SpellCap     guisp=royalblue gui=undercurl   ctermfg=63  ctermbg=NONE    cterm=underline
 hi SpellRare    guisp=magenta   gui=undercurl   ctermfg=201 ctermbg=NONE    cterm=underline
 hi SpellLocal   guisp=cyan      gui=undercurl   ctermfg=51  ctermbg=NONE    cterm=underline
-call <SID>X('Pmenu',            s:bwhite,   s:grey27,   '')
-call <SID>X('PmenuSel',         s:grey0,    s:yellow,   '')
-call <SID>X('PmenuSbar',        '',         s:grey19,   'none')
-call <SID>X('PmenuThumb',       '',         s:grey50,   'none')
-call <SID>X('TabLine',          s:grey100,  s:grey50,   'none')
-call <SID>X('TabLineSel',       s:grey100,  'none',     'bold')
-call <SID>X('TabLineFill',      s:grey100,  s:grey27,   'none')
-call <SID>X('CursorColumn',     '',         s:grey19,   'none')
-call <SID>X('CursorLine',       '',         s:grey19,   'none')
-call <SID>X('ColorColumn',      '',         s:grey19,     'none')
-call <SID>X('Cursor',           '',         s:grey39,   'none')
+call s:X('Pmenu',            s:bwhite,   s:grey27,   '')
+call s:X('PmenuSel',         s:grey0,    s:yellow,   '')
+call s:X('PmenuSbar',        '',         s:grey19,   'none')
+call s:X('PmenuThumb',       '',         s:grey50,   'none')
+call s:X('TabLine',          s:grey100,  s:grey50,   'none')
+call s:X('TabLineSel',       s:grey100,  'none',     'bold')
+call s:X('TabLineFill',      s:grey100,  s:grey27,   'none')
+call s:X('CursorColumn',     '',         s:grey19,   'none')
+call s:X('CursorLine',       '',         s:grey19,   'none')
+call s:X('ColorColumn',      '',         s:grey19,     'none')
+call s:X('Cursor',           '',         s:grey39,   'none')
 
 " Syntax highlighting
-call <SID>X('lCursor',          '',         s:bred,     'none')
-call <SID>X('MatchParen',       s:bred,     'none',     'bold')
-call <SID>X('Comment',          s:bblack,   '',         'italic')
-call <SID>X('Constant',         s:red,      '',         'none')
-call <SID>X('Special',          s:yellow,   '',         'none')
-call <SID>X('Identifier',       s:green,    '',         'none')
-call <SID>X('Statement',        s:blue,     '',         'none')
-call <SID>X('PreProc',          s:red,      '',         'none')
-call <SID>X('Type',             s:green,    '',         'none')
-call <SID>X('Underlined',       s:bblue,    '',         'underline')
-call <SID>X('Error',            s:grey100,  s:red1,     'none')
-call <SID>X('Todo',             s:bcyan,    'none',     'bold,italic,underline')
-call <SID>X('String',           s:bgreen,   '',         'italic')
-call <SID>X('Number',           s:red,      '',         'none')
-call <SID>X('Boolean',          s:orange,   '',         'none')
-call <SID>X('Float',            s:orange,   '',         'none')
-call <SID>X('Function',         s:green,    '',         'none')
-call <SID>X('Keyword',          s:blue,     '',         'none')
-call <SID>X('SpecialComment',   s:cyan,     '',         'none')
+call s:X('lCursor',          '',         s:bred,     'none')
+call s:X('MatchParen',       s:bred,     'none',     'bold')
+call s:X('Comment',          s:bblack,   '',         'italic')
+call s:X('Constant',         s:red,      '',         'none')
+call s:X('Special',          s:yellow,   '',         'none')
+call s:X('Identifier',       s:green,    '',         'none')
+call s:X('Statement',        s:blue,     '',         'none')
+call s:X('PreProc',          s:red,      '',         'none')
+call s:X('Type',             s:green,    '',         'none')
+call s:X('Underlined',       s:bblue,    '',         'underline')
+call s:X('Error',            s:grey100,  s:red1,     'none')
+call s:X('Todo',             s:bcyan,    'none',     'bold,italic,underline')
+call s:X('String',           s:bgreen,   '',         'italic')
+call s:X('Number',           s:red,      '',         'none')
+call s:X('Boolean',          s:orange,   '',         'none')
+call s:X('Float',            s:orange,   '',         'none')
+call s:X('Function',         s:green,    '',         'none')
+call s:X('Keyword',          s:blue,     '',         'none')
+call s:X('SpecialComment',   s:cyan,     '',         'none')
 
 " VimOutliner headings
-call <SID>X('OL1',      s:bwhite, '', 'bold')
-call <SID>X('OL2',      s:red,    '', 'bold')
-call <SID>X('OL3',      s:bblue,  '', 'bold')
-call <SID>X('OL4',      s:orange, '', 'bold')
-call <SID>X('OL5',      s:green,  '', 'bold')
-call <SID>X('OL6',      s:blue,   '', 'bold')
-call <SID>X('OL7',      s:yellow, '', 'bold')
-call <SID>X('OL8',      s:violet, '', 'bold')
-call <SID>X('OL9',      s:bwhite, '', 'bold')
+call s:X('OL1',      s:bwhite, '', 'bold')
+call s:X('OL2',      s:red,    '', 'bold')
+call s:X('OL3',      s:bblue,  '', 'bold')
+call s:X('OL4',      s:orange, '', 'bold')
+call s:X('OL5',      s:green,  '', 'bold')
+call s:X('OL6',      s:blue,   '', 'bold')
+call s:X('OL7',      s:yellow, '', 'bold')
+call s:X('OL8',      s:violet, '', 'bold')
+call s:X('OL9',      s:bwhite, '', 'bold')
 
 " VimOutliner tags
-call <SID>X('outlTags', s:red,    '', 'none')
+call s:X('outlTags', s:red,    '', 'none')
 
 " VimOutliner body text
-call <SID>X('BT1',      s:bgreen, '', 'none')
-call <SID>X('BT2',      s:bgreen, '', 'none')
-call <SID>X('BT3',      s:bgreen, '', 'none')
-call <SID>X('BT4',      s:bgreen, '', 'none')
-call <SID>X('BT5',      s:bgreen, '', 'none')
-call <SID>X('BT6',      s:bgreen, '', 'none')
-call <SID>X('BT7',      s:bgreen, '', 'none')
-call <SID>X('BT8',      s:bgreen, '', 'none')
-call <SID>X('BT9',      s:bgreen, '', 'none')
+call s:X('BT1',      s:bgreen, '', 'none')
+call s:X('BT2',      s:bgreen, '', 'none')
+call s:X('BT3',      s:bgreen, '', 'none')
+call s:X('BT4',      s:bgreen, '', 'none')
+call s:X('BT5',      s:bgreen, '', 'none')
+call s:X('BT6',      s:bgreen, '', 'none')
+call s:X('BT7',      s:bgreen, '', 'none')
+call s:X('BT8',      s:bgreen, '', 'none')
+call s:X('BT9',      s:bgreen, '', 'none')
 
 " VimOutliner pre-formatted text
-call <SID>X('PT1',      s:cyan,   '', 'none')
-call <SID>X('PT2',      s:cyan,   '', 'none')
-call <SID>X('PT3',      s:cyan,   '', 'none')
-call <SID>X('PT4',      s:cyan,   '', 'none')
-call <SID>X('PT5',      s:cyan,   '', 'none')
-call <SID>X('PT6',      s:cyan,   '', 'none')
-call <SID>X('PT7',      s:cyan,   '', 'none')
-call <SID>X('PT8',      s:cyan,   '', 'none')
-call <SID>X('PT9',      s:cyan,   '', 'none')
+call s:X('PT1',      s:cyan,   '', 'none')
+call s:X('PT2',      s:cyan,   '', 'none')
+call s:X('PT3',      s:cyan,   '', 'none')
+call s:X('PT4',      s:cyan,   '', 'none')
+call s:X('PT5',      s:cyan,   '', 'none')
+call s:X('PT6',      s:cyan,   '', 'none')
+call s:X('PT7',      s:cyan,   '', 'none')
+call s:X('PT8',      s:cyan,   '', 'none')
+call s:X('PT9',      s:cyan,   '', 'none')
 
 " delete functions {{{
-delf <SID>X
-delf <SID>rgb
-delf <SID>color
-delf <SID>rgb_color
-delf <SID>rgb_level
-delf <SID>rgb_number
-delf <SID>grey_color
-delf <SID>grey_level
-delf <SID>grey_number
+delf s:X
+delf s:rgb
+delf s:color
+delf s:rgb_color
+delf s:rgb_level
+delf s:rgb_number
+delf s:grey_color
+delf s:grey_level
+delf s:grey_number
 " }}}
 
 " vim:set fdm=marker:
