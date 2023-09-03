@@ -33,6 +33,7 @@ endif
 set mouse=a
 set ttymouse=sgr
 set balloonevalterm
+set termguicolors
 if $TERM !~ "^xterm"
     " Underlines
     let &t_AU = "\e[58:5:%dm"
