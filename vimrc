@@ -16,12 +16,63 @@ endfunction
 silent function! WINDOWS()
     return  (has('win32') || has('win64'))
 endfunction
+
+silent function! WSL()
+    return has('win32unix')
+endfunction
 " }}}
 
 " Basics {{{
 set nocompatible
 if !WINDOWS()
     set shell=sh
+endif
+" }}}
+
+" Modern terminal support {{{
+set mouse=a
+set ttymouse=sgr
+set balloonevalterm
+if $TERM !~ "^xterm"
+    " Underlines
+    let &t_AU = "\e[58:5:%dm"
+    let &t_8u = "\e[58:2:%lu:%lu:%lum"
+    let &t_Us = "\e[4:2m"
+    let &t_Cs = "\e[4:3m"
+    let &t_ds = "\e[4:4m"
+    let &t_Ds = "\e[4:5m"
+    let &t_Ce = "\e[4:0m"
+    " Strikethrough
+    let &t_Ts = "\e[9m"
+    let &t_Te = "\e[29m"
+    " Truecolor support
+    let &t_8f = "\e[38:2:%lu:%lu:%lum"
+    let &t_8b = "\e[48:2:%lu:%lu:%lum"
+    let &t_RF = "\e]10;?\e\\"
+    let &t_RB = "\e]11;?\e\\"
+    " Bracketed paste
+    let &t_BE = "\e[?2004h"
+    let &t_BD = "\e[?2004l"
+    let &t_PS = "\e[200~"
+    let &t_PE = "\e[201~"
+    " Cursor control
+    let &t_RC = "\e[?12$p"
+    let &t_SH = "\e[%d q"
+    let &t_RS = "\eP$q q\e\\"
+    let &t_SI = "\e[5 q"
+    let &t_SR = "\e[3 q"
+    let &t_EI = "\e[1 q"
+    let &t_VS = "\e[?12l"
+    " Focus tracking
+    let &t_fe = "\e[?1004h"
+    let &t_fd = "\e[?1004l"
+    execute "set <FocusGained>=\<Esc>[I"
+    execute "set <FocusLost>=\<Esc>[O"
+    " Window title
+    let &t_ST = "\e[22;2t"
+    let &t_RT = "\e[23;2t"
+    " No background color erase
+    let &t_ut=''
 endif
 " }}}
 
@@ -197,11 +248,6 @@ call plug#end()
 " }}}
 
 " Editor {{{
-" enable the mouse
-if has('mouse')
-    set mouse=a
-endif
-
 set shortmess+=filmnrxoOtT      " Abbreviate messages (no 'hit enter')
 set hidden                      " keep hidden buffers on window close
 
@@ -374,69 +420,10 @@ if WINDOWS()
 endif
 
 " Set windows font and color scheme
-colorscheme numbat
 if WINDOWS()
     set guifont=Consolas:h8
     set guifontwide=MS_Gothic:h8:cSHIFTJIS
 endif
-
-if $TERM =~ "^xterm"
-    set termguicolors
-    if empty($ConEmuBuild)
-        " set xterm escape sequences
-        let &t_ZH="\e[3m"       " start italics
-        let &t_ZR="\e[23m"      " end italics
-        let &t_us="\e[4m"       " start underline
-        let &t_ue="\e[24m"      " end underline
-        let &t_SI="\e[5 q"      " start insert (blinking bar)
-        let &t_EI="\e[1 q"      " end insert (blinking block)
-    endif
-endif
-
-if $COLORTERM == "gnome-terminal"
-    " In Ubuntu the arrows fall back on wrong-sized fonts
-    set listchars=tab:▸—,eol:¬,trail:·,nbsp:⁃,precedes:«,extends:»
-    " Use 256 color mode
-    set t_Co=256
-    " use autocommands since DECSCUSR isn't supported yet
-    " This isn't really optimal since it changes the default profile for all
-    " terminal windows, but it's the only solution that works.
-    let &t_SI=""
-    let &t_EI=""
-    if has("autocmd")
-        " the VimEnter command shows termresponse on startup???
-        "au VimEnter * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
-        au InsertEnter * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape ibeam"
-        au InsertLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
-        au VimLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
-    endif
-endif
-
-if !empty($ConEmuBuild) && !empty($TERM)
-    " 256 color terminal is possible in Windows using ConEmu
-    " set term=xterm
-    set t_Co=256
-    let &t_AB="\e[48;5;%dm" " set ANSI background color
-    let &t_AF="\e[38;5;%dm" " set ANSI foreground color
-    let &t_ZH="\e[3m"       " start italics
-    let &t_ZR="\e[23m"      " end italics
-    let &t_us="\e[4m"       " start underline
-    let &t_ue="\e[24m"      " end underline
-    " rebind mouse wheel
-    nnoremap <Esc>[62~ <C-E>
-    nnoremap <Esc>[63~ <C-Y>
-    "inoremap <Esc>[62~ <C-X><C-E>
-    "inoremap <Esc>[63~ <C-X><C-Y>
-    " rebind backspace
-    map <Char-0x07F> <BS>
-    imap <Char-0x07F> <BS>
-    " This only really works using codepage 65001
-    set listchars=tab:►—,eol:¬,trail:·,nbsp:⁃,precedes:←,extends:→
-endif
-
-" Make sure &t_EI fires on startup
-" This just enters insert mode, does nothing, and returns to normal mode
-au VimEnter * normal a
 
 " Set gui window size
 if has("gui_running")
@@ -449,6 +436,8 @@ if has("gui_running")
     "    endif
     "endif
 endif
+
+colorscheme numbat
 " }}}
 
 " Mappings {{{
