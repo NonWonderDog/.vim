@@ -20,7 +20,7 @@ $files = @("vimrc")
 $olddir = join-path $HOME .dotfiles_old
 
 # create dotfiles_old in home dir
-mkdir $olddir -Force > null
+mkdir $olddir -Force > $null
 
 # move any existing dotfiles in homedir to dotfiles_old directory, then create 
 # symlinks from the homedir to any files in the ~/.dotfiles directory specified 
@@ -33,13 +33,8 @@ foreach ($file in $files) {
 }
 
 foreach ($file in $files) {
-    cmd /c mklink "$HOME\.$file" "$dir\$file"
+    New-Item -Path "$HOME\.$file" -ItemType SymbolicLink -Value "$dir\$file"
 }
-
-# neovim support
-cmd /c mklink /D "$env:LOCALAPPDATA\nvim\" "$dir\"
-cmd /c mklink "$env:LOCALAPPDATA\nvim\init.vim" "$dir\vimrc"
 
 write-host "Done."
 pauseQuit
-
