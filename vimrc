@@ -231,7 +231,7 @@ Plug 'kergoth/vim-hilinks'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-speeddating'
+" Plug 'tpope/vim-speeddating' breaks v-<C-a>
 Plug 'tpope/vim-surround'
 
 Plug 'vimoutliner/vimoutliner'
